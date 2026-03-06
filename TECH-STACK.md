@@ -20,7 +20,7 @@ This stack stays close to the grain of the web. It keeps the site hand-built, le
 
 It also matches the tone of the site:
 
-- **Swiss discipline:** plain HTML and Plain CSS make the grid, spacing, and typography the main event.
+- **Swiss discipline:** plain HTML and plain CSS make the grid, spacing, and typography the main event.
 - **Editorial warmth:** Markdown keeps writing at the center while Pandoc gives you dependable footnotes, metadata, and clean HTML output.
 - **Quiet confidence:** Vanilla JavaScript is enough for the few interactive touches you want, without turning the site into a software project.
 - **Performance as aesthetics:** no framework runtime, no hydration, no client router, no bundler complexity.
