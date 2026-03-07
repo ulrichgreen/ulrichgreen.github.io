@@ -32,7 +32,7 @@ for (const section of sections) {
 }
 
 const concepts = [
-  'load full experience',
+  'Load full experience',
   'prefers-reduced-motion',
   'footer',
   'Flash',
