@@ -97,7 +97,7 @@ and line count — into the right margin via CSS Grid. The `role` and `aria-labe
 make every code block accessible to screen readers.
 
 The pipeline remains: `cat post.md | node frontmatter.mjs | node md2html.mjs | node template.mjs`.
-shiki initialises once when the script starts, then highlights every code block in the document
+shiki initializes once when the script starts, then highlights every code block in the document
 synchronously. No async complexity in the pipeline.
 
 ### Markdown Authoring
@@ -596,7 +596,7 @@ shiki adds one dependency to `package.json`:
 |---|---|---|
 | **shiki** | Build-time syntax highlighting (TextMate grammars) | ~6,000,000 |
 
-The total dependency count goes from five to six. shiki is initialised once in
+The total dependency count goes from five to six. shiki is initialized once in
 `scripts/md2html.mjs`, before the markdown parse begins. It adds approximately 200ms to the
 first build (grammar loading) and negligible time per code block thereafter.
 
