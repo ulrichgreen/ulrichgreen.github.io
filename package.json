@@ -4,7 +4,7 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node test/verify-tech-stack.js && node test/verify-code-examples.js"
+    "test": "node test/verify-tech-stack.js && node test/verify-code-examples.js && node test/verify-site-planning.js"
   },
   "keywords": [],
   "author": "",
