@@ -1,0 +1,248 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Colophon</title>
+  <style>
+    :root {
+      --u: 8px;
+      --t-xs: 12px;
+      --t-sm: 14px;
+      --t-base: 18px;
+      --t-h2: 28px;
+      --t-h1: 40px;
+      --lh-3u: 24px;
+      --lh-4u: 32px;
+      --lh-5u: 40px;
+      --lh-7u: 56px;
+      --measure: 65ch;
+      --c-bg: #f8f7f5;
+      --c-text: #1c1b19;
+      --c-muted: #74736f;
+      --c-rule: #dbd9d4;
+      --ff-body: ui-serif, "New York", "Iowan Old Style", Georgia, serif;
+      --ff-ui: system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --c-bg: #111110;
+        --c-text: #e5e4e0;
+        --c-muted: #8a8985;
+        --c-rule: #2a2926;
+      }
+    }
+
+    *, *::before, *::after { box-sizing: border-box; }
+
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+
+    body {
+      margin: 0;
+      font-family: var(--ff-body);
+      font-size: var(--t-base);
+      line-height: var(--lh-4u);
+      color: var(--c-text);
+      background: var(--c-bg);
+      font-feature-settings: "liga" 1, "kern" 1;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    a {
+      color: inherit;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      transition: text-decoration-thickness 0.4s ease;
+    }
+
+    a:hover { text-decoration-thickness: 2px; }
+
+    .page {
+      max-width: calc(var(--measure) + calc(var(--u) * 10));
+      margin: 0 auto;
+      padding: calc(var(--u) * 8) calc(var(--u) * 4) calc(var(--u) * 16);
+    }
+
+    .kicker,
+    .meta-title {
+      font-family: var(--ff-ui);
+      font-size: var(--t-xs);
+      line-height: var(--lh-3u);
+      color: var(--c-muted);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+    }
+
+    .kicker {
+      margin-bottom: calc(var(--u) * 3);
+    }
+
+    h1 {
+      font-size: var(--t-h1);
+      line-height: var(--lh-7u);
+      font-weight: 400;
+      letter-spacing: -0.018em;
+      max-width: 14ch;
+      margin: 0 0 calc(var(--u) * 4);
+    }
+
+    .intro {
+      max-width: var(--measure);
+      font-size: 22px;
+      line-height: var(--lh-4u);
+      color: var(--c-muted);
+      margin: 0 0 calc(var(--u) * 6);
+    }
+
+    h2 {
+      max-width: var(--measure);
+      font-size: var(--t-h2);
+      line-height: var(--lh-5u);
+      font-weight: 400;
+      letter-spacing: -0.012em;
+      margin: calc(var(--u) * 8) 0 calc(var(--u) * 2);
+    }
+
+    p,
+    ul {
+      max-width: var(--measure);
+      margin: 0 0 var(--lh-4u);
+    }
+
+    ul {
+      padding-left: calc(var(--u) * 3);
+    }
+
+    li {
+      margin-bottom: calc(var(--u) / 2);
+    }
+
+    .divider {
+      display: block;
+      height: calc(var(--u) * 8);
+      border: none;
+      position: relative;
+      margin: 0;
+    }
+
+    .divider::after {
+      content: "· · ·";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--c-muted);
+      font-size: var(--t-sm);
+      letter-spacing: 0.4em;
+    }
+
+    .meta {
+      border-top: 1px solid var(--c-rule);
+      margin-top: calc(var(--u) * 12);
+      padding-top: calc(var(--u) * 4);
+    }
+
+    .meta-title {
+      margin-bottom: calc(var(--u) * 2);
+    }
+
+    @media (max-width: 640px) {
+      :root {
+        --t-base: 17px;
+        --t-h1: 32px;
+        --lh-7u: 40px;
+      }
+
+      .page {
+        padding: calc(var(--u) * 6) calc(var(--u) * 2) calc(var(--u) * 12);
+      }
+
+      h1 { max-width: none; }
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+      a { transition: none; }
+    }
+
+    @media print {
+      body { background: white; color: black; }
+    }
+  </style>
+</head>
+<body>
+  <main class="page">
+    <p class="kicker">
+      <a href="./index.html">Index</a> · Colophon
+    </p>
+
+    <h1>Colophon</h1>
+    <p class="intro">
+      This prototype is built as a reading object first: static files in the <code>docs</code>
+      folder, no framework, no analytics, no external assets, and only enough CSS and JavaScript
+      to clarify the typography.
+    </p>
+
+    <p>
+      The choices on this page follow the direction already written down in this repository:
+      authored HTML over abstraction, performance as part of the design, typography over graphics,
+      and a visible respect for print, restraint, and maintenance.
+    </p>
+
+    <hr class="divider">
+
+    <h2>Materials</h2>
+    <p>
+      The site is plain HTML, raw CSS, and a few lines of Vanilla JS. That matches the stated stack
+      in <a href="./TECH-STACK.md">TECH-STACK.md</a> and the broader standards in
+      <a href="./SITE-PLANNING.md">SITE-PLANNING.md</a>: low-level tools, static output, and
+      nothing added just because the modern web expects a logo for it.
+    </p>
+    <p>
+      The current index page is a standalone prototype. It carries its own styles, its own controls,
+      and its own content in one file. This colophon follows the same approach so it can be opened,
+      read, printed, or archived without any extra machinery.
+    </p>
+
+    <h2>Typography</h2>
+    <p>
+      Typography is doing the heavy lifting here. The page uses a system serif stack, a 65ch
+      measure, and an 8px baseline grid with line-heights of 24, 32, 40, and 56 pixels. Those are
+      the same proportions the index page uses for body copy, headings, notes, and interface text.
+    </p>
+    <p>
+      This is consistent with the repo's larger argument: the craft should be visible in spacing,
+      hierarchy, rhythm, and restraint before the site reaches for decorative graphics or heavier
+      tooling.
+    </p>
+
+    <h2>Operating Principles</h2>
+    <ul>
+      <li>Static files are the product, not an intermediate artifact hidden behind a platform.</li>
+      <li>No third-party widgets, trackers, or hosted dependencies are required to read the page.</li>
+      <li>Dark mode, reduced motion, and print are treated as normal reading conditions.</li>
+      <li>The source should stay legible enough that the implementation can be inspected directly.</li>
+    </ul>
+
+    <h2>Related Notes in This Repo</h2>
+    <p>
+      The supporting documents expand the same ideas from different angles:
+      <a href="./TECH-STACK.md">TECH-STACK.md</a> explains the low-level tool choices,
+      <a href="./CODE-EXAMPLES.md">CODE-EXAMPLES.md</a> describes how code should be treated as
+      typography, <a href="./SITE-PLANNING.md">SITE-PLANNING.md</a> sets the editorial and design
+      standard, and <a href="./SURPRISE-IDEAS.md">SURPRISE-IDEAS.md</a> explores what delight can
+      look like without abandoning restraint.
+    </p>
+
+    <footer class="meta">
+      <p class="meta-title">Summary</p>
+      <p>
+        The site should feel authored, not assembled. This colophon exists to make the hidden
+        choices legible: system fonts, static HTML, raw CSS, minimal JS, zero external dependencies,
+        and a preference for exactness over volume.
+      </p>
+    </footer>
+  </main>
+</body>
+</html>
