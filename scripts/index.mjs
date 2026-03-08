@@ -13,7 +13,7 @@ const articles = readdirSync(writingDir)
     const slug = file.replace(/\.md$/, '');
     return { ...data, slug };
   })
-  .filter(a => a.published)
+  .filter(a => a.published && !isNaN(new Date(a.published).getTime()))
   .sort((a, b) => new Date(b.published) - new Date(a.published));
 
 function formatDate(d) {
@@ -24,9 +24,10 @@ function formatDate(d) {
 
 const listItems = articles.map(a => {
   const iso = new Date(a.published).toISOString().slice(0, 10);
+  const title = (a.title || '').replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;');
   return `
   <li>
-    <a href="/writing/${a.slug}.html">${a.title}</a>
+    <a href="/writing/${a.slug}.html">${title}</a>
     <time datetime="${iso}">${formatDate(a.published)}</time>
   </li>`;
 }).join('');

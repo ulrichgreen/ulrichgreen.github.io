@@ -95,7 +95,7 @@
     color: var(--c-text);
     background-color: var(--c-bg);
     font-feature-settings: "liga" 1, "kern" 1;
-    font-variation-settings: "opsz" var(--opsz, 16);
+    font-variation-settings: "wght" var(--wght, 400), "opsz" var(--opsz, 16);
     -webkit-font-smoothing: antialiased;
     -moz-osx-font-smoothing: grayscale;
   }
