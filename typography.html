@@ -1,0 +1,679 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Typography Exploration — ulrich.green</title>
+  <style>
+    /* =============================================================
+       Variables
+       ============================================================= */
+    :root {
+      /* Baseline grid — every line-height and spacing value is
+         a multiple of --unit (8 px). */
+      --unit:    8px;
+      --lead:    32px;   /* body: 4 units  */
+      --lead-sm: 24px;   /* small: 3 units */
+      --lead-lg: 40px;   /* large: 5 units */
+      --lead-xl: 56px;   /* display: 7 units */
+
+      /* Font stacks — swapped at runtime by the font switcher */
+      --font-body: ui-serif, 'New York', Georgia, 'Times New Roman', serif;
+      --font-ui:   ui-sans-serif, system-ui, -apple-system, 'Segoe UI', sans-serif;
+      --font-mono: ui-monospace, 'SF Mono', 'Cascadia Code', 'Fira Code', monospace;
+
+      /* Palette — warm near-white */
+      --bg:     #f9f8f5;
+      --ink:    #1a1918;
+      --ink-2:  #5e5c56;
+      --rule:   #d8d6ce;
+      --accent: #2e4f7a;
+      --tint:   rgba(46, 79, 122, 0.07);
+
+      /* Reading measure */
+      --measure: 66ch;
+    }
+
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --bg:     #141310;
+        --ink:    #e6e4de;
+        --ink-2:  #8a8880;
+        --rule:   #2e2c28;
+        --accent: #7ba3d8;
+        --tint:   rgba(123, 163, 216, 0.09);
+      }
+    }
+
+    /* =============================================================
+       Reset
+       ============================================================= */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    /* =============================================================
+       Base
+       ============================================================= */
+    html {
+      font-family: var(--font-body);
+      font-size: 18px;
+      line-height: var(--lead);
+      background: var(--bg);
+      color: var(--ink);
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      hanging-punctuation: first last;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* =============================================================
+       Baseline grid debug overlay (toggled by button / B key)
+       ============================================================= */
+    html.show-grid {
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent 31px,
+        color-mix(in srgb, var(--accent) 18%, transparent) 31px,
+        color-mix(in srgb, var(--accent) 18%, transparent) 32px
+      );
+      background-attachment: fixed;
+    }
+
+    /* =============================================================
+       Running header
+       ============================================================= */
+    .running-header {
+      position: fixed;
+      inset: 0 0 auto;
+      height: 40px;
+      display: flex;
+      align-items: center;
+      padding-inline: calc(var(--unit) * 4);
+      font-family: var(--font-ui);
+      font-size: 11px;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--ink-2);
+      border-bottom: 1px solid var(--rule);
+      background: var(--bg);
+      z-index: 100;
+    }
+
+    .running-header .sep {
+      margin-inline: 0.5em;
+      opacity: 0.45;
+    }
+
+    /* =============================================================
+       Page layout
+       ============================================================= */
+    body {
+      /* Offset for the fixed running header */
+      padding-block-start: 40px;
+    }
+
+    .page {
+      max-width: calc(var(--measure) + calc(var(--unit) * 8));
+      margin-inline: auto;
+      padding: calc(var(--unit) * 12) calc(var(--unit) * 4) calc(var(--unit) * 20);
+    }
+
+    /* =============================================================
+       Article header
+       ============================================================= */
+    .article-header {
+      padding-block-end: calc(var(--unit) * 4);
+      border-bottom: 1px solid var(--rule);
+      /* Subtract 1 px for the border so total gap stays on-grid */
+      margin-block-end: calc(var(--unit) * 7 - 1px);
+    }
+
+    .article-category {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      line-height: var(--lead-sm);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-2);
+      margin-block-end: calc(var(--unit) * 2);
+    }
+
+    h1 {
+      font-size: 40px;
+      line-height: var(--lead-xl);
+      font-weight: 400;
+      letter-spacing: -0.025em;
+      color: var(--ink);
+      max-width: var(--measure);
+      margin-block-end: calc(var(--unit) * 2);
+    }
+
+    .article-meta {
+      font-family: var(--font-ui);
+      font-size: 13px;
+      line-height: var(--lead-sm);
+      color: var(--ink-2);
+    }
+
+    /* =============================================================
+       Body text
+       ============================================================= */
+    article {
+      max-width: var(--measure);
+    }
+
+    p {
+      font-size: 18px;
+      line-height: var(--lead);
+      margin-block-end: var(--lead);
+    }
+
+    /* Opening paragraph — small-caps treatment on first line */
+    p:first-of-type {
+      font-variant-caps: small-caps;
+      letter-spacing: 0.02em;
+    }
+
+    /* =============================================================
+       Headings
+       ============================================================= */
+    h2 {
+      font-size: 24px;
+      line-height: var(--lead-lg);
+      font-weight: 400;
+      letter-spacing: -0.015em;
+      margin-block-start: calc(var(--unit) * 8);
+      margin-block-end: calc(var(--unit) * 2);
+    }
+
+    h3 {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      line-height: var(--lead-sm);
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-2);
+      margin-block-start: calc(var(--unit) * 6);
+      margin-block-end: var(--unit);
+    }
+
+    /* =============================================================
+       Blockquote
+       ============================================================= */
+    blockquote {
+      margin-block: calc(var(--unit) * 6);
+      padding-inline-start: calc(var(--unit) * 4);
+      border-inline-start: 2px solid var(--ink);
+      font-size: 22px;
+      line-height: var(--lead-lg);
+      font-style: italic;
+      color: var(--ink);
+      max-width: calc(var(--measure) - 2ch);
+    }
+
+    blockquote cite {
+      display: block;
+      font-family: var(--font-ui);
+      font-size: 11px;
+      line-height: var(--lead-sm);
+      font-style: normal;
+      letter-spacing: 0.09em;
+      text-transform: uppercase;
+      color: var(--ink-2);
+      margin-block-start: calc(var(--unit) * 2);
+    }
+
+    /* =============================================================
+       Section break
+       ============================================================= */
+    hr {
+      border: none;
+      text-align: center;
+      margin-block: calc(var(--unit) * 8);
+      color: var(--ink-2);
+      line-height: var(--lead);
+    }
+
+    hr::before {
+      content: '· · ·';
+      letter-spacing: 0.6em;
+      font-size: 14px;
+    }
+
+    /* =============================================================
+       Links
+       ============================================================= */
+    a {
+      color: inherit;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      text-decoration-color: color-mix(in srgb, var(--ink) 35%, transparent);
+      transition: text-decoration-color 180ms;
+    }
+
+    a:hover { text-decoration-color: var(--ink); }
+
+    /* =============================================================
+       Inline code
+       ============================================================= */
+    code {
+      font-family: var(--font-mono);
+      font-size: 0.84em;
+      background: var(--tint);
+      padding: 0.1em 0.35em;
+      border-radius: 3px;
+    }
+
+    /* =============================================================
+       Code block
+       ============================================================= */
+    pre {
+      font-family: var(--font-mono);
+      font-size: 14px;
+      line-height: var(--lead-sm);
+      background: color-mix(in srgb, var(--ink) 3%, var(--bg));
+      border: 1px solid var(--rule);
+      border-radius: 4px;
+      padding: calc(var(--unit) * 3);
+      margin-block: calc(var(--unit) * 4);
+      overflow-x: auto;
+    }
+
+    pre code {
+      background: none;
+      padding: 0;
+      font-size: inherit;
+      border-radius: 0;
+    }
+
+    /* =============================================================
+       Footnotes
+       ============================================================= */
+    sup {
+      font-size: 0.65em;
+      line-height: 0;
+      vertical-align: super;
+    }
+
+    sup a {
+      color: var(--accent);
+      text-decoration: none;
+    }
+
+    .footnotes {
+      margin-block-start: calc(var(--unit) * 12);
+      padding-block-start: calc(var(--unit) * 4);
+      border-block-start: 1px solid var(--rule);
+      max-width: var(--measure);
+    }
+
+    .footnotes-label {
+      font-family: var(--font-ui);
+      font-size: 11px;
+      line-height: var(--lead-sm);
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-2);
+      margin-block-end: calc(var(--unit) * 3);
+    }
+
+    .footnote {
+      font-size: 14px;
+      line-height: var(--lead-sm);
+      color: var(--ink-2);
+      padding-inline-start: 2.5ch;
+      position: relative;
+      margin-block-end: calc(var(--unit) * 2);
+    }
+
+    .footnote-marker {
+      position: absolute;
+      inset-inline-start: 0;
+    }
+
+    /* =============================================================
+       Page footer
+       ============================================================= */
+    .page-footer {
+      max-width: var(--measure);
+      margin-block-start: calc(var(--unit) * 8);
+      padding-block-start: calc(var(--unit) * 4);
+      border-block-start: 1px solid var(--rule);
+      font-family: var(--font-ui);
+      font-size: 12px;
+      line-height: var(--lead-sm);
+      color: var(--ink-2);
+    }
+
+    /* =============================================================
+       Font switcher panel
+       ============================================================= */
+    .switcher {
+      position: fixed;
+      inset: auto calc(var(--unit) * 3) calc(var(--unit) * 3) auto;
+      background: var(--bg);
+      border: 1px solid var(--rule);
+      border-radius: 6px;
+      padding: calc(var(--unit) * 2) calc(var(--unit) * 2.5);
+      z-index: 200;
+      min-width: 188px;
+      box-shadow: 0 4px 24px color-mix(in srgb, var(--ink) 10%, transparent);
+    }
+
+    .switcher-title {
+      font-family: var(--font-ui);
+      font-size: 10px;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--ink-2);
+      margin-block-end: calc(var(--unit) * 1.5);
+    }
+
+    .font-options {
+      display: flex;
+      flex-direction: column;
+      gap: 1px;
+    }
+
+    .font-option {
+      display: grid;
+      grid-template-columns: 14px 1fr auto;
+      align-items: center;
+      gap: 7px;
+      cursor: pointer;
+      padding-block: 3px;
+    }
+
+    .font-option input[type="radio"] {
+      accent-color: var(--accent);
+      cursor: pointer;
+      width: 12px;
+      height: 12px;
+    }
+
+    .font-option-name {
+      font-family: var(--font-ui);
+      font-size: 12px;
+      color: var(--ink);
+    }
+
+    .font-option-specimen {
+      font-size: 16px;
+      line-height: 1;
+      color: var(--ink-2);
+      padding-inline-start: 4px;
+    }
+
+    .switcher-divider {
+      height: 1px;
+      background: var(--rule);
+      margin-block: calc(var(--unit) * 1.5);
+    }
+
+    .grid-btn {
+      width: 100%;
+      font-family: var(--font-ui);
+      font-size: 10px;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: var(--ink-2);
+      background: none;
+      border: 1px solid var(--rule);
+      border-radius: 3px;
+      padding: 4px 8px;
+      cursor: pointer;
+      transition: color 120ms, border-color 120ms;
+    }
+
+    .grid-btn:hover {
+      color: var(--ink);
+      border-color: var(--ink-2);
+    }
+
+    .grid-btn[aria-pressed="true"] {
+      color: var(--accent);
+      border-color: var(--accent);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Running header -->
+  <header class="running-header" aria-label="Site header">
+    <span>ulrich.green</span>
+    <span class="sep">/</span>
+    <span>Writing</span>
+    <span class="sep">/</span>
+    <span>On the Advantage of Nothing</span>
+  </header>
+
+  <div class="page">
+
+    <!-- Article header -->
+    <header class="article-header">
+      <p class="article-category">Design note</p>
+      <h1>On the Advantage of Nothing</h1>
+      <p class="article-meta">
+        <time datetime="2025-03-15">15 March 2025</time>
+        &thinsp;·&thinsp; 1,100 words
+        &thinsp;·&thinsp; 5 min read
+      </p>
+    </header>
+
+    <!-- Article body -->
+    <article>
+
+      <p>Every design decision is also a decision about what not to show. The negative
+      space between two lines of text carries as much meaning as the words themselves.
+      When that space is wrong — too tight, too loose, inconsistent — the reader feels
+      it before they can name it. The text becomes uncomfortable. The eye skips forward
+      looking for an exit.</p>
+
+      <p>Spacing, in this sense, is not decoration. It is structure. It holds the reading
+      experience together the way mortar holds bricks: invisibly, under compression,
+      resisting collapse. The moment you remove it or add it arbitrarily, the whole
+      thing starts to lean.</p>
+
+      <blockquote>
+        The secret of good typography is the space between the characters, not the
+        characters themselves.
+        <cite>— Adrian Frutiger</cite>
+      </blockquote>
+
+      <p>The baseline grid is the clearest expression of this idea. A fixed unit —
+      eight pixels is the right choice for a screen — to which all vertical measurements
+      must answer. Headings, body text, captions, code blocks, rules, padding: everything
+      is a multiple of that unit. The result is not visible. That is the point. What the
+      reader notices is that the page feels composed rather than assembled.</p>
+
+      <p>Eight pixels is the right unit because it is small enough to allow precise
+      control and large enough that every spacing decision is deliberate rather than
+      accidental. A twelve-pixel gap and a sixteen-pixel gap are meaningfully different.
+      A twelve-pixel gap and a thirteen-pixel gap are not. The grid eliminates the
+      thirteen.</p>
+
+      <h2>The Typeface Problem</h2>
+
+      <p>For years the typography conversation on the web has been dominated by custom
+      fonts. A chosen typeface became a status signal: proof that someone cared enough
+      to select it, pay for it, and load it. The logic is not wrong. A well-chosen
+      typeface does communicate care. But the signal has a cost.</p>
+
+      <p>Every custom font is a network request. A layout-shift risk. A flash of unstyled
+      text to be suppressed. A font file to be subsetted, versioned, hosted, and cached.
+      None of these problems are insurmountable, but they are all real, and they are all
+      paid for by the reader in milliseconds and shifted letters before the experience
+      settles.</p>
+
+      <p>System fonts are the opposite argument. Georgia was designed by Matthew Carter
+      in 1993 specifically for screen reading — high x-height, open apertures, generous
+      spacing. Charter was designed by Carter for low-resolution printing and holds its
+      quality at every screen resolution. Palatino, designed by Hermann Zapf in 1948,
+      has been on every Mac for decades. The <code>ui-serif</code> keyword resolves to
+      New York on Apple devices: a typeface designed for Apple's own editorial surfaces
+      and tuned for retina displays.</p>
+
+      <p>None of these fonts require a network request. None of them cause layout shift.
+      None of them have a file size. The reader already has them. They arrive at zero
+      latency. The question is not whether they are good enough. The question is which
+      one is doing the most work for this particular reading experience.</p>
+
+      <hr>
+
+      <h2>Choosing Without Loading</h2>
+
+      <p>The panel in the lower right corner of this page switches the body typeface
+      between six system font stacks without reloading anything. Georgia. Charter.
+      Palatino. Optima. The modern <code>ui-serif</code> stack. The default system
+      sans-serif. Each one produces a completely different reading feel from the same
+      sixteen lines of CSS.</p>
+
+      <pre><code>:root {
+  --font-body: ui-serif, 'New York', Georgia, serif;
+  --font-ui:   ui-sans-serif, system-ui, -apple-system, sans-serif;
+}
+
+body {
+  font-family: var(--font-body);
+  font-size: 18px;
+  line-height: 32px; /* 4 × 8px baseline unit */
+}</code></pre>
+
+      <p>The key observation is not that one stack is correct. It is that the grid holds
+      regardless of which stack is chosen. The rhythm survives the typeface change because
+      the rhythm is in the spacing, not the letterforms. A well-composed page is
+      well-composed in any font. A poorly composed page does not improve when you add a
+      beautiful typeface to it.</p>
+
+      <p>Optima is the interesting case.<sup><a href="#fn1" id="ref1">1</a></sup> Zapf
+      designed it as a "serifless roman" — a sans-serif with the optical tension of an
+      old-style serif, the strokes swelling and narrowing as if serifs were about to form
+      but decided against it. It reads like a serif. It scales like a sans-serif. On
+      Apple devices it is present and beautiful. On Windows it falls back to Candara,
+      which is a reasonable relative. The combination produces something that feels
+      neither corporate nor literary, but precise and considered.</p>
+
+      <p>The grid is the constant. The typeface is the variable. This page exists to find
+      the right variable.</p>
+
+    </article>
+
+    <!-- Footnotes -->
+    <aside class="footnotes" aria-label="Footnotes">
+      <p class="footnotes-label">Notes</p>
+      <p class="footnote" id="fn1">
+        <span class="footnote-marker">1.</span>
+        Optima is available by default on macOS and most Linux distributions. On Windows
+        it falls back to Candara (included since Vista) or Noto Sans. The rendering
+        differences between these fallbacks are significant enough to test on multiple
+        platforms before committing to this stack.
+        <a href="#ref1">↩</a>
+      </p>
+    </aside>
+
+    <!-- Footer -->
+    <footer class="page-footer">
+      <p>ulrich.green
+        &thinsp;·&thinsp; Typography exploration prototype
+        &thinsp;·&thinsp; March 2025
+      </p>
+    </footer>
+
+  </div><!-- /.page -->
+
+  <!-- Font switcher panel -->
+  <aside class="switcher" aria-label="Typography controls">
+    <p class="switcher-title">Typeface</p>
+    <div class="font-options" role="radiogroup" aria-label="Choose body font">
+
+      <label class="font-option">
+        <input type="radio" name="font" value="ui-serif" checked>
+        <span class="font-option-name">ui-serif</span>
+        <span class="font-option-specimen"
+          style="font-family:ui-serif,'New York',Georgia,serif">Ag</span>
+      </label>
+
+      <label class="font-option">
+        <input type="radio" name="font" value="georgia">
+        <span class="font-option-name">Georgia</span>
+        <span class="font-option-specimen"
+          style="font-family:Georgia,'Times New Roman',serif">Ag</span>
+      </label>
+
+      <label class="font-option">
+        <input type="radio" name="font" value="charter">
+        <span class="font-option-name">Charter</span>
+        <span class="font-option-specimen"
+          style="font-family:Charter,'Bitstream Charter','Sitka Text',Cambria,serif">Ag</span>
+      </label>
+
+      <label class="font-option">
+        <input type="radio" name="font" value="palatino">
+        <span class="font-option-name">Palatino</span>
+        <span class="font-option-specimen"
+          style="font-family:Palatino,'Palatino Linotype','Book Antiqua','Iowan Old Style','Hoefler Text',Georgia,serif">Ag</span>
+      </label>
+
+      <label class="font-option">
+        <input type="radio" name="font" value="optima">
+        <span class="font-option-name">Optima</span>
+        <span class="font-option-specimen"
+          style="font-family:Optima,Candara,'Gill Sans','Noto Sans',sans-serif">Ag</span>
+      </label>
+
+      <label class="font-option">
+        <input type="radio" name="font" value="system-ui">
+        <span class="font-option-name">System UI</span>
+        <span class="font-option-specimen"
+          style="font-family:system-ui,-apple-system,sans-serif">Ag</span>
+      </label>
+
+    </div>
+    <div class="switcher-divider"></div>
+    <button class="grid-btn" id="gridToggle" aria-pressed="false">
+      Show baseline grid
+    </button>
+  </aside>
+
+  <script>
+    /* ---------------------------------------------------------------
+       Font stacks — mapped from radio value to full CSS font-family
+    --------------------------------------------------------------- */
+    const stacks = {
+      'ui-serif':  "ui-serif, 'New York', Georgia, 'Times New Roman', serif",
+      'georgia':   "Georgia, 'Times New Roman', serif",
+      'charter':   "Charter, 'Bitstream Charter', 'Sitka Text', Cambria, 'Times New Roman', serif",
+      'palatino':  "Palatino, 'Palatino Linotype', 'Book Antiqua', 'Iowan Old Style', 'Hoefler Text', Georgia, serif",
+      'optima':    "Optima, Candara, 'Gill Sans', 'Noto Sans', sans-serif",
+      'system-ui': "system-ui, -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif",
+    };
+
+    /* Font switching */
+    document.querySelectorAll('input[name="font"]').forEach(radio => {
+      radio.addEventListener('change', () => {
+        document.documentElement.style.setProperty('--font-body', stacks[radio.value]);
+      });
+    });
+
+    /* Baseline grid toggle */
+    const btn = document.getElementById('gridToggle');
+
+    function toggleGrid() {
+      const on = document.documentElement.classList.toggle('show-grid');
+      btn.textContent = on ? 'Hide baseline grid' : 'Show baseline grid';
+      btn.setAttribute('aria-pressed', String(on));
+    }
+
+    btn.addEventListener('click', toggleGrid);
+
+    /* Keyboard shortcut: B = baseline grid */
+    document.addEventListener('keydown', e => {
+      if ((e.key === 'b' || e.key === 'B') && !e.ctrlKey && !e.metaKey && !e.altKey) {
+        toggleGrid();
+      }
+    });
+  </script>
+
+</body>
+</html>
