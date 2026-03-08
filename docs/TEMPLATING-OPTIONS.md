@@ -328,7 +328,7 @@ extra, never the price of admission.
 
 ---
 
-## A Practical Migration Path
+## Practical Migration Path
 
 If you want to test the idea without rewriting the whole project:
 
