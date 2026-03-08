@@ -1,0 +1,670 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Typography Exploration — system fonts</title>
+  <!--
+    Baseline grid: 8px unit (--u)
+    All vertical measurements are multiples of 8px:
+      3u = 24px  — footnotes, labels, small UI
+      4u = 32px  — body line-height
+      5u = 40px  — h2 line-height
+      7u = 56px  — h1 line-height
+    Zero external dependencies.
+  -->
+  <style>
+    /* ---- Custom properties ---- */
+    :root {
+      /* Grid unit */
+      --u: 8px;
+
+      /* Type scale */
+      --t-xs:   12px;
+      --t-sm:   14px;
+      --t-base: 18px;
+      --t-h3:   22px;
+      --t-h2:   28px;
+      --t-h1:   40px;
+
+      /* Line heights — strict multiples of --u */
+      --lh-3u: 24px;
+      --lh-4u: 32px;
+      --lh-5u: 40px;
+      --lh-7u: 56px;
+
+      /* Measure */
+      --measure: 65ch;
+
+      /* Palette — light */
+      --c-bg:    #f8f7f5;
+      --c-text:  #1c1b19;
+      --c-muted: #74736f;
+      --c-rule:  #dbd9d4;
+
+      /* Font stacks */
+      --ff-body: ui-serif, "New York", "Iowan Old Style", Georgia, serif;
+      --ff-ui:   system-ui, -apple-system, "Segoe UI", sans-serif;
+    }
+
+    /* Dark mode — system preference (overridden by data-theme) */
+    @media (prefers-color-scheme: dark) {
+      :root {
+        --c-bg:    #111110;
+        --c-text:  #e5e4e0;
+        --c-muted: #8a8985;
+        --c-rule:  #2a2926;
+      }
+    }
+
+    [data-theme="light"] {
+      --c-bg:    #f8f7f5;
+      --c-text:  #1c1b19;
+      --c-muted: #74736f;
+      --c-rule:  #dbd9d4;
+    }
+
+    [data-theme="dark"] {
+      --c-bg:    #111110;
+      --c-text:  #e5e4e0;
+      --c-muted: #8a8985;
+      --c-rule:  #2a2926;
+    }
+
+    /* ---- Font stack overrides ---- */
+    [data-font="ui-serif"]  { --ff-body: ui-serif, "New York", "Iowan Old Style", Georgia, serif; }
+    [data-font="georgia"]   { --ff-body: Georgia, "Times New Roman", serif; }
+    [data-font="charter"]   { --ff-body: "Charter", "Bitstream Charter", "Sitka Text", Cambria, serif; }
+    [data-font="palatino"]  { --ff-body: Palatino, "Palatino Linotype", "Book Antiqua", "URW Palladio L", serif; }
+    [data-font="optima"]    { --ff-body: Optima, Candara, "Gill Sans Nova", "Noto Sans", sans-serif; }
+    [data-font="system-ui"] { --ff-body: system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif; }
+
+    /* ---- Reset ---- */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html { font-size: 16px; -webkit-text-size-adjust: 100%; }
+
+    body {
+      font-family: var(--ff-body);
+      font-size: var(--t-base);
+      line-height: var(--lh-4u);
+      color: var(--c-text);
+      background: var(--c-bg);
+      font-feature-settings: "liga" 1, "kern" 1;
+      -webkit-font-smoothing: antialiased;
+      text-rendering: optimizeLegibility;
+    }
+
+    /* ---- Baseline grid overlay ---- */
+    body.show-grid::after {
+      content: "";
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      z-index: 9999;
+      background-image: repeating-linear-gradient(
+        to bottom,
+        transparent 0,
+        transparent calc(var(--u) - 1px),
+        rgba(220, 0, 80, 0.12) calc(var(--u) - 1px),
+        rgba(220, 0, 80, 0.12) var(--u)
+      );
+    }
+
+    /* ---- Controls bar (40px = 5u) ---- */
+    .controls {
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      height: 40px;
+      padding: 0 calc(var(--u) * 3);
+      display: flex;
+      align-items: center;
+      gap: var(--u);
+      overflow-x: auto;
+      scrollbar-width: none;
+      background: var(--c-bg);
+      border-bottom: 1px solid var(--c-rule);
+      /* Frosted glass where supported */
+      -webkit-backdrop-filter: blur(12px);
+      backdrop-filter: blur(12px);
+    }
+
+    .controls::-webkit-scrollbar { display: none; }
+
+    .controls-label {
+      font-family: var(--ff-ui);
+      font-size: var(--t-xs);
+      line-height: var(--lh-3u);
+      color: var(--c-muted);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+
+    .font-btn,
+    .util-btn {
+      font-family: var(--ff-ui);
+      font-size: var(--t-xs);
+      line-height: var(--lh-3u);
+      background: none;
+      border: 1px solid var(--c-rule);
+      color: var(--c-muted);
+      padding: 0 10px;
+      height: 24px;
+      cursor: pointer;
+      border-radius: 2px;
+      white-space: nowrap;
+      flex-shrink: 0;
+      transition: border-color 0.15s ease, color 0.15s ease, background-color 0.15s ease;
+    }
+
+    .font-btn:hover,
+    .util-btn:hover {
+      border-color: var(--c-muted);
+      color: var(--c-text);
+    }
+
+    .font-btn.is-active {
+      background: var(--c-text);
+      border-color: var(--c-text);
+      color: var(--c-bg);
+    }
+
+    .util-btn[aria-pressed="true"] {
+      border-color: var(--c-text);
+      color: var(--c-text);
+    }
+
+    .controls-rule {
+      width: 1px;
+      height: 16px;
+      background: var(--c-rule);
+      flex-shrink: 0;
+    }
+
+    /* ---- Page layout ---- */
+    .page {
+      max-width: calc(var(--measure) + calc(var(--u) * 10));
+      margin: 0 auto;
+      padding: calc(var(--u) * 8) calc(var(--u) * 4) calc(var(--u) * 16);
+    }
+
+    /* ---- Article header ---- */
+    .article-eyebrow {
+      font-family: var(--ff-ui);
+      font-size: var(--t-xs);
+      line-height: var(--lh-3u);
+      color: var(--c-muted);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: calc(var(--u) * 3);
+    }
+
+    h1 {
+      font-size: var(--t-h1);
+      line-height: var(--lh-7u);
+      font-weight: 400;
+      letter-spacing: -0.018em;
+      max-width: 18ch;
+      margin-bottom: calc(var(--u) * 4);
+    }
+
+    .article-intro {
+      font-size: var(--t-h3);
+      line-height: var(--lh-4u);
+      font-weight: 400;
+      color: var(--c-muted);
+      max-width: var(--measure);
+      margin-bottom: calc(var(--u) * 6);
+    }
+
+    /* ---- Section headings ---- */
+    h2 {
+      font-size: var(--t-h2);
+      line-height: var(--lh-5u);
+      font-weight: 400;
+      letter-spacing: -0.012em;
+      max-width: var(--measure);
+      margin-top: calc(var(--u) * 8);
+      margin-bottom: calc(var(--u) * 2);
+    }
+
+    h3 {
+      font-size: var(--t-h3);
+      line-height: var(--lh-4u);
+      font-weight: 400;
+      max-width: var(--measure);
+      margin-top: calc(var(--u) * 6);
+      margin-bottom: var(--u);
+    }
+
+    /* ---- Body copy ---- */
+    p {
+      max-width: var(--measure);
+      margin-bottom: var(--lh-4u);
+    }
+
+    h2 + p,
+    h3 + p { margin-top: 0; }
+
+    ul, ol {
+      max-width: var(--measure);
+      padding-left: calc(var(--u) * 3);
+      margin-bottom: var(--lh-4u);
+    }
+
+    li {
+      line-height: var(--lh-4u);
+      margin-bottom: calc(var(--u) / 2);
+    }
+
+    li:last-child { margin-bottom: 0; }
+
+    blockquote {
+      max-width: var(--measure);
+      border-left: 2px solid var(--c-rule);
+      padding: calc(var(--u) * 2) calc(var(--u) * 4);
+      margin: calc(var(--u) * 4) 0;
+      font-style: italic;
+      color: var(--c-muted);
+    }
+
+    blockquote p { margin-bottom: 0; }
+
+    em { font-style: italic; }
+    strong { font-weight: 600; }
+
+    code {
+      font-family: "SFMono-Regular", "SF Mono", Menlo, "Roboto Mono", Consolas, monospace;
+      font-size: 0.875em;
+      background: rgba(128, 128, 120, 0.1);
+      padding: 1px 5px;
+      border-radius: 2px;
+    }
+
+    a {
+      color: inherit;
+      text-decoration-thickness: 1px;
+      text-underline-offset: 3px;
+      transition: text-decoration-thickness 0.4s ease;
+    }
+
+    a:hover { text-decoration-thickness: 2px; }
+
+    /* ---- Section divider ---- */
+    .divider {
+      display: block;
+      height: calc(var(--u) * 8);
+      border: none;
+      position: relative;
+    }
+
+    .divider::after {
+      content: "· · ·";
+      position: absolute;
+      left: 0;
+      top: 50%;
+      transform: translateY(-50%);
+      color: var(--c-muted);
+      font-size: var(--t-sm);
+      letter-spacing: 0.4em;
+    }
+
+    /* ---- Footnotes ---- */
+    .footnotes {
+      border-top: 1px solid var(--c-rule);
+      margin-top: calc(var(--u) * 12);
+      padding-top: calc(var(--u) * 4);
+      max-width: var(--measure);
+    }
+
+    .footnotes-label {
+      font-family: var(--ff-ui);
+      font-size: var(--t-xs);
+      line-height: var(--lh-3u);
+      color: var(--c-muted);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: calc(var(--u) * 2);
+    }
+
+    .footnotes ol {
+      padding-left: calc(var(--u) * 3);
+      margin-bottom: 0;
+    }
+
+    .footnotes li {
+      font-size: var(--t-sm);
+      line-height: var(--lh-3u);
+      color: var(--c-muted);
+      margin-bottom: calc(var(--u) * 2);
+    }
+
+    /* ---- Type specimen ---- */
+    .specimen {
+      border-top: 1px solid var(--c-rule);
+      margin-top: calc(var(--u) * 12);
+      padding-top: calc(var(--u) * 6);
+    }
+
+    .specimen-title {
+      font-family: var(--ff-ui);
+      font-size: var(--t-xs);
+      line-height: var(--lh-3u);
+      color: var(--c-muted);
+      letter-spacing: 0.07em;
+      text-transform: uppercase;
+      margin-bottom: calc(var(--u) * 6);
+    }
+
+    .specimen-row {
+      display: grid;
+      grid-template-columns: 56px 1fr;
+      gap: calc(var(--u) * 2);
+      align-items: start;
+      padding-bottom: calc(var(--u) * 4);
+      border-bottom: 1px solid var(--c-rule);
+      margin-bottom: calc(var(--u) * 4);
+    }
+
+    .specimen-meta {
+      font-family: var(--ff-ui);
+      font-size: 11px;
+      color: var(--c-muted);
+      letter-spacing: 0.03em;
+      line-height: 1.4;
+      padding-top: 4px;
+    }
+
+    /* ---- Responsive ---- */
+    @media (max-width: 640px) {
+      :root {
+        --t-base: 17px;
+        --t-h1: 32px;
+        --lh-7u: 40px;
+      }
+
+      .controls { padding: 0 calc(var(--u) * 2); }
+      .page { padding: calc(var(--u) * 6) calc(var(--u) * 2) calc(var(--u) * 12); }
+      h1 { max-width: none; }
+    }
+
+    /* ---- Print ---- */
+    @media print {
+      .controls { display: none; }
+      .specimen { display: none; }
+      body { background: white; color: black; }
+    }
+
+    /* ---- Reduced motion ---- */
+    @media (prefers-reduced-motion: reduce) {
+      .font-btn, .util-btn, a { transition: none; }
+    }
+  </style>
+</head>
+<body data-font="ui-serif">
+
+  <!-- Controls: font switcher + utilities -->
+  <nav class="controls" aria-label="Typography controls">
+    <span class="controls-label">Font</span>
+    <button class="font-btn is-active" data-font-id="ui-serif"
+      title="ui-serif — New York on Apple, Cambria on Windows">ui-serif</button>
+    <button class="font-btn" data-font-id="georgia"
+      title="Georgia — Matthew Carter, 1993. Designed for screen rendering.">Georgia</button>
+    <button class="font-btn" data-font-id="charter"
+      title="Charter — Matthew Carter, 1987. Maps to Sitka Text on Windows.">Charter</button>
+    <button class="font-btn" data-font-id="palatino"
+      title="Palatino — Hermann Zapf's humanist serif. Available broadly.">Palatino</button>
+    <button class="font-btn" data-font-id="optima"
+      title="Optima — Zapf's humanist sans. macOS only; falls back to Candara.">Optima</button>
+    <button class="font-btn" data-font-id="system-ui"
+      title="System UI — SF Pro on Apple, Segoe UI on Windows.">System UI</button>
+    <span class="controls-rule" aria-hidden="true"></span>
+    <button class="util-btn" id="js-grid-btn" aria-pressed="false"
+      title="Toggle baseline grid overlay (keyboard: B)">Grid</button>
+    <button class="util-btn" id="js-theme-btn"
+      title="Toggle dark / light mode">Dark</button>
+  </nav>
+
+  <main class="page">
+    <article>
+      <header>
+        <p class="article-eyebrow">
+          <time datetime="2025-03-08">8 March 2025</time> · Essay · 7 min
+        </p>
+        <h1>On Constraints and the Craft of Restraint</h1>
+        <p class="article-intro">
+          The best design decisions are often invisible. They do not announce themselves
+          with novelty or loudness; they earn notice only by their absence when reversed.
+        </p>
+      </header>
+
+      <p>Constraints — of material, time, budget, or intention — are not obstacles to good design.
+      They are the conditions that make good design possible. A typeface chosen for legibility at small
+      sizes may be indistinguishable from one chosen for beauty at a glance. But at fourteen pixels,
+      in a long essay, after the fifth paragraph, the difference between a well-spaced text face and
+      an inadequately hinted screen font is the difference between finishing the piece and clicking
+      away. No single reader will articulate this. Every reader will feel it.</p>
+
+      <p>This is the case for paying attention to typography before anything else. The typeface,
+      the measure, the leading, the vertical rhythm — these decisions are made once and felt on every
+      page, in every article, on every visit. They are the most leveraged design work on a reading
+      site.</p>
+
+      <h2>The Baseline Grid as a Design Commitment</h2>
+
+      <p>Typography without a rhythm system is furniture without joints. Each element can look fine
+      in isolation while the whole is quietly broken. The baseline grid is the commitment that forces
+      every vertical decision to speak the same unit. Headings, body text, captions, footnotes, and
+      blockquotes must all land on the same invisible staff lines, or the composition loses its
+      ground.</p>
+
+      <p>This page uses an eight-pixel unit. Body text sits at eighteen pixels across a thirty-two
+      pixel line-height — four grid units. Display headings rise to forty pixels on a fifty-six
+      pixel line-height — seven units. Footnotes descend to fourteen pixels on twenty-four — three
+      units. Every size is derived, not chosen arbitrarily. Every vertical gap is a multiple of
+      eight.</p>
+
+      <blockquote>
+        <p>The constraint is not the enemy of creativity. It is the condition under which creativity
+        becomes legible — to the reader and to the designer.</p>
+      </blockquote>
+
+      <p>When a grid breaks — when a heading sits two pixels above the line it was supposed to touch,
+      when a pull quote has eighteen pixels of top padding instead of sixteen — the reader does not
+      consciously notice. But the page feels slightly wrong, slightly unsettled, in the way a room
+      feels wrong when a single picture is fractionally crooked. Good typography is partly the
+      management of this subliminal anxiety.</p>
+
+      <p>Toggle the baseline grid overlay with the <strong>Grid</strong> button above, or press
+      <kbd>B</kbd>. The faint pink lines mark the eight-pixel unit. Every line of text should
+      fall on one of these lines.</p>
+
+      <hr class="divider">
+
+      <h2>System Fonts as a Design Position</h2>
+
+      <p>There is a case to be made that loading a custom web font on every page visit is a form of
+      typographic insecurity — an admission that the platform fonts are not good enough, or that the
+      designer does not trust the reader's machine to make the text beautiful on its own.</p>
+
+      <p>The system serif on a contemporary Apple device is <em>New York</em> — a typeface designed
+      explicitly for screen legibility by Apple's typography team. It has optical sizing, thoughtful
+      spacing, and a warmth that most web-distributed serifs cannot match at body sizes. On Windows,
+      the equivalent route leads to <em>Georgia</em>, one of the most carefully hinted screen fonts
+      ever made. On Linux, the path varies by distribution, but the intention is the same: the
+      platform provides a reading font because reading is what screens are mostly for.</p>
+
+      <p>This is not an argument that custom fonts are always wrong. It is an argument that the
+      decision should be made consciously, not defaulted into because every other site loads a
+      custom font.</p>
+
+      <h2>What This Prototype Is Testing</h2>
+
+      <p>Six font stacks are available in the control bar above. Each represents a different design
+      position:</p>
+
+      <ul>
+        <li><strong>ui-serif</strong> — the platform's native reading serif. New York on Apple,
+        Cambria on Windows. The most honest, most performance-efficient choice.</li>
+        <li><strong>Georgia</strong> — designed for screens in 1993 and still reliable on every
+        platform. The safe, deeply tested default.</li>
+        <li><strong>Charter</strong> — designed by Matthew Carter for low-resolution printing.
+        Maps to Sitka Text on Windows. Remarkable durability on both screen and paper.</li>
+        <li><strong>Palatino</strong> — Hermann Zapf's humanist revival, available on nearly
+        every platform under at least one of its three names. Warmer and more calligraphic
+        than a transitional serif.</li>
+        <li><strong>Optima</strong> — Zapf again: a sans-serif with calligraphic stroke
+        contrast. Elegant and distinctive on Apple platforms; falls back to Candara on
+        Windows.</li>
+        <li><strong>System UI</strong> — the interface font. SF Pro on Apple, Segoe UI on
+        Windows. Not designed for long-form reading, but worth seeing in this context.</li>
+      </ul>
+
+      <p>The question this prototype asks is simple: does any of these stacks produce a reading
+      experience that makes a custom web font unnecessary? The answer is likely platform-dependent.
+      The design direction can be set from here.</p>
+
+      <hr class="divider">
+
+      <h2>Measure, Leading, and the Reader</h2>
+
+      <p>Measure — the length of a line of text — matters as much as the typeface itself. A
+      beautifully chosen font set at 100 characters per line is unreadable. The same font at 45
+      characters per line is exhausting. The comfortable range for body text with generous leading
+      is between 55 and 75 characters, with 65 as a reliable center of mass.</p>
+
+      <p>This column is constrained to 65 characters per line, enforced with the <code>ch</code>
+      unit. The <code>ch</code> unit scales automatically when the font stack changes, which means
+      the column stays within a reasonable range across all six font stacks — a small alignment
+      between the technical and aesthetic constraints.</p>
+
+      <p>The leading is set to 32 pixels, giving a ratio of approximately 1.78 at 18 pixels body
+      text. This is more generous than a typical printed book at 1.5, and reflects the demands of
+      screen reading: slightly more air between lines improves reacquisition after a saccade and
+      reduces the visual fatigue of extended sessions.</p>
+
+      <footer class="footnotes" aria-label="Notes">
+        <p class="footnotes-label">Notes</p>
+        <ol>
+          <li>Matthew Carter designed Georgia for the Microsoft TrueType initiative in 1993. It
+          remains one of the most carefully hinted fonts in common distribution, designed for screens
+          before screen design was a recognized discipline.</li>
+          <li>The term "measure" comes from letterpress tradition, where compositors used a physical
+          gauge — a brass rule — to set column width. The constraint was material before it was
+          aesthetic.</li>
+          <li>Charter was released into the public domain by Bitstream in 1992 and is maintained as
+          an open-source font. It predates high-resolution screens, which may explain its unusual
+          durability on low-DPI displays.</li>
+        </ol>
+      </footer>
+    </article>
+
+    <!-- Type specimen: all scales in the current font stack -->
+    <section class="specimen" aria-label="Type specimen">
+      <p class="specimen-title">Type specimen — all scales in the current font stack</p>
+
+      <div class="specimen-row">
+        <span class="specimen-meta">40&thinsp;/&thinsp;56<br>Display</span>
+        <span style="font-size:40px;line-height:56px;letter-spacing:-0.018em">
+          The quick brown fox jumps
+        </span>
+      </div>
+
+      <div class="specimen-row">
+        <span class="specimen-meta">28&thinsp;/&thinsp;40<br>Heading</span>
+        <span style="font-size:28px;line-height:40px;letter-spacing:-0.012em">
+          Constraints and the craft of restraint
+        </span>
+      </div>
+
+      <div class="specimen-row">
+        <span class="specimen-meta">22&thinsp;/&thinsp;32<br>Subhead</span>
+        <span style="font-size:22px;line-height:32px">
+          The system serif on a contemporary device
+        </span>
+      </div>
+
+      <div class="specimen-row">
+        <span class="specimen-meta">18&thinsp;/&thinsp;32<br>Body</span>
+        <span style="font-size:18px;line-height:32px">
+          Body text at reading size. A baseline grid of eight pixels forces every vertical
+          decision into a single shared unit, making visual rhythm audible even when unnoticed.
+          <em>Italic emphasis.</em> <strong>Weighted emphasis.</strong>
+        </span>
+      </div>
+
+      <div class="specimen-row">
+        <span class="specimen-meta">14&thinsp;/&thinsp;24<br>Small</span>
+        <span style="font-size:14px;line-height:24px;color:var(--c-muted)">
+          Footnote and metadata — three baseline units. Still on the grid.
+          Used for captions, annotations, and supporting information.
+        </span>
+      </div>
+
+      <div class="specimen-row">
+        <span class="specimen-meta">12&thinsp;/&thinsp;24<br>Label</span>
+        <span style="font-family:var(--ff-ui);font-size:12px;line-height:24px;letter-spacing:0.07em;text-transform:uppercase;color:var(--c-muted)">
+          Interface labels · Dates · Categories · Word count
+        </span>
+      </div>
+    </section>
+  </main>
+
+  <script>
+    (function () {
+      'use strict';
+
+      var body     = document.body;
+      var fontBtns = document.querySelectorAll('[data-font-id]');
+      var gridBtn  = document.getElementById('js-grid-btn');
+      var themeBtn = document.getElementById('js-theme-btn');
+
+      /* ---- Font switcher ---- */
+      fontBtns.forEach(function (btn) {
+        btn.addEventListener('click', function () {
+          fontBtns.forEach(function (b) { b.classList.remove('is-active'); });
+          btn.classList.add('is-active');
+          body.setAttribute('data-font', btn.dataset.fontId);
+        });
+      });
+
+      /* ---- Baseline grid toggle ---- */
+      var gridOn = false;
+
+      function toggleGrid() {
+        gridOn = !gridOn;
+        body.classList.toggle('show-grid', gridOn);
+        gridBtn.setAttribute('aria-pressed', String(gridOn));
+        gridBtn.textContent = gridOn ? 'Grid on' : 'Grid';
+      }
+
+      gridBtn.addEventListener('click', toggleGrid);
+
+      document.addEventListener('keydown', function (e) {
+        if ((e.key === 'b' || e.key === 'B') && !e.ctrlKey && !e.metaKey && !e.altKey) {
+          toggleGrid();
+        }
+      });
+
+      /* ---- Dark / light theme toggle ---- */
+      var mq     = window.matchMedia('(prefers-color-scheme: dark)');
+      var darkOn = mq.matches;
+
+      function applyTheme() {
+        body.setAttribute('data-theme', darkOn ? 'dark' : 'light');
+        themeBtn.textContent = darkOn ? 'Light' : 'Dark';
+      }
+
+      applyTheme();
+
+      themeBtn.addEventListener('click', function () {
+        darkOn = !darkOn;
+        applyTheme();
+      });
+    }());
+  </script>
+</body>
+</html>
