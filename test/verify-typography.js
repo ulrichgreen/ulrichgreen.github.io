@@ -1,10 +1,10 @@
 const fs = require('fs');
 const path = require('path');
 
-const file = path.join(__dirname, '..', 'typography.html');
+const file = path.join(__dirname, '..', 'docs', 'index.html');
 
 if (!fs.existsSync(file)) {
-  console.error('typography.html not found');
+  console.error('docs/index.html not found');
   process.exit(1);
 }
 

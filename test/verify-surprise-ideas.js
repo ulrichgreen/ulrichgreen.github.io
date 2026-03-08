@@ -1,7 +1,7 @@
 const fs = require('fs');
 const path = require('path');
 
-const file = path.join(__dirname, '..', 'SURPRISE-IDEAS.md');
+const file = path.join(__dirname, '..', 'docs', 'SURPRISE-IDEAS.md');
 
 if (!fs.existsSync(file)) {
   console.error('SURPRISE-IDEAS.md not found');
