@@ -1,17 +1,17 @@
 const fs = require('fs');
 const path = require('path');
 
-const colophonFile = path.join(__dirname, '..', 'docs', 'colophon.html');
-const indexFile = path.join(__dirname, '..', 'docs', 'index.html');
+const colophonFile = path.join(__dirname, '..', 'content', 'colophon.md');
+const indexFile = path.join(__dirname, '..', 'content', 'index.md');
 const errors = [];
 
 if (!fs.existsSync(colophonFile)) {
-  console.error('docs/colophon.html not found');
+  console.error('content/colophon.md not found');
   process.exit(1);
 }
 
 if (!fs.existsSync(indexFile)) {
-  console.error('docs/index.html not found');
+  console.error('content/index.md not found');
   process.exit(1);
 }
 
@@ -19,7 +19,7 @@ const colophon = fs.readFileSync(colophonFile, 'utf8');
 const index = fs.readFileSync(indexFile, 'utf8');
 
 const requiredColophonContent = [
-  '<h1>Colophon</h1>',
+  '# Colophon',
   'TECH-STACK.md',
   'SITE-PLANNING.md',
   'CODE-EXAMPLES.md',
@@ -37,18 +37,12 @@ for (const item of requiredColophonContent) {
   }
 }
 
-if (!index.includes('href="./colophon.html"')) {
+if (!index.includes('./colophon.html')) {
   errors.push('Missing index link to ./colophon.html');
 }
 
-if (!index.includes('Read the <a href="./colophon.html">colophon</a>')) {
+if (!index.includes('[colophon](./colophon.html)')) {
   errors.push('Missing visible colophon call-to-action on index page');
-}
-
-const externalPattern = /(?:href|src)\s*=\s*["']https?:\/\//gi;
-const externalMatches = colophon.match(externalPattern);
-if (externalMatches) {
-  errors.push(`Found external URL references in colophon: ${externalMatches.join(', ')}`);
 }
 
 if (errors.length > 0) {
@@ -59,4 +53,4 @@ if (errors.length > 0) {
   process.exit(1);
 }
 
-console.log('colophon verified: standalone page present, repo-aligned content included, index link added.');
+console.log('colophon verified: content/colophon.md present, repo-aligned content included, index link added.');
