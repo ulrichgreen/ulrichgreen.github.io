@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "pnpm exec tsx test/verify-jsx-rendering.ts && pnpm exec tsx test/verify-manifesto.ts && pnpm exec tsx test/verify-architecture.ts && pnpm exec tsx test/verify-structure.ts && pnpm exec tsx test/verify-stack.ts && pnpm exec tsx test/verify-roadmap.ts && pnpm exec tsx test/verify-experiments.ts && pnpm exec tsx test/verify-typography.ts && pnpm exec tsx test/verify-colophon.ts",
+        "test": "pnpm exec tsx test/verify-jsx-rendering.ts && pnpm exec tsx test/verify-manifesto.ts && pnpm exec tsx test/verify-architecture.ts && pnpm exec tsx test/verify-structure.ts && pnpm exec tsx test/verify-stack.ts && pnpm exec tsx test/verify-roadmap.ts && pnpm exec tsx test/verify-experiments.ts && pnpm exec tsx test/verify-typography.ts && pnpm exec tsx test/verify-colophon.ts && pnpm exec tsx test/verify-improvements.ts && pnpm exec tsx test/verify-alternatives.ts",
         "typecheck": "tsc --noEmit"
     },
     "keywords": [],
