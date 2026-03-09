@@ -18,6 +18,22 @@
         -moz-osx-font-smoothing: grayscale;
     }
 
+    .skip-link {
+        position: absolute;
+        inset-block-start: var(--space-1);
+        inset-inline-start: var(--space-2);
+        padding: var(--space-1) var(--space-2);
+        background-color: var(--c-text);
+        color: var(--c-bg);
+        text-decoration: none;
+        transform: translateY(calc(-100% - var(--space-2)));
+        z-index: 200;
+    }
+
+    .skip-link:focus-visible {
+        transform: translateY(0);
+    }
+
     h1 {
         font-family: var(--ff-body);
         font-size: clamp(32px, 5vw, 56px);

@@ -12,8 +12,13 @@ export default function BaseLayout({
         <html lang="en">
             <SiteHead title={title} description={description} />
             <body>
+                <a className="skip-link" href="#main-content">
+                    Skip to content
+                </a>
                 <RunningHeader section={section} title={title} />
-                <main className="page page-arrival">{children}</main>
+                <main id="main-content" className="page page-arrival">
+                    {children}
+                </main>
                 <script src="/site.js" defer></script>
                 <script src="/islands.js" defer></script>
             </body>
