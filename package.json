@@ -4,13 +4,14 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "node test/verify-tech-stack.js && node test/verify-code-examples.js && node test/verify-site-planning.js && node test/verify-surprise-ideas.js && node test/verify-templating-options.js && node test/verify-typography.js && node test/verify-colophon.js"
+    "test": "node test/verify-jsx-rendering.mjs && node test/verify-tech-stack.js && node test/verify-code-examples.js && node test/verify-site-planning.js && node test/verify-surprise-ideas.js && node test/verify-templating-options.js && node test/verify-typography.js && node test/verify-colophon.js"
   },
   "keywords": [],
   "author": "",
   "license": "ISC",
   "dependencies": {
     "chokidar": "^5.0.0",
+    "esbuild": "^0.27.3",
     "gray-matter": "^4.0.3",
     "lightningcss": "^1.31.1",
     "marked": "^17.0.4",

@@ -30,17 +30,17 @@ dist/site.js: src/site.js
 	cp src/site.js dist/site.js
 
 # Prose pages — content/*.md (not index.md, which is generated separately)
-dist/%.html: content/%.md scripts/frontmatter.mjs scripts/md2html.mjs scripts/template.mjs templates/base.mjs templates/article.mjs
+dist/%.html: content/%.md scripts/frontmatter.mjs scripts/md2html.mjs scripts/template.mjs scripts/jsx-runtime.mjs scripts/load-jsx.mjs scripts/render-html.mjs templates/base.jsx templates/article.jsx
 	@mkdir -p $(@D)
 	cat $< | node scripts/frontmatter.mjs | node scripts/md2html.mjs | node scripts/template.mjs > $@
 
 # Writing articles — content/writing/*.md
-dist/writing/%.html: content/writing/%.md scripts/frontmatter.mjs scripts/md2html.mjs scripts/template.mjs templates/article.mjs
+dist/writing/%.html: content/writing/%.md scripts/frontmatter.mjs scripts/md2html.mjs scripts/template.mjs scripts/jsx-runtime.mjs scripts/load-jsx.mjs scripts/render-html.mjs templates/base.jsx templates/article.jsx
 	@mkdir -p $(@D)
 	cat $< | node scripts/frontmatter.mjs | node scripts/md2html.mjs | node scripts/template.mjs > $@
 
 # Index — generated from all writing front matter
-dist/index.html: $(WRITING_PAGES) content/index.md scripts/index.mjs templates/base.mjs
+dist/index.html: $(WRITING_PAGES) content/index.md scripts/index.mjs scripts/jsx-runtime.mjs scripts/load-jsx.mjs scripts/render-html.mjs templates/base.jsx
 	@mkdir -p dist
 	node scripts/index.mjs > $@
 
