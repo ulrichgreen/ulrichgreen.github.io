@@ -120,9 +120,25 @@ async function main() {
     const homePath = new URL("../content/index.mdx", import.meta.url).pathname;
     const home = await buildContent(homePath);
     const homeHtml = renderPage(home, writingIndex);
+    const skipLinkTag = homeHtml
+        .match(/<a\b[^>]*>/g)
+        ?.find((tag) => tag.includes('class="skip-link"'));
+    const mainTag = homeHtml
+        .match(/<main\b[^>]*>/g)
+        ?.find((tag) => tag.includes('id="main-content"'));
 
-    assert(homeHtml.includes('class="skip-link" href="#main-content"'));
-    assert(homeHtml.includes('<main id="main-content" class="page page-arrival">'));
+    assert(
+        skipLinkTag,
+        "The page should render a skip link to the main landmark.",
+    );
+    assert(
+        skipLinkTag.includes('href="#main-content"'),
+        "The skip link should point at the main landmark ID.",
+    );
+    assert(
+        mainTag,
+        "The main landmark should expose the skip-link target.",
+    );
 
     console.log(
         "Accessibility verified: text colors meet WCAG AA contrast, skip link exists, and small-screen navigation stays available.",
