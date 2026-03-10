@@ -11,10 +11,11 @@ const content = readFileSync(file, 'utf8');
 const required = [
   'personal site',
   'authored',
-  'framework runtime',
+  'islands',
   'TypeScript',
   'HTML',
-  'What This Site Tries To Do',
+  'What It Optimizes For',
+  'What The Code Must Keep True',
   'What It Refuses',
   'What Success Looks Like',
 ];
