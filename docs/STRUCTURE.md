@@ -6,21 +6,23 @@ This repo has a simple split.
 
 `content/`
 
-The markdown source for pages and essays.
+The MDX source for pages and essays.
 
 `src/`
 
 All code that produces the site.
 
-`src/build/` contains command-line build steps.
+`src/build/` contains command-line build steps and render helpers.
 
-`src/runtime/` contains the small JSX runtime and renderer.
+`src/content-components.tsx` is the approved component surface for MDX authors.
 
 `src/templates/` contains page-level templates.
 
 `src/components/` contains reusable TSX pieces.
 
 `src/client/` contains browser-only code.
+
+`src/islands/` contains explicitly hydratable React components and the island wrapper.
 
 `src/styles/` contains the stylesheet partials.
 
@@ -40,20 +42,24 @@ Generated output. Never edit it by hand.
 
 ## Typical Changes
 
-Adding an essay means editing `content/writing/`.
+Adding an essay means editing `content/writing/` and using `.mdx`.
 
 Changing the page chrome usually means `src/templates/` or `src/components/`.
 
-Changing the build means `src/build/` or `src/runtime/`.
+Changing the build means `src/build/`.
 
 Changing the look means `src/styles/`.
 
-Changing a progressive enhancement means `src/client/site.ts`.
+Changing a progressive enhancement means `src/client/`.
+
+Adding a new content-safe component means editing `src/content-components.tsx`.
+
+Adding a new interactive island means editing `src/islands/` and `src/client/islands.ts`.
 
 Changing the content model or layout interfaces means `src/types/content.ts`.
 
 ## Why It Is Shaped This Way
 
-The repo now looks closer to a normal React project because that shape is easy to scan. The difference is that the output is still static HTML and the browser never pays for the TSX authoring model.
+The repo now looks closer to a normal React project because MDX and islands are easiest to express that way. The difference is that the output is still static HTML and only explicit islands pay the hydration cost.
 
-That is the trade: familiar source layout, minimal runtime.
+That is the trade: a more capable authoring model without turning the site into a client-heavy app.

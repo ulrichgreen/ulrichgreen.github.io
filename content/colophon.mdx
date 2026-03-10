@@ -1,0 +1,33 @@
+---
+title: Colophon
+description: How this site was built, from MDX authoring to React-rendered islands.
+section: colophon
+---
+
+# Colophon
+
+This site is still a collection of static files. The difference is that the authored content now lives in MDX, the page shell renders through React on the server, and only explicit islands hydrate on the client.
+
+## Planning
+
+The docs folder stays small on purpose. `MANIFESTO.md` says what the site is trying to do. `ARCHITECTURE.md` explains the build and rendering path. `STRUCTURE.md` is the map of the repo. `STACK.md` records the tool choices. `ROADMAP.md` keeps the next useful ideas in one place. `EXPERIMENTS.md` is where the stranger ideas live. `MDX-AUTHORING.md` documents how content can use the approved MDX components.
+
+That split keeps the documents short enough to stay useful.
+
+## Build
+
+`make` still drives the whole thing. Content from `content/` goes through a TypeScript pipeline: frontmatter parsing, MDX evaluation, then React server rendering. CSS is bundled from partials in `src/styles/`. The browser code is split between `src/client/site.ts` for progressive enhancement and `src/client/islands.ts` for island hydration. The output still lands in `dist/`.
+
+There is still a watch mode. `make watch` runs a tiny dev server with rebuilds and live reload. The build is larger than it used to be, but it still fits in your head.
+
+## Design
+
+The visual design is still raw CSS. The source is still split into partials under `src/styles/`, and it still compiles to one stylesheet. The 8px baseline grid is still the backbone. Custom properties still carry the spacing scale, type scale, and palette. The site still leans on typography before graphics.
+
+There is still a small browser layer for progressive enhancement: updating the running header, shifting font weight with scroll, revealing footnotes into the margin, and a one-time page-arrival fade. Interactive islands use React where state is warranted, but document-level behavior stays as plain Vanilla JS.
+
+## Principles
+
+This site still has zero external services at runtime. No CDN fonts, no analytics script, no third-party widgets. Every byte served is a byte I wrote or explicitly chose to include. TypeScript keeps the build code legible. React makes MDX and islands coherent. The site itself still ships as plain HTML, raw CSS, and a small amount of JavaScript.
+
+Constraints are still the point. The result should be a site I understand completely, which means I can fix it, extend it, and trust it.

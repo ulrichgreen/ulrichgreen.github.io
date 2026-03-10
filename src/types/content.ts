@@ -1,42 +1,54 @@
+import type { ComponentType, ReactNode } from "react";
+
 export interface PageMeta {
-  title?: string;
-  description?: string;
-  section?: string;
-  published?: string;
-  revised?: string;
-  words?: number | string;
-  note?: string;
-  summary?: string;
-  [key: string]: unknown;
+    title?: string;
+    description?: string;
+    section?: string;
+    published?: string;
+    revised?: string;
+    words?: number | string;
+    note?: string;
+    summary?: string;
+    print?: boolean;
+    [key: string]: unknown;
 }
 
 export interface FrontmatterPayload {
-  meta: PageMeta;
-  body: string;
+    meta: PageMeta;
+    body: string;
 }
 
-export interface HtmlPayload {
-  meta: PageMeta;
-  html: string;
+export type ContentComponentMap = Record<string, ComponentType<any>>;
+
+export interface MdxContentProps {
+    components?: ContentComponentMap;
+}
+
+export type ContentBodyComponent = ComponentType<MdxContentProps>;
+
+export interface BuiltContent {
+    meta: PageMeta;
+    Content: ContentBodyComponent;
+    sourcePath: string;
 }
 
 export interface WritingIndexEntry extends PageMeta {
-  title: string;
-  published: string;
-  slug: string;
+    title: string;
+    published: string;
+    slug: string;
+    href: string;
 }
 
 export interface BaseLayoutProps {
-  title?: string;
-  description?: string;
-  section?: string;
-  children?: unknown;
+    title?: string;
+    description?: string;
+    section?: string;
+    children?: ReactNode;
 }
 
 export interface ArticleLayoutProps extends BaseLayoutProps {
-  published?: string;
-  revised?: string;
-  words?: number | string;
-  note?: string;
-  contentHtml?: string;
+    published?: string;
+    revised?: string;
+    words?: number | string;
+    note?: string;
 }

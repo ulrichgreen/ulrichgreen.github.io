@@ -1,100 +1,103 @@
 @media print {
-  :root {
-    --c-bg: #ffffff;
-    --c-text: #000000;
-    --c-muted: #555555;
-    --c-rule: #cccccc;
-    --c-accent: #000000;
-  }
+    :root {
+        --c-bg: #ffffff;
+        --c-text: #000000;
+        --c-muted: #555555;
+        --c-rule: #cccccc;
+        --c-accent: #000000;
+    }
 
-  .running-header {
-    display: none;
-  }
+    .running-header {
+        display: none;
+    }
 
-  .margin-note {
-    position: static;
-    width: auto;
-    max-width: none;
-    display: block;
-    font-size: var(--t-xs);
-    color: var(--c-muted);
-    margin-block-start: var(--space-1);
-    page-break-inside: avoid;
-  }
+    .margin-note {
+        position: static;
+        width: auto;
+        max-width: none;
+        display: block;
+        font-size: var(--t-xs);
+        color: var(--c-muted);
+        margin-block-start: var(--space-1);
+        page-break-inside: avoid;
+    }
 
-  body {
-    font-size: 11pt;
-    line-height: 1.5;
-    color: #000;
-    background: #fff;
-    -webkit-print-color-adjust: exact;
-    print-color-adjust: exact;
-  }
+    body {
+        font-size: 11pt;
+        line-height: 1.5;
+        color: #000;
+        background: #fff;
+        -webkit-print-color-adjust: exact;
+        print-color-adjust: exact;
+    }
 
-  h1 {
-    font-size: 24pt;
-    line-height: 1.2;
-    page-break-after: avoid;
-  }
+    h1 {
+        font-size: 24pt;
+        line-height: 1.2;
+        page-break-after: avoid;
+    }
 
-  h2 {
-    font-size: 16pt;
-    line-height: 1.3;
-    page-break-after: avoid;
-    margin-block-start: 18pt;
-  }
+    h2 {
+        font-size: 16pt;
+        line-height: 1.3;
+        page-break-after: avoid;
+        margin-block-start: 18pt;
+    }
 
-  h3 {
-    font-size: 12pt;
-    page-break-after: avoid;
-  }
+    h3 {
+        font-size: 12pt;
+        page-break-after: avoid;
+    }
 
-  p, li {
-    orphans: 3;
-    widows: 3;
-    max-width: none;
-  }
+    p,
+    li {
+        orphans: 3;
+        widows: 3;
+        max-width: none;
+    }
 
-  a {
-    color: inherit;
-    text-decoration: none;
-  }
+    a {
+        color: inherit;
+        text-decoration: none;
+    }
 
-  a[href^="http"]::after {
-    content: " (" attr(href) ")";
-    font-size: 0.8em;
-    color: var(--c-muted);
-  }
+    a[href^="http"]::after {
+        content: " (" attr(href) ")";
+        font-size: 0.8em;
+        color: var(--c-muted);
+    }
 
-  .cv-entry {
-    page-break-inside: avoid;
-    border-block-end: 0.5pt solid #ccc;
-  }
+    .cv-entry {
+        page-break-inside: avoid;
+        border-block-end: 0.5pt solid #ccc;
+    }
 
-  pre, blockquote {
-    page-break-inside: avoid;
-  }
+    pre,
+    blockquote {
+        page-break-inside: avoid;
+    }
 
-  .page {
-    display: block;
-    padding: 0;
-  }
+    .page {
+        display: block;
+        padding: 0;
+    }
 
-  article {
-    padding-block: 0;
-  }
+    article {
+        padding-block: 0;
+    }
 
-  .tag, .fn-ref {
-    color: inherit;
-    border-color: #ccc;
-  }
+    .tag,
+    .fn-ref {
+        color: inherit;
+        border-color: #ccc;
+    }
 
-  @page {
-    margin: 2cm 2.5cm;
-    size: A4 portrait;
-  }
+    @page {
+        margin: 2cm 2.5cm;
+        size: A4 portrait;
+    }
 
-  @page :first {
-    margin-block-start: 1.5cm;
-  }
+    @page :first {
+        margin-block-start: 1.5cm;
+    }
 }

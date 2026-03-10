@@ -1,42 +1,42 @@
 @layer tokens {
-  :root {
-    --unit: 8px;
-    --u: 8px;
-    --lh-3u: 24px;
-    --lh-4u: 32px;
-    --lh-5u: 40px;
-    --lh-7u: 56px;
-    --t-xs: 12px;
-    --t-sm: 14px;
-    --t-base: 18px;
-    --t-h2: 28px;
-    --t-h1: 40px;
-    --measure: 65ch;
-    --c-bg: #f8f7f5;
-    --c-text: #1c1b19;
-    --c-muted: #74736f;
-    --c-rule: #dbd9d4;
-    --c-accent: #2a3f5f;
-    --ff-body: ui-serif, "New York", "Iowan Old Style", Georgia, serif;
-    --ff-ui: system-ui, -apple-system, "Segoe UI", sans-serif;
-    --ff-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
-    --space-1: calc(1 * var(--u));
-    --space-2: calc(2 * var(--u));
-    --space-3: calc(3 * var(--u));
-    --space-4: calc(4 * var(--u));
-    --space-6: calc(6 * var(--u));
-    --space-8: calc(8 * var(--u));
-    --header-h: calc(5 * var(--u));
-    --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
-  }
-
-  @media (prefers-color-scheme: dark) {
     :root {
-      --c-bg: #1a1917;
-      --c-text: #edecea;
-      --c-muted: #9e9c97;
-      --c-rule: #38372f;
-      --c-accent: #8aafd4;
+        --unit: 8px;
+        --u: 8px;
+        --lh-3u: 24px;
+        --lh-4u: 32px;
+        --lh-5u: 40px;
+        --lh-7u: 56px;
+        --t-xs: 12px;
+        --t-sm: 14px;
+        --t-base: 18px;
+        --t-h2: 28px;
+        --t-h1: 40px;
+        --measure: 65ch;
+        --c-bg: #f8f7f5;
+        --c-text: #1c1b19;
+        --c-muted: #6b6861;
+        --c-rule: #dbd9d4;
+        --c-accent: #2a3f5f;
+        --ff-body: ui-serif, "New York", "Iowan Old Style", Georgia, serif;
+        --ff-ui: system-ui, -apple-system, "Segoe UI", sans-serif;
+        --ff-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+        --space-1: calc(1 * var(--u));
+        --space-2: calc(2 * var(--u));
+        --space-3: calc(3 * var(--u));
+        --space-4: calc(4 * var(--u));
+        --space-6: calc(6 * var(--u));
+        --space-8: calc(8 * var(--u));
+        --header-h: calc(5 * var(--u));
+        --ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
-  }
+
+    @media (prefers-color-scheme: dark) {
+        :root {
+            --c-bg: #1a1917;
+            --c-text: #edecea;
+            --c-muted: #9e9c97;
+            --c-rule: #38372f;
+            --c-accent: #8aafd4;
+        }
+    }
 }

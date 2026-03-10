@@ -1,23 +1,40 @@
-import matter from 'gray-matter';
-import { createInterface } from 'node:readline';
-import type { FrontmatterPayload } from '../types/content.ts';
+import matter from "gray-matter";
+import { createInterface } from "node:readline";
+import type { FrontmatterPayload } from "../types/content.ts";
 
-const chunks: string[] = [];
+export function parseFrontmatter(raw: string): FrontmatterPayload {
+    if (!raw.trim()) {
+        throw new Error("frontmatter.ts: input is empty");
+    }
 
-const rl = createInterface({ input: process.stdin, terminal: false });
-rl.on('line', line => chunks.push(line));
-rl.on('close', () => {
-  const raw = chunks.join('\n');
-  if (!raw.trim()) {
-    process.stderr.write('frontmatter.ts: stdin is empty\n');
-    process.exit(1);
-  }
+    const { data, content } = matter(raw);
 
-  const { data, content } = matter(raw);
-  const payload: FrontmatterPayload = {
-    meta: data,
-    body: content,
-  };
+    return {
+        meta: data,
+        body: content,
+    };
+}
 
-  process.stdout.write(JSON.stringify(payload));
-});
+function main() {
+    const chunks: string[] = [];
+    const rl = createInterface({ input: process.stdin, terminal: false });
+
+    rl.on("line", (line) => chunks.push(line));
+    rl.on("close", () => {
+        try {
+            process.stdout.write(
+                JSON.stringify(parseFrontmatter(chunks.join("\n"))),
+            );
+        } catch (error) {
+            process.stderr.write(`${String(error)}\n`);
+            process.exit(1);
+        }
+    });
+}
+
+if (
+    process.argv[1] &&
+    new URL(process.argv[1], "file:").href === import.meta.url
+) {
+    main();
+}

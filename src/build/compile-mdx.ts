@@ -1,0 +1,35 @@
+import { pathToFileURL } from "node:url";
+import * as runtime from "react/jsx-runtime";
+import type { ContentBodyComponent } from "../types/content.ts";
+
+const MDX_ESM_PATTERN = /^\s*(import|export)\s/m;
+
+function assertSupportedMdx(body: string, filePath: string) {
+    if (MDX_ESM_PATTERN.test(body)) {
+        throw new Error(
+            `${filePath}: MDX ESM is disabled. Use approved components from src/content-components.tsx instead.`,
+        );
+    }
+}
+
+export async function compileMdx(
+    body: string,
+    filePath: string,
+): Promise<ContentBodyComponent> {
+    assertSupportedMdx(body, filePath);
+
+    const { evaluate } = await import("@mdx-js/mdx");
+
+    const module = (await evaluate(
+        { value: body, path: filePath },
+        {
+            ...runtime,
+            baseUrl: pathToFileURL(filePath),
+            development: false,
+        },
+    )) as {
+        default: ContentBodyComponent;
+    };
+
+    return module.default;
+}

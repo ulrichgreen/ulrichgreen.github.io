@@ -12,25 +12,25 @@ TypeScript now covers the build, templates, client code, and tests.
 
 The reason is simple: the risky parts of this repo are the content model, the rendering path, and the file boundaries. Types help there.
 
-## TSX With A Small Runtime
+## React And react-dom/server
 
-Templates use TSX because it is easier to read and compose than string templates once layouts grow past trivial size.
+React is the single rendering runtime for templates, MDX content, and explicit interactive islands.
 
-The runtime is still custom and small. TSX is an authoring format, not a framework commitment.
+`react-dom/server` renders the static document at build time.
 
-## marked And gray-matter
+## MDX And gray-matter
 
 `gray-matter` parses frontmatter.
 
-`marked` turns markdown into HTML.
+`@mdx-js/mdx` turns MDX into React components at build time.
 
-Both stay because they solve the exact problems this site has and then get out of the way.
+That keeps content authoring expressive without moving layout concerns into string manipulation.
 
 ## lightningcss And esbuild
 
 `lightningcss` bundles and minifies the stylesheet.
 
-`esbuild` handles two jobs: loading TSX templates at build time and compiling the tiny browser script.
+`esbuild` handles the browser bundles for progressive enhancement and island hydration.
 
 That keeps the toolchain short.
 
@@ -40,11 +40,11 @@ The dev server watches files, rebuilds, and reloads the browser. Nothing more.
 
 ## What This Stack Avoids
 
-No framework runtime.
+No full-page hydration.
 
 No client-side routing.
 
-No hydration.
+No arbitrary imports from MDX content.
 
 No CSS framework.
 
