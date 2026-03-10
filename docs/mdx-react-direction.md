@@ -98,7 +98,7 @@ The right additions are small tools that replace custom seams:
 
 ### `zod`
 
-Use it for frontmatter validation and layout-specific schemas. This replaces stringly checks with one executable contract.
+Use it for frontmatter validation and layout-specific schemas. This replaces loose string-based checks with one executable contract.
 
 ### `remark-gfm` and `remark-directive`
 

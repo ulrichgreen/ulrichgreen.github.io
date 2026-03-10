@@ -1,6 +1,9 @@
 import { existsSync, readFileSync } from "node:fs";
+import { fileURLToPath } from "node:url";
 
-const file = new URL("../docs/mdx-react-direction.md", import.meta.url).pathname;
+const file = fileURLToPath(
+    new URL("../docs/mdx-react-direction.md", import.meta.url),
+);
 
 if (!existsSync(file)) {
     console.error("mdx-react-direction.md not found");
