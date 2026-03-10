@@ -52,7 +52,7 @@ TypeScript interfaces in `src/types/content.ts` define the shapes that flow thro
 
 `src/build/css.ts` bundles the stylesheet partials in `src/styles/` into `dist/style.css` using `lightningcss`. The partials are organized into CSS layers: reset, tokens, base, layout, components, utilities, motion, and print.
 
-`src/build/client.ts` bundles `src/client/site.ts` into `dist/site.js` using `esbuild` as a single IIFE.
+`src/build/client.ts` bundles two browser entry points using `esbuild`: `src/client/site.ts` into `dist/site.js` for progressive enhancement, and `src/client/islands.ts` into `dist/islands.js` for island hydration. Both are single IIFEs.
 
 Both target recent browsers (Chrome 120+, Firefox 121+, Safari 17+).
 
