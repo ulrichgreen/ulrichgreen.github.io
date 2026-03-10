@@ -9,12 +9,19 @@ if (!existsSync(file)) {
 
 const content = readFileSync(file, "utf8");
 const required = [
-    "sitemap.xml",
+    "Quick Wins",
+    "Speculation Rules",
+    "View Transitions",
     "canonical URLs",
+    "sitemap.xml",
     "frontmatter validation",
     "full-text feed",
     "broken-link check",
+    "lazy island hydration",
+    "content-hashed filenames",
     "Year-based archives",
+    "single process",
+    "performance budget",
     "Not The Goal",
 ];
 
@@ -26,4 +33,6 @@ if (errors.length > 0) {
     process.exit(1);
 }
 
-console.log(`ROADMAP.md verified: ${required.length} roadmap items present.`);
+console.log(
+    `ROADMAP.md verified: ${required.length} roadmap items present.`,
+);
