@@ -46,6 +46,16 @@ MDX in `content/` is the source of truth for pages.
 
 Articles should prefer explicit `description` frontmatter. Automatic fallback still exists, but only as a safety net.
 
+TypeScript interfaces in `src/types/content.ts` define the shapes that flow through the pipeline: `PageMeta`, `FrontmatterPayload`, `HtmlPayload`, `WritingIndexEntry`, and the layout props.
+
+## CSS And Client JS
+
+`src/build/css.ts` bundles the stylesheet partials in `src/styles/` into `dist/style.css` using `lightningcss`. The partials are organized into CSS layers: reset, tokens, base, layout, components, utilities, motion, and print.
+
+`src/build/client.ts` bundles two browser entry points using `esbuild`: `src/client/site.ts` into `dist/site.js` for progressive enhancement, and `src/client/islands.ts` into `dist/islands.js` for island hydration. Both are single IIFEs.
+
+Both target recent browsers (Chrome 120+, Firefox 121+, Safari 17+).
+
 ## Client Code
 
 The browser code is split in two:
@@ -65,6 +75,10 @@ footnote reveals,
 page arrival fade.
 
 The page should still work without it.
+
+## Dev Server
+
+`make watch` starts a dev server on port 3000 through `src/build/dev.ts`. It serves `dist/`, watches `content/` and `src/` with `chokidar`, rebuilds on change, and pushes a reload over WebSocket.
 
 ## What Not To Change Casually
 
