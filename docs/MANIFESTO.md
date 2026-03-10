@@ -1,45 +1,51 @@
 # Manifesto
 
-This site is here to make a point.
+This is a personal site built around writing. Not a portfolio, not a product, not an engagement machine. The writing is the center of gravity and everything else is in service of it.
 
-The point is that a personal site can feel authored without becoming a product, a dashboard, or a little startup for one person. It can be fast, exact, readable, and calm because every layer was chosen on purpose.
+The site should feel authored. Taste shows through typography, spacing, and structure — not decoration. Reading should be the easiest thing it does.
 
-I want the writing to carry the work. I want the HTML to be clean enough that view source still means something. I want the CSS to do the visible work and the build to stay small enough that I can explain it without hand-waving.
+## What It Optimizes For
 
-## What This Site Tries To Do
+Reading first. The page should render meaning before the browser runs any JavaScript.
 
-It should read well first.
+Legibility end-to-end. The build should remain understandable by one person in one sitting. If a layer can't be explained plainly, it hasn't earned its place.
 
-It should feel considered without feeling polished into blandness.
+Authored HTML. `view source` should still mean something. The output should be clean enough that a person can read it.
 
-It should make taste visible through structure, spacing, type, and restraint rather than through decoration.
-
-It should stay small enough that every dependency, every file, and every interaction has to earn its place.
+Small surface. Every dependency carries a cost. Every file, every interaction, every abstraction must justify itself. Prefer removing over adding.
 
 ## What It Refuses
 
-No framework runtime in the browser.
+No full-page hydration. React renders the document at build time. Interactive behavior lives in explicit islands only.
 
-No analytics creep.
+No arbitrary MDX imports. Content components are approved through `src/content-components.tsx`. MDX is a content format, not an application surface.
 
-No third-party widgets.
+No analytics creep, tracking pixels, or third-party widgets.
 
-No fake complexity added just to look modern.
+No client-side routing. Pages are static HTML. Navigation is a link.
 
-No docs folder full of grand plans that have nothing to do with the code.
+No fake complexity added to look modern.
 
-## Why The Build Looks Like This
+No planning docs detached from the code. The docs folder is a set of constraints on the codebase, not aspirational literature.
 
-The build is not hidden because the build is part of the project. Markdown goes in. HTML comes out. The pipeline is readable. The templates are real components, but they render at build time and disappear before the browser sees the page.
+## What The Code Must Keep True
 
-TypeScript is there to make the content model and the rendering path harder to break. It is not there to turn this into an app.
+The build pipeline runs: content → frontmatter → MDX → React SSR → HTML. That sequence must remain readable.
+
+TypeScript covers the risky parts — the content model, the rendering path, the template contracts. It is not there to turn this into an app.
+
+The progressive enhancement layer handles document-level behavior. It must not touch island-owned DOM.
+
+CSS is layered, custom, and designed. No CSS framework.
+
+The test suite verifies docs as well as code. Both must stay in sync.
 
 ## What Success Looks Like
 
-The site loads quickly.
+The writing is clearly the center.
 
-The writing feels like the center of gravity.
+The site loads quickly and works without JavaScript.
 
-The code stays understandable after time passes.
+A new reader of the source can understand the whole project: where content lives, how the build works, what the browser receives.
 
-The repo reads like one person's project, not a pile of default decisions.
+The code still reads like one person's considered project, not a pile of default decisions accumulated without intention.
