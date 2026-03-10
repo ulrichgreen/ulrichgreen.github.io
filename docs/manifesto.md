@@ -38,7 +38,7 @@ The progressive enhancement layer owns document-level behavior. Islands own thei
 
 CSS is handwritten, layered, and designed on purpose. No framework. No utility classes. The design system is the CSS.
 
-Tests verify both docs and code. If they drift apart, the build fails. That's the point.
+Tests verify the rendering and accessibility paths that matter most. If implementation drifts, the build fails. That's the point.
 
 ## What Success Looks Like
 

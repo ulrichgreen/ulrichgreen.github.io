@@ -1,9 +1,11 @@
 import type { ComponentType, ReactNode } from "react";
 
+export type LayoutName = "article" | "base";
+
 export interface PageMeta {
-    title?: string;
+    title: string;
     description?: string;
-    layout?: "article" | "base";
+    layout: LayoutName;
     section?: string;
     published?: string;
     revised?: string;
@@ -11,7 +13,6 @@ export interface PageMeta {
     note?: string;
     summary?: string;
     print?: boolean;
-    [key: string]: unknown;
 }
 
 export interface FrontmatterPayload {

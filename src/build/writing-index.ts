@@ -7,8 +7,9 @@ export function listWritingEntries(directory: string): WritingIndexEntry[] {
     return readdirSync(directory)
         .filter((file) => file.endsWith(".mdx"))
         .map((file) => {
-            const raw = readFileSync(join(directory, file), "utf8");
-            const { meta } = parseFrontmatter(raw);
+            const sourcePath = join(directory, file);
+            const raw = readFileSync(sourcePath, "utf8");
+            const { meta } = parseFrontmatter(raw, sourcePath);
             const slug = file.replace(/\.mdx$/, "");
 
             return {

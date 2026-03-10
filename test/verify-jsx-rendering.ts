@@ -1,4 +1,5 @@
 import assert from "node:assert/strict";
+import { parseFrontmatter } from "../src/build/frontmatter.ts";
 import {
     buildContent,
     resolveMetaDescription,
@@ -48,6 +49,18 @@ async function main() {
     assert.equal(
         fallbackDescription,
         "A paragraph that should become the fallback description.",
+    );
+
+    const baseFrontmatter = parseFrontmatter("---\ntitle: Test Page\n---\nBody");
+    assert.equal(baseFrontmatter.meta.layout, "base");
+
+    assert.throws(
+        () =>
+            parseFrontmatter(
+                "---\ntitle: Missing date\nlayout: article\n---\nBody",
+                "/tmp/missing-published.mdx",
+            ),
+        /published is required when layout is article/,
     );
 
     console.log(

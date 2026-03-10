@@ -4,11 +4,11 @@ Static-first, one person's build. Content in as MDX, out as HTML. React renders 
 
 ## How It Builds
 
-`make build` produces everything in `dist/`. Each page flows through a TypeScript pipeline: YAML frontmatter parsing, MDX compilation into a React component, then server rendering with `renderToStaticMarkup`. The output is plain HTML — no client framework needed to read a page.
+`make build` produces everything in `dist/`. One TypeScript build entry reads the full content graph, validates YAML frontmatter, compiles MDX into React components, then renders every page with `renderToStaticMarkup`. The output is plain HTML — no client framework needed to read a page.
 
 Templates and shared components are standard React TSX. MDX content renders through the same tree, but only components exposed through `src/content-components.tsx` are available to authors. That boundary is deliberate.
 
-`layout: article` in frontmatter routes a page through the article template. Everything else gets the base layout. The `section` field is purely presentational — it controls the running header breadcrumb and is inferred from the content directory path when not set explicitly. Islands — the only parts that hydrate — use `hydrateRoot` through a dedicated client entry. The rest of the page stays static.
+`layout: article` in frontmatter routes a page through the article template by way of a small layout registry. Everything else gets the base layout. The `section` field is purely presentational — it controls the running header breadcrumb and is inferred from the content directory path when not set explicitly. Islands — the only parts that hydrate — use `hydrateRoot` through a dedicated client entry. The rest of the page stays static.
 
 ## The Stack
 
@@ -24,7 +24,7 @@ The component gate for MDX authors is `src/content-components.tsx`. Only what's 
 
 ## Authoring Content
 
-MDX is the content format. Frontmatter stays YAML. Every page shares the same frontmatter schema — `title`, `description`, `layout`, `published`, `revised`, `words`, `note`, `print`. Set `layout: article` for essay-style pages; the default is the base layout. Files and folders dictate URLs. Most prose should stay prose — components in content earn their place by being genuinely necessary.
+MDX is the content format. Frontmatter stays YAML, but it now passes through a typed validation step before the page enters the rest of the pipeline. Every page shares the same frontmatter schema — `title`, `description`, `layout`, `published`, `revised`, `words`, `note`, `print`. Set `layout: article` for essay-style pages; the default is the base layout. Files and folders dictate URLs. Most prose should stay prose — components in content earn their place by being genuinely necessary.
 
 Progressive enhancement handles document-level behavior: running headers, scroll effects, footnote reveals. Islands handle interactive state. The two stay separate.
 

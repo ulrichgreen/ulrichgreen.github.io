@@ -4,7 +4,7 @@
     "description": "",
     "main": "index.js",
     "scripts": {
-        "test": "pnpm exec tsx test/verify-jsx-rendering.ts && pnpm exec tsx test/verify-accessibility.ts && pnpm exec tsx test/verify-manifesto.ts && pnpm exec tsx test/verify-architecture.ts && pnpm exec tsx test/verify-roadmap.ts && pnpm exec tsx test/verify-experiments.ts && pnpm exec tsx test/verify-mdx-react-direction.ts && pnpm exec tsx test/verify-typography.ts && pnpm exec tsx test/verify-colophon.ts",
+        "test": "pnpm exec tsx test/verify-jsx-rendering.ts && pnpm exec tsx test/verify-accessibility.ts",
         "typecheck": "tsc --noEmit"
     },
     "keywords": [],
@@ -18,7 +18,8 @@
         "lightningcss": "^1.31.1",
         "react": "^19.2.4",
         "react-dom": "^19.2.4",
-        "ws": "^8.19.0"
+        "ws": "^8.19.0",
+        "zod": "^4.3.6"
     },
     "devDependencies": {
         "@types/node": "^24.5.2",

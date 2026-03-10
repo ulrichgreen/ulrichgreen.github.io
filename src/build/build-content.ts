@@ -119,7 +119,7 @@ export function resolveMetaDescription(
 
 export async function buildContent(filePath: string): Promise<BuiltContent> {
     const raw = readFileSync(filePath, "utf8");
-    const stripped = stripDuplicateArticleTitle(parseFrontmatter(raw));
+    const stripped = stripDuplicateArticleTitle(parseFrontmatter(raw, filePath));
     const description = resolveMetaDescription(stripped);
     const meta = description
         ? { ...stripped.meta, description }
