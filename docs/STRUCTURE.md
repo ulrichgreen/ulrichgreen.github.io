@@ -26,6 +26,8 @@ All code that produces the site.
 
 `src/styles/` contains the stylesheet partials.
 
+`src/types/` contains TypeScript interfaces for the content model and layout props.
+
 `docs/`
 
 Short project documents. Each file should answer one question and stop.
@@ -53,6 +55,8 @@ Changing a progressive enhancement means `src/client/`.
 Adding a new content-safe component means editing `src/content-components.tsx`.
 
 Adding a new interactive island means editing `src/islands/` and `src/client/islands.ts`.
+
+Changing the content model or layout interfaces means `src/types/content.ts`.
 
 ## Why It Is Shaped This Way
 
