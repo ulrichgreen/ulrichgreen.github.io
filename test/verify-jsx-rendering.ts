@@ -50,6 +50,22 @@ async function main() {
         homeHtml.includes('name="view-transition" content="same-origin"'),
         "Home page should include the view-transition meta tag.",
     );
+    assert(
+        homeHtml.includes(
+            'name="theme-color" media="(prefers-color-scheme: light)" content="#f8f7f5"',
+        ),
+        "Home page should include the light theme-color meta tag.",
+    );
+    assert(
+        homeHtml.includes(
+            'name="theme-color" media="(prefers-color-scheme: dark)" content="#1a1917"',
+        ),
+        "Home page should include the dark theme-color meta tag.",
+    );
+    assert(
+        homeHtml.includes('style="view-transition-name:article-title-on-constraints"'),
+        "Writing index links should have named view transitions.",
+    );
 
     const articlePath = new URL(
         "../content/writing/on-tools.mdx",
@@ -62,7 +78,12 @@ async function main() {
         article.meta.description,
         "Tools are not neutral. They carry assumptions about your work, and those assumptions shape the systems you build.",
     );
-    assert(articleHtml.includes("<h1>On Tools</h1>"));
+    assert(
+        articleHtml.includes(
+            '<h1 style="view-transition-name:article-title-on-tools"',
+        ),
+        "Article title should have a named view transition.",
+    );
     assert(articleHtml.includes("March 1, 2025"));
     assert(articleHtml.includes('data-island="DemoWidget"'));
     assert(articleHtml.includes("Count the cost before you add capability."));

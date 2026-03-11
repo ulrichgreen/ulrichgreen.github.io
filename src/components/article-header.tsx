@@ -25,18 +25,35 @@ function safeISODate(value?: string): string {
     return date.toISOString().slice(0, 10);
 }
 
+export function getArticleTitleTransitionName(
+    slugOrPath?: string,
+): string | undefined {
+    if (!slugOrPath) return undefined;
+
+    const slug = slugOrPath
+        .replace(/^\/writing\//, "")
+        .replace(/\.html$/, "")
+        .trim();
+
+    if (!slug) return undefined;
+
+    return `article-title-${slug.replace(/[^a-z0-9_-]+/gi, "-")}`;
+}
+
 export function ArticleHeader({
     title,
     published,
     revised,
     words,
     note,
+    titleTransitionName,
 }: {
     title?: string;
     published?: string;
     revised?: string;
     words?: number | string;
     note?: string;
+    titleTransitionName?: string;
 }) {
     const publishedIso = safeISODate(published);
     const revisedIso = safeISODate(revised);
@@ -45,7 +62,15 @@ export function ArticleHeader({
 
     return (
         <header className="article-header">
-            <h1>{title || ""}</h1>
+            <h1
+                style={
+                    titleTransitionName
+                        ? { viewTransitionName: titleTransitionName }
+                        : undefined
+                }
+            >
+                {title || ""}
+            </h1>
             <div className="article-meta">
                 <time dateTime={publishedIso}>{publishedDate}</time>
                 {revisedDate && (

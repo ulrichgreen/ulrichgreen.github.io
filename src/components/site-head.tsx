@@ -1,4 +1,6 @@
 const SITE_URL = "https://ulrich.green";
+const LIGHT_THEME_COLOR = "#f8f7f5";
+const DARK_THEME_COLOR = "#1a1917";
 
 export function SiteHead({
     title,
@@ -21,6 +23,16 @@ export function SiteHead({
             />
             <title>{title || ""}</title>
             <meta name="description" content={description || ""} />
+            <meta
+                name="theme-color"
+                media="(prefers-color-scheme: light)"
+                content={LIGHT_THEME_COLOR}
+            />
+            <meta
+                name="theme-color"
+                media="(prefers-color-scheme: dark)"
+                content={DARK_THEME_COLOR}
+            />
             {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
             <meta property="og:title" content={title || ""} />
             <meta property="og:description" content={description || ""} />

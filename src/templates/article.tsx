@@ -1,4 +1,7 @@
-import { ArticleHeader } from "../components/article-header.tsx";
+import {
+    ArticleHeader,
+    getArticleTitleTransitionName,
+} from "../components/article-header.tsx";
 import BaseLayout from "./base.tsx";
 import type { ArticleLayoutProps } from "../types/content.ts";
 
@@ -27,6 +30,7 @@ export default function ArticleLayout({
                     revised={revised}
                     words={words}
                     note={note}
+                    titleTransitionName={getArticleTitleTransitionName(pagePath)}
                 />
                 <div className="article-body">{children}</div>
                 <footer className="article-footer">
