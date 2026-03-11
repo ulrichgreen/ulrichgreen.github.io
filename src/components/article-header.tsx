@@ -35,9 +35,14 @@ export function getArticleTitleTransitionName(
         .replace(/\.html$/, "")
         .trim();
 
-    if (!slug) return undefined;
+    const normalizedSlug = slug
+        .replace(/[^a-z0-9_-]+/gi, "-")
+        .replace(/-+/g, "-")
+        .replace(/^-|-$/g, "");
 
-    return `article-title-${slug.replace(/[^a-z0-9_-]+/gi, "-")}`;
+    if (!normalizedSlug) return undefined;
+
+    return `article-title-${normalizedSlug}`;
 }
 
 export function ArticleHeader({

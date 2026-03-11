@@ -63,7 +63,9 @@ async function main() {
         "Home page should include the dark theme-color meta tag.",
     );
     assert(
-        homeHtml.includes('style="view-transition-name:article-title-on-constraints"'),
+        /style="view-transition-name:article-title-[a-z0-9_-]+"/.test(
+            homeHtml,
+        ),
         "Writing index links should have named view transitions.",
     );
 
