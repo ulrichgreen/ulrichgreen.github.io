@@ -2,12 +2,6 @@
 
 What's worth building next, in order of effort and payoff. The top items are small moves that punch above their weight. The bottom is the "not happening" list — useful for saying no quickly.
 
-## Quick Wins
-
-Add named view transitions on article titles — the writing index and article page could animate between each other with a `view-transition-name` on the title element. Builds on the cross-document view transitions already in place.
-
-Add a `theme-color` meta tag using the background token for each color scheme, so the browser chrome matches the page in both light and dark mode.
-
 ## Next
 
 Generate a sitemap.xml from the writing index and top-level content files. Helps search engines, costs nothing.
