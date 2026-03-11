@@ -14,6 +14,13 @@ export function SiteHead({
             />
             <title>{title || ""}</title>
             <meta name="description" content={description || ""} />
+            <link
+                rel="preload"
+                href="/fonts/JetBrainsMono-Regular.woff2"
+                as="font"
+                type="font/woff2"
+                crossOrigin="anonymous"
+            />
             <link rel="stylesheet" href="/style.css" />
         </head>
     );
