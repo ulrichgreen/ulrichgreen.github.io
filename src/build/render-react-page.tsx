@@ -3,10 +3,9 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { getContentComponents } from "../content-components.tsx";
 import type { BuiltContent, WritingIndexEntry } from "../types/content.ts";
 import type { RegisterIslandInput } from "../types/islands.ts";
-import { defaultAssetManifest } from "./render-context.tsx";
 import type { AssetManifest } from "./asset-manifest.ts";
 import { renderLayout } from "./layouts.tsx";
-import { RenderContext, type RenderContextValue } from "./render-context.tsx";
+import { defaultAssetManifest, RenderContext, type RenderContextValue } from "./render-context.tsx";
 
 function derivePagePath(sourcePath: string): string {
     const marker = "/content/";
@@ -61,7 +60,7 @@ export function renderPage(
     const page = renderLayout(meta, body);
 
     return `<!doctype html>\n${renderToStaticMarkup(
-        <RenderContext.Provider value={{ ...context }}>
+        <RenderContext.Provider value={context}>
             {page}
         </RenderContext.Provider>,
     )}`;

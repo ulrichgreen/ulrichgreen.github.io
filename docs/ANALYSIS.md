@@ -1,77 +1,109 @@
 # Codebase Analysis
 
-Remaining findings from a thorough audit of the build pipeline, templates, types, client code, styles, content, tests, docs, CI, dependencies, and security posture.
+Build pipeline audit from five perspectives — performance, architecture, minimalism, reliability, and developer experience. Findings are split into two sections: changes already applied, and remaining observations for future consideration.
 
 Baseline state: typecheck passes, `pnpm test` passes (JSX rendering, accessibility, links, feed), `pnpm build` succeeds (10 HTML pages, CSS, two JS bundles, feed, sitemap, robots, headers, OG image).
 
 ---
 
-## Types and Templates
+## Changes Applied
 
-### `PageMeta` fields not covered by layout props
+### Performance
 
-`src/types/content.ts` — `PageMeta` declares `words`, `readingTime`, `note`, `summary`, and `print`, but `BaseLayoutProps` and `ArticleLayoutProps` only forward `published` and `revised` from that group. The extra fields are used internally by `build-content.ts` and `article-header.tsx`, but the gap makes it unclear which fields are "for the template" vs. "for the build."
+**Eliminate duplicate MDX compilation in feed generation.** `buildFeed()` was re-reading and re-compiling all 6 writing MDX files that were already compiled in the main page loop. The site build now collects compiled writing pages and passes them directly to `buildFeed()`. Zero re-reads, zero re-compilations.
+
+**Parallelize page MDX compilation.** Replaced the sequential `for` loop in `site.ts` with `Promise.allSettled()` over all source files. Pages with heavy syntax highlighting (shiki) can now overlap.
+
+**Hoist `@mdx-js/mdx` dynamic import.** Moved the `import("@mdx-js/mdx")` from inside `compileMdx()` to a module-level constant. The promise resolves once on first use; all subsequent calls get the cached module.
+
+**Parallelize CSS and client JS builds.** `buildCss()` and `buildClient()` are independent — they now run concurrently via `Promise.all()`.
+
+### Architecture
+
+**Centralize directory paths.** `distDirectory`, `contentDirectory`, and `writingDirectory` were independently defined (via `fileURLToPath(new URL("../../dist", import.meta.url))`) in 10 files with 3 different variable names. Now a single `src/build/paths.ts` is the source of truth.
+
+**Extract `writeDistFile()`.** Five files repeated `mkdirSync(distDir, { recursive: true }); writeFileSync(join(distDir, name), content)`. Now `writeDistFile("feed.xml", xml)` handles mkdir internally via `src/build/dist-fs.ts`.
+
+**Decouple feed from render internals.** `feed.ts` duplicated 15 lines of render context wiring (createElement, RenderContext.Provider, registerIsland stub, inline defaultAssetManifest). Now it calls `renderContentBody()` — a function exported from `render-react-page.tsx` that shares the same private `createRenderContext()` factory.
+
+**Consolidate `defaultAssetManifest`.** Three identical copies collapsed to one export in `render-context.tsx`.
+
+### Reliability
+
+**Guard `buildAll()` against import-time execution.** Added `import.meta.url` guard so importing `build.ts` from `dev.ts` doesn't trigger a redundant build.
+
+**Per-file error handling.** `Promise.allSettled` in `site.ts` reports which specific pages failed instead of crashing the entire build on the first bad MDX file.
+
+**Warn on silently filtered writing entries.** `writing-index.ts` now logs to stderr when entries are skipped due to missing or invalid title/published date.
+
+**Guard post-build tests.** `verify-links.ts` and `verify-feed.ts` now exit with an actionable message when `dist/` doesn't exist, instead of crashing with raw ENOENT errors.
+
+**Preserve stack traces in dev server.** `dev.ts` now logs `error.stack` instead of `String(error)`.
+
+**Escape CDATA in feed.** `feed.ts` now handles `]]>` sequences in HTML content that would break the Atom XML.
+
+### Developer Experience
+
+**Build summary.** The build now reports `build: 10 pages in 0.79s` — page count and wall-clock time.
+
+**Fix `verify` script.** Reordered to `typecheck → build → test` so post-build verifiers always run against fresh output. Removed duplicate invocations of `check-links` and `verify-feed`.
+
+**Dev server logs changed files.** The chokidar watcher now prints which file triggered each rebuild.
+
+**Rename `INJECT` → `LIVE_RELOAD_SCRIPT`.** Self-documenting name in `dev.ts`.
 
 ---
 
-## Client Code and Performance
+## Remaining Findings
 
-### Footnote enhancement requires JavaScript
+### Types and Templates
 
-`src/client/enhancements.ts` — margin notes and inline footnotes are created entirely in JS. Without JavaScript, footnote reference links are present in the HTML but do not reveal their content. This is a minor progressive-enhancement gap in a site whose manifesto promises "the words still land" without JS.
+`PageMeta` declares `words`, `readingTime`, `note`, `summary`, and `print`, but layout prop types only forward a subset. The `summary` frontmatter field is accepted by the schema but no content file uses it. The `print` field is set by `cv.mdx` but not consumed by any template or build logic. These are harmless but add noise.
 
----
+### Client Code
 
-## Tests
+Footnote enhancement (`enhancements.ts`) creates margin notes and inline footnotes entirely in JavaScript. Without JS, footnote reference links don't reveal content — a minor progressive-enhancement gap.
 
-### No tests for SEO artifacts
+The four hydration strategies (`load`, `visible`, `idle`, `interaction`) in `islands.ts` serve one widget that uses the default `load`. The other three strategies are shipped but never executed. Worth simplifying when the architecture stabilizes.
 
-`robots.txt`, `sitemap.xml`, `_headers`, and `og-image.svg` are generated by dedicated build modules but have no verification tests. A broken sitemap or missing headers file would go unnoticed.
+### Dead Code
 
-### No tests for client-side behavior
+`page.ts` is a standalone CLI for building a single page. It's referenced in documentation but not in any script or CI workflow. `frontmatter.ts` has a `main()` function for stdin/stdout usage that's similarly unreferenced. `stripDuplicateArticleTitle()` in `build-content.ts` handles a pattern that no current article exhibits.
 
-`src/client/enhancements.ts` and `src/client/islands.ts` are completely untested. There's no unit or integration test for footnote reveals, island hydration scheduling, or the four hydration strategies.
+### Tests
 
-### No tests for CSS build or asset manifest
+No tests exist for SEO artifacts (`robots.txt`, `sitemap.xml`, `_headers`, `og-image.svg`), client-side behavior (`enhancements.ts`, `islands.ts`), or the CSS build and asset manifest pipeline.
 
-The CSS bundling step (`src/build/css.ts`), font copying, and content-hash renaming (`src/build/asset-manifest.ts`) have no dedicated tests.
+### Security
 
-### Ghost tests from prior iterations
+`dangerouslySetInnerHTML` in `src/islands/island.tsx` injects `renderToString` output. Safe today because props come from static MDX at build time and `renderToString` escapes React output. Fragile if a component ever renders unescaped user content.
 
-Repository memories reference `verify-manifesto.ts`, `verify-structure.ts`, `verify-stack.ts`, `verify-roadmap.ts`, `verify-experiments.ts`, `verify-typography.ts`, and `verify-colophon.ts`. None of these files exist. The docs they validated (`manifesto.md`, `roadmap.md`, `experiments.md`) are present but unverified by the current test suite.
-
----
-
-## Security and Dependencies
-
-### All 13 production dependencies are actively imported — none unused
-
-`@mdx-js/mdx`, `chokidar`, `esbuild`, `gray-matter`, `lightningcss`, `react`, `react-dom`, `rehype-autolink-headings`, `rehype-pretty-code`, `rehype-slug`, `remark-gfm`, `shiki`, `ws`, and `zod` are all imported in build or client code. No phantom dependencies.
-
-### Dev dependencies correctly classified
-
-`@types/node`, `@types/react`, `@types/react-dom`, `@types/ws`, `tsx`, and `typescript` are all in `devDependencies`. No misclassifications.
-
-### No hardcoded secrets
-
-No API keys, tokens, passwords, or `.env` files found.
-
-### `dangerouslySetInnerHTML` in island rendering
-
-`src/islands/island.tsx` injects `renderToString` output via `dangerouslySetInnerHTML`. Currently safe because props come from static MDX at build time and `renderToString` escapes React output. The risk is low but the pattern is fragile — if a component ever renders unescaped user content, this becomes an XSS vector.
-
-### `.gitignore` is correct
-
-`node_modules/`, `dist/`, `package-lock.json`, `.DS_Store` are all ignored. No build artifacts committed, no source files excluded.
+All 13 production dependencies are actively imported. Dev dependencies are correctly classified. No hardcoded secrets. `.gitignore` is correct.
 
 ---
 
 ## Summary
 
-| Area | Finding | Severity |
-|------|---------|----------|
-| Types | `PageMeta` fields not fully reflected in layout prop types | Low |
-| Perf | Footnote enhancement requires JavaScript | Low |
-| Tests | No tests for SEO artifacts, client behavior, CSS build, or asset manifest | Medium |
-| Tests | Ghost test files referenced in memories but deleted | Info |
-| Security | `dangerouslySetInnerHTML` in island SSR — safe today, fragile pattern | Low |
+| Area | Change | Status |
+|------|--------|--------|
+| Perf | Eliminate duplicate feed compilation | ✅ Applied |
+| Perf | Parallelize page MDX compilation | ✅ Applied |
+| Perf | Hoist `@mdx-js/mdx` import | ✅ Applied |
+| Perf | Parallelize CSS + JS builds | ✅ Applied |
+| Arch | Centralize directory paths | ✅ Applied |
+| Arch | Extract `writeDistFile()` | ✅ Applied |
+| Arch | Decouple feed from render internals | ✅ Applied |
+| Arch | Consolidate `defaultAssetManifest` | ✅ Applied |
+| Rel | Import guard on `buildAll()` | ✅ Applied |
+| Rel | Per-file error handling in page build | ✅ Applied |
+| Rel | Warn on silently filtered entries | ✅ Applied |
+| Rel | Guard post-build tests | ✅ Applied |
+| Rel | CDATA escaping in feed | ✅ Applied |
+| DX | Build summary output | ✅ Applied |
+| DX | Fix `verify` script ordering | ✅ Applied |
+| DX | Dev server change logging | ✅ Applied |
+| Types | Unused `summary`/`print` fields | Noted |
+| Client | Unused hydration strategies | Noted |
+| Client | Footnote enhancement requires JS | Noted |
+| Tests | Missing SEO artifact tests | Noted |
+| Dead | `page.ts` CLI, `frontmatter.ts` stdin | Noted |
