@@ -6,6 +6,13 @@ import type { RegisterIslandInput } from "../types/islands.ts";
 import { renderLayout } from "./layouts.tsx";
 import { RenderContext } from "./render-context.tsx";
 
+function derivePagePath(sourcePath: string): string {
+    const marker = "/content/";
+    const idx = sourcePath.indexOf(marker);
+    if (idx === -1) return "/";
+    return "/" + sourcePath.slice(idx + marker.length).replace(/\.mdx$/, ".html");
+}
+
 export function renderPage(
     content: BuiltContent,
     writingIndex: WritingIndexEntry[],
@@ -16,11 +23,13 @@ export function renderPage(
         return `${name.toLowerCase()}-${islandCount}`;
     };
 
+    const meta = { ...content.meta, pagePath: derivePagePath(content.sourcePath) };
+
     const body = createElement(content.Content, {
         components: getContentComponents(),
     });
 
-    const page = renderLayout(content.meta, body);
+    const page = renderLayout(meta, body);
 
     return `<!doctype html>\n${renderToStaticMarkup(
         <RenderContext.Provider value={{ writingIndex, registerIsland }}>

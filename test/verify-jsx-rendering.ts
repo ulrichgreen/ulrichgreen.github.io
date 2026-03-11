@@ -22,6 +22,35 @@ async function main() {
     assert(homeHtml.includes("On Constraints"));
     assert(homeHtml.includes('class="page-header__section">home</span>'));
 
+    assert(
+        homeHtml.includes('rel="canonical" href="https://ulrich.green/index.html"'),
+        "Home page should include a canonical URL.",
+    );
+    assert(
+        homeHtml.includes('property="og:title" content="Ulrich Green"'),
+        "Home page should include og:title.",
+    );
+    assert(
+        homeHtml.includes('property="og:type" content="website"'),
+        "Home page should have og:type website.",
+    );
+    assert(
+        homeHtml.includes('name="twitter:card" content="summary"'),
+        "Home page should include twitter:card.",
+    );
+    assert(
+        homeHtml.includes('rel="icon" href="data:image/svg+xml,'),
+        "Home page should include an inline SVG favicon.",
+    );
+    assert(
+        homeHtml.includes('type="speculationrules"'),
+        "Home page should include speculation rules.",
+    );
+    assert(
+        homeHtml.includes('name="view-transition" content="same-origin"'),
+        "Home page should include the view-transition meta tag.",
+    );
+
     const articlePath = new URL(
         "../content/writing/on-tools.mdx",
         import.meta.url,
@@ -37,6 +66,15 @@ async function main() {
     assert(articleHtml.includes("March 1, 2025"));
     assert(articleHtml.includes('data-island="DemoWidget"'));
     assert(articleHtml.includes("Count the cost before you add capability."));
+
+    assert(
+        articleHtml.includes('rel="canonical" href="https://ulrich.green/writing/on-tools.html"'),
+        "Article page should include a canonical URL.",
+    );
+    assert(
+        articleHtml.includes('property="og:type" content="article"'),
+        "Article page should have og:type article.",
+    );
 
     const fallbackDescription = resolveMetaDescription({
         meta: {

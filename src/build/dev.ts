@@ -46,6 +46,8 @@ const wss = new WebSocketServer({ server });
 
 let buildQueued = false;
 let buildRunning = false;
+let debounceTimer: ReturnType<typeof setTimeout> | undefined;
+const DEBOUNCE_MS = 80;
 
 async function runBuild() {
     if (buildRunning) {
@@ -74,8 +76,13 @@ async function runBuild() {
     }
 }
 
+function debouncedBuild() {
+    clearTimeout(debounceTimer);
+    debounceTimer = setTimeout(() => void runBuild(), DEBOUNCE_MS);
+}
+
 chokidar.watch(["content", "src"], { ignoreInitial: true }).on("all", () => {
-    void runBuild();
+    debouncedBuild();
 });
 
 void runBuild();

@@ -4,17 +4,9 @@ What's worth building next, in order of effort and payoff. The top items are sma
 
 ## Quick Wins
 
-Add Speculation Rules — a `<script type="speculationrules">` block in the base template. The browser prerenders internal links on hover. Navigation feels instant. No framework, no JavaScript logic, silent fallback in unsupported browsers.
+Add named view transitions on article titles — the writing index and article page could animate between each other with a `view-transition-name` on the title element. Builds on the cross-document view transitions already in place.
 
-Add View Transitions with a single CSS rule (`@view-transition { navigation: auto; }`) and a meta tag. Cross-document fades without a single line of JS. Respects `prefers-reduced-motion`. Named transitions on article titles would let the writing index and article page animate between each other — the kind of detail that separates a crafted site from a generated one.
-
-Add Open Graph and social meta tags. `site-head.tsx` already has the data in frontmatter. Adding `og:title`, `og:description`, `og:type`, `og:url`, and `twitter:card` makes shared links look deliberate instead of bare.
-
-Add canonical URLs for every page. Needs a site base URL in config or frontmatter defaults. Small change, permanent benefit.
-
-Add a favicon. Even a minimal inline SVG `data:` URI prevents the default 404 and shows intention in the browser tab.
-
-Debounce dev rebuilds further if needed. `dev.ts` now coalesces overlapping builds into a single queued rerun, but a short delay on rapid saves may still reduce unnecessary work.
+Add a `theme-color` meta tag using the background token for each color scheme, so the browser chrome matches the page in both light and dark mode.
 
 ## Next
 

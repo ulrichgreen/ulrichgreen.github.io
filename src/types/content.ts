@@ -13,6 +13,7 @@ export interface PageMeta {
     note?: string;
     summary?: string;
     print?: boolean;
+    pagePath?: string;
 }
 
 export interface FrontmatterPayload {
@@ -45,6 +46,7 @@ export interface BaseLayoutProps {
     title?: string;
     description?: string;
     section?: string;
+    pagePath?: string;
     children?: ReactNode;
 }
 

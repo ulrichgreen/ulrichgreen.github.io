@@ -6,6 +6,7 @@ export default function ArticleLayout({
     title,
     description,
     section,
+    pagePath,
     published,
     revised,
     words,
@@ -13,7 +14,12 @@ export default function ArticleLayout({
     children,
 }: ArticleLayoutProps) {
     return (
-        <BaseLayout title={title} description={description} section={section}>
+        <BaseLayout
+            title={title}
+            description={description}
+            section={section}
+            pagePath={pagePath}
+        >
             <article>
                 <ArticleHeader
                     title={title}
