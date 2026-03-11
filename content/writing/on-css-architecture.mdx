@@ -1,0 +1,98 @@
+---
+title: On CSS Architecture
+description: Good CSS is not the absence of difficulty. It is difficulty that has been absorbed into the system so the author can think about design.
+published: 2025-05-01
+words: 950
+layout: article
+---
+
+The hardest thing about CSS is not the language. The language is small. The hardest thing is that every decision you make is global by default, and the consequences of a bad decision compound silently until the system is too fragile to change.
+
+This is why CSS architecture matters, and why most of it fails. The failure mode is always the same: someone writes a set of conventions, the conventions work for the first few months, and then the team grows or the design shifts and the conventions buckle under weight they were not designed to carry. The problem is almost never the naming scheme. The problem is that the system did not absorb enough of the difficulty up front.
+
+Good CSS architecture is a system of constraints that makes the common case effortless and the uncommon case possible. It does not prevent you from doing anything. It makes the right thing easier to do than the wrong thing. Custom properties are the clearest example of this. A well-designed set of tokens does not just avoid magic numbers. It makes magic numbers feel unnatural, because the named alternative is always closer to hand.
+
+```css
+:root {
+  --color-text: oklch(0.25 0.02 260);
+  --color-text-muted: oklch(0.45 0.02 260);
+  --color-surface: oklch(0.99 0.005 260);
+  --color-border: oklch(0.85 0.01 260);
+  --space-xs: 0.25rem;
+  --space-s: 0.5rem;
+  --space-m: 1rem;
+  --space-l: 2rem;
+  --space-xl: 4rem;
+  --measure: 65ch;
+}
+```
+
+These are not shortcuts. They are decisions. Each one records a choice about the system that no longer needs to be made again. The color scale is a decision about palette. The spacing scale is a decision about rhythm. The measure is a decision about line length. Every time an author reaches for `var(--space-m)` instead of choosing a pixel value, the system is doing its work, absorbing a decision so the author can think about something else.
+
+Cascade layers are the structural equivalent. The cascade has always been CSS's most powerful and most misunderstood feature. Layers make it explicit. Instead of fighting specificity with ever-more-specific selectors, you declare the order of priority once and let the system enforce it.
+
+```css
+@layer reset, base, components, utilities;
+
+@layer reset {
+  *,
+  *::before,
+  *::after {
+    box-sizing: border-box;
+    margin: 0;
+  }
+}
+
+@layer base {
+  body {
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+    color: var(--color-text);
+    background: var(--color-surface);
+  }
+
+  h1, h2, h3 {
+    line-height: 1.2;
+    text-wrap: balance;
+  }
+}
+
+@layer components {
+  .card {
+    padding: var(--space-m);
+    border: 1px solid var(--color-border);
+    border-radius: var(--space-xs);
+  }
+}
+```
+
+The order is declared on the first line: reset styles yield to base styles, base styles yield to components, components yield to utilities. A utility class will always override a component style, not because it is more specific, but because the architecture says so. The specificity wars are over. The system has absorbed them.
+
+I have come to think that the measure of a CSS architecture is how little you have to think about the architecture while using it. If you are constantly reasoning about where a new rule should go, the system is not working. If you are reaching for `!important` or adding a wrapper div to increase specificity, the system has failed. The whole purpose of the architecture is to remove those questions so you can think about the design instead.
+
+Spacing is where this shows most clearly. A consistent spacing system, applied through tokens, produces rhythm without effort. The author does not need to decide whether this gap should be 14 pixels or 16 pixels. The system has already decided. The choice is between small and medium, and both are correct because both are part of the scale.
+
+```css
+.stack > * + * {
+  margin-block-start: var(--space-m);
+}
+
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--space-s);
+  align-items: center;
+}
+
+.grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(min(100%, 30ch), 1fr));
+  gap: var(--space-l);
+}
+```
+
+These are layout primitives. Each one solves a single spatial problem. The stack creates vertical rhythm. The cluster handles inline groups that may wrap. The grid fills available space responsively without a single media query. They compose together, and because they all draw from the same spacing scale, everything they produce is rhythmically consistent.
+
+This is what good CSS architecture buys you. Not the absence of difficulty, but difficulty that has been pre-resolved. The hard decisions about color, spacing, type scale, and cascade order are made once, encoded into the system, and then quietly enforced every time someone writes a new component. The author does not have to be disciplined. The system is disciplined on their behalf.
+
+The goal is not to write less CSS. It is to write CSS where every line is a design decision and none of it is plumbing. The plumbing should already be done.

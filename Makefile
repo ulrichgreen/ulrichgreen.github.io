@@ -24,8 +24,8 @@ SITE_CONTENT := $(CONTENT_PAGES) $(WRITING_PAGES)
 # Default target
 build: dist/style.css dist/site.js dist/islands.js dist/.pages-built
 
-# CSS — process src/style.css through lightningcss
-dist/style.css: src/styles/style.css src/styles/reset.css src/styles/tokens.css src/styles/base.css src/styles/layout.css src/styles/components.css src/styles/utilities.css src/styles/motion.css src/styles/print.css src/build/css.ts
+# CSS — process src/style.css through lightningcss, copy fonts
+dist/style.css: src/styles/style.css src/styles/reset.css src/styles/tokens.css src/styles/base.css src/styles/layout.css src/styles/components.css src/styles/utilities.css src/styles/motion.css src/styles/print.css src/styles/code.css src/build/css.ts src/fonts/JetBrainsMono-Regular.woff2 src/fonts/JetBrainsMono-Bold.woff2 src/fonts/JetBrainsMono-Italic.woff2
 	@mkdir -p dist
 	$(TSX) src/build/css.ts
 

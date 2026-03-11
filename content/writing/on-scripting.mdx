@@ -1,0 +1,96 @@
+---
+title: On Scripting
+description: The best JavaScript is the JavaScript the browser never has to run. The second best is the kind that knows when to stop.
+published: 2025-06-01
+words: 1000
+layout: article
+---
+
+The best JavaScript is the JavaScript the browser never has to run. This is not an argument against JavaScript. It is an argument for knowing where the work belongs. Some work belongs on the server. Some belongs at build time. Some belongs in HTML and CSS, which handle it without any scripting at all. JavaScript is for the remainder, the interactions that genuinely require a running program on the client, and the discipline is in keeping that remainder small.
+
+Progressive enhancement is the name for this discipline, though the name has acquired baggage. People hear it and think of graceful degradation, of fallback content for users with JavaScript disabled. That framing misses the point. Progressive enhancement is not about what happens when JavaScript fails. It is about building on a foundation that works before JavaScript arrives. The HTML is the product. The CSS is the product. The JavaScript makes the product better, but it does not make the product exist.
+
+The simplest form of this is enhancement of existing elements. A disclosure widget does not need a framework. It needs a `details` element and, if you want animation or custom behavior, a small script that enhances what the browser already provides.
+
+```html
+<details class="disclosure">
+  <summary>View the details</summary>
+  <div class="disclosure-body">
+    <p>Content that is revealed on interaction.</p>
+  </div>
+</details>
+```
+
+```typescript
+function enhanceDisclosure(el: HTMLDetailsElement): void {
+  const summary = el.querySelector("summary");
+  const body = el.querySelector(".disclosure-body") as HTMLElement;
+  if (!summary || !body) return;
+
+  summary.addEventListener("click", (e) => {
+    e.preventDefault();
+    const isOpen = el.open;
+
+    if (isOpen) {
+      body.style.height = `${body.scrollHeight}px`;
+      requestAnimationFrame(() => {
+        body.style.height = "0px";
+      });
+      body.addEventListener("transitionend", () => {
+        el.open = false;
+        body.style.height = "";
+      }, { once: true });
+    } else {
+      el.open = true;
+      const fullHeight = body.scrollHeight;
+      body.style.height = "0px";
+      requestAnimationFrame(() => {
+        body.style.height = `${fullHeight}px`;
+      });
+      body.addEventListener("transitionend", () => {
+        body.style.height = "";
+      }, { once: true });
+    }
+  });
+}
+```
+
+Without the script, the disclosure still works. It opens and closes. It is keyboard-accessible. It is announced correctly by screen readers. The script adds animation, a smooth height transition that makes the interaction feel more considered. If the script fails to load, the user loses the animation but keeps the functionality. That is the right trade-off.
+
+This pattern, starting with markup that works and layering behavior on top, scales to more complex interactions. The key is that the script should discover what the HTML already provides rather than constructing the interface from scratch. A framework that renders the entire page in JavaScript has inverted this relationship. The HTML is no longer the product. It is a loading screen.
+
+I have come to think that the most important architectural decision in client-side code is the boundary. Where does the island of interactivity start and stop? What does it own, and what does it leave to the document? The smaller and more explicit that boundary is, the easier the code is to reason about.
+
+```typescript
+interface IslandOptions {
+  root: HTMLElement;
+  hydrate: () => void | Promise<void>;
+}
+
+function createIsland({ root, hydrate }: IslandOptions): void {
+  if (!root || root.dataset.hydrated === "true") return;
+
+  const observer = new IntersectionObserver(
+    (entries) => {
+      for (const entry of entries) {
+        if (entry.isIntersecting) {
+          observer.disconnect();
+          root.dataset.hydrated = "true";
+          hydrate();
+        }
+      }
+    },
+    { rootMargin: "200px" }
+  );
+
+  observer.observe(root);
+}
+```
+
+This is an island loader. It watches for an element to approach the viewport and then hydrates it. The element already exists in the document as static HTML. The hydration adds interactivity, but only when the user is likely to need it, and only once. The `data-hydrated` check prevents double initialization. The `rootMargin` gives the hydration a head start so the user does not see a flash of inert content.
+
+The pattern matters more than the implementation. The pattern is: the document is complete without the script. The script finds specific roots in the document and enhances them. Each enhanced region is small, self-contained, and aware of its boundaries. Nothing outside the island is touched. Nothing inside the island assumes anything about the rest of the page.
+
+This is the opposite of how most modern JavaScript is written. The dominant model is: JavaScript owns the page, renders it, manages its state, and controls its lifecycle from mount to unmount. That model works. It is well-tooled, well-documented, and productive. But it purchases its productivity by moving the entire page into the scripting layer, which means the page does not exist until the script runs. That is a cost, and it is a cost paid by every user on every visit, whether the page needed that level of interactivity or not.
+
+The discipline is in asking, for each feature, whether it needs to be in the scripting layer at all. The disclosure widget did not. A static article page does not. A date formatter might. A collaborative editor certainly does. The answer varies, but the question should always be asked, because the default should be less code, not more. Every byte of JavaScript you send is a byte the user's device must parse, compile, and execute. The least you can do is make sure it is worth the cost.

@@ -19,7 +19,7 @@
         --c-accent: #2a3f5f;
         --ff-body: ui-serif, "New York", "Iowan Old Style", Georgia, serif;
         --ff-ui: system-ui, -apple-system, "Segoe UI", sans-serif;
-        --ff-mono: ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
+        --ff-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
         --space-1: calc(1 * var(--u));
         --space-2: calc(2 * var(--u));
         --space-3: calc(3 * var(--u));

@@ -1,5 +1,6 @@
 import { pathToFileURL } from "node:url";
 import * as runtime from "react/jsx-runtime";
+import rehypePrettyCode from "rehype-pretty-code";
 import type { ContentBodyComponent } from "../types/content.ts";
 
 const MDX_ESM_PATTERN = /^\s*(import|export)\s/m;
@@ -26,6 +27,9 @@ export async function compileMdx(
             ...runtime,
             baseUrl: pathToFileURL(filePath),
             development: false,
+            rehypePlugins: [
+                [rehypePrettyCode, { theme: "github-dark", keepBackground: true }],
+            ],
         },
     )) as {
         default: ContentBodyComponent;

@@ -1,0 +1,68 @@
+---
+title: On Markup
+description: HTML is not a formality the browser tolerates on the way to running your JavaScript. It is the material the web is made of.
+published: 2025-04-01
+words: 900
+layout: article
+---
+
+HTML is not a formality. It is the material the web is made of, the way wood is the material a cabinet is made of. You can paint over bad joinery, but the cabinet will not hold. You can style over bad markup, but the page will not hold either. Not when someone navigates it with a keyboard. Not when a search engine tries to understand it. Not when a screen reader tries to make it legible.
+
+The problem is that HTML is forgiving. The browser will render almost anything. Missing closing tags, divs nested seven layers deep, a form with no labels. It all renders. This forgiveness is a gift to beginners and a trap for professionals, because it means you can write markup for years without ever learning whether you are writing it well.
+
+Good markup is not about following rules for their own sake. It is about communicating structure. A heading is not a visual style. It is a declaration that this text introduces the content that follows. A list is not a layout trick. It is a statement that these items are peers. When the markup reflects the actual structure of the content, the page becomes legible to every system that encounters it, not just the one rendering pixels on a screen.
+
+I notice the difference most clearly in navigation. A nav element with a list of links is not merely a convention. It tells assistive technology that this region is a navigation landmark, and the list tells it how many choices there are. That information is invisible to someone reading the page visually, but it is the difference between a usable interface and a wall of undifferentiated links for someone who is not.
+
+```html
+<nav aria-label="Main">
+  <ul role="list">
+    <li><a href="/" aria-current="page">Home</a></li>
+    <li><a href="/writing">Writing</a></li>
+    <li><a href="/projects">Projects</a></li>
+  </ul>
+</nav>
+```
+
+The `aria-label` distinguishes this navigation from others on the page. The `aria-current` attribute tells a screen reader which link represents the current page. These are small additions. They cost almost nothing to write. But they encode information that no amount of CSS or JavaScript can recover after the fact, because they describe meaning, not appearance.
+
+The same principle applies to document structure. An article is not a div with a class name. It is a self-contained composition. A header groups introductory content. A time element makes a date machine-readable. These distinctions feel pedantic until you encounter a system that depends on them, and then they feel essential.
+
+```html
+<article>
+  <header>
+    <h1>On Markup</h1>
+    <time datetime="2025-04-01">April 2025</time>
+  </header>
+  <p>HTML is not a formality. It is the material the web is made of.</p>
+  <footer>
+    <p>Filed under <a href="/topics/craft" rel="tag">craft</a>.</p>
+  </footer>
+</article>
+```
+
+This is more markup than a div with some spans inside it. It is also more meaningful. Every element carries semantic weight that downstream systems can use. The browser uses it for accessibility. Search engines use it for understanding. Reader modes use it to extract the article from the surrounding page. None of that works if the structure is a flat pile of divs.
+
+Forms are where this matters most acutely, because forms are where users transmit information back. A form without proper labels is not just inaccessible. It is hostile. It asks the user to guess what each field is for, and it gives assistive technology nothing to work with.
+
+```html
+<form action="/subscribe" method="post">
+  <div>
+    <label for="email">Email address</label>
+    <input
+      id="email"
+      name="email"
+      type="email"
+      autocomplete="email"
+      required
+    />
+  </div>
+  <button type="submit">Subscribe</button>
+</form>
+```
+
+The `for` and `id` pairing connects the label to the input explicitly. The `type="email"` triggers the right keyboard on mobile devices. The `autocomplete` attribute lets the browser fill in saved data. The `required` attribute provides validation without JavaScript. Every one of these attributes is doing real work. None of them affect how the form looks.
+
+This is the deeper point about markup. The best HTML is the kind that does real work invisibly. It provides structure to machines, affordances to users, and resilience to the page. It is the foundation that CSS styles and JavaScript enhances. When the foundation is right, everything built on top of it gets easier. When the foundation is wrong, every layer above it is compensating.
+
+Write the markup first. Write it as though there will be no CSS and no JavaScript, because for some of your users, on some of their devices, in some of their circumstances, there will not be. The page that works in that condition is the page that works in every condition. Everything else is decoration.
