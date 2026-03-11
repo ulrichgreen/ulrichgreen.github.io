@@ -10,7 +10,7 @@
         "check-links": "pnpm exec tsx test/verify-links.ts",
         "test": "pnpm exec tsx test/verify-jsx-rendering.ts && pnpm exec tsx test/verify-accessibility.ts",
         "typecheck": "tsc --noEmit",
-        "verify": "pnpm run typecheck && pnpm run test && pnpm run build && pnpm run check-links",
+        "verify": "pnpm run typecheck && pnpm run test && pnpm run build && pnpm run check-links && pnpm exec tsx test/verify-feed.ts",
         "watch": "pnpm run dev"
     },
     "keywords": [],

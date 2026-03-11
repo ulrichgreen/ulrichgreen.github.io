@@ -35,6 +35,10 @@ async function main() {
         "Home page should have og:type website.",
     );
     assert(
+        homeHtml.includes('property="og:image" content="https://ulrich.green/og-image.svg"'),
+        "Home page should include og:image.",
+    );
+    assert(
         homeHtml.includes('name="twitter:card" content="summary"'),
         "Home page should include twitter:card.",
     );

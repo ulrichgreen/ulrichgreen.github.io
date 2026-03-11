@@ -1,4 +1,5 @@
 const SITE_URL = "https://ulrich.green";
+const OG_IMAGE_URL = `${SITE_URL}/og-image.svg`;
 const LIGHT_THEME_COLOR = "#f8f7f5";
 const DARK_THEME_COLOR = "#1a1917";
 
@@ -52,6 +53,9 @@ export function SiteHead({
             {canonicalUrl && (
                 <meta property="og:url" content={canonicalUrl} />
             )}
+            <meta property="og:image" content={OG_IMAGE_URL} />
+            <meta property="og:image:width" content="1200" />
+            <meta property="og:image:height" content="630" />
             <meta name="twitter:card" content="summary" />
             <meta
                 name="view-transition"
