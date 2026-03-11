@@ -4,9 +4,10 @@ import http from "node:http";
 import { extname, join } from "node:path";
 import { WebSocketServer } from "ws";
 import { buildAll } from "./build.ts";
+import { distDirectory } from "./paths.ts";
 
 const PORT = 3000;
-const DIST = new URL("../../dist", import.meta.url).pathname;
+const DIST = distDirectory;
 const MIME: Record<string, string> = {
     ".html": "text/html",
     ".css": "text/css",

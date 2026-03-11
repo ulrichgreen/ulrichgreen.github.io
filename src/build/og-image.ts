@@ -1,8 +1,4 @@
-import { mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
-import { fileURLToPath } from "node:url";
-
-const distDirectory = fileURLToPath(new URL("../../dist", import.meta.url));
+import { writeDistFile } from "./dist-fs.ts";
 
 const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
   <rect width="1200" height="630" fill="#1a1917"/>
@@ -12,6 +8,5 @@ const svg = `<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" v
 </svg>`;
 
 export function buildOgImage(): void {
-    mkdirSync(distDirectory, { recursive: true });
-    writeFileSync(join(distDirectory, "og-image.svg"), svg);
+    writeDistFile("og-image.svg", svg);
 }

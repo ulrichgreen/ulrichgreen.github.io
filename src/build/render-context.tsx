@@ -3,7 +3,7 @@ import type { AssetManifest } from "./asset-manifest.ts";
 import type { WritingIndexEntry } from "../types/content.ts";
 import type { RegisterIslandInput } from "../types/islands.ts";
 
-const defaultAssetManifest: AssetManifest = {
+export const defaultAssetManifest: AssetManifest = {
     "style.css": "style.css",
     "site.js": "site.js",
     "islands.js": "islands.js",

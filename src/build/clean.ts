@@ -1,8 +1,9 @@
 import { rmSync } from "node:fs";
 import { fileURLToPath } from "node:url";
+import { distDirectory } from "./paths.ts";
 
 export function cleanDist(): void {
-    rmSync(new URL("../../dist", import.meta.url), {
+    rmSync(distDirectory, {
         force: true,
         recursive: true,
     });

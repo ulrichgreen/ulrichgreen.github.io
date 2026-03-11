@@ -1,9 +1,7 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, renameSync } from "node:fs";
 import { join } from "node:path";
-import { fileURLToPath } from "node:url";
-
-const distDirectory = fileURLToPath(new URL("../../dist", import.meta.url));
+import { distDirectory } from "./paths.ts";
 
 export interface AssetManifest {
     "style.css": string;

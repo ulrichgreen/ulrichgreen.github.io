@@ -1,8 +1,5 @@
-import { mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
-import { fileURLToPath } from "node:url";
 import { SITE_URL } from "../config.ts";
-const distDirectory = fileURLToPath(new URL("../../dist", import.meta.url));
+import { writeDistFile } from "./dist-fs.ts";
 
 export function buildRobots(): void {
     const content = [
@@ -13,6 +10,5 @@ export function buildRobots(): void {
         "",
     ].join("\n");
 
-    mkdirSync(distDirectory, { recursive: true });
-    writeFileSync(join(distDirectory, "robots.txt"), content);
+    writeDistFile("robots.txt", content);
 }

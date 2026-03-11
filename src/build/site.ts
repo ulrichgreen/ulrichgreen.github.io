@@ -10,13 +10,8 @@ import { buildOgImage } from "./og-image.ts";
 import { buildRobots } from "./robots.ts";
 import { buildSitemap } from "./sitemap.ts";
 import { listWritingEntries } from "./writing-index.ts";
+import { contentDirectory, distDirectory, writingDirectory } from "./paths.ts";
 import type { BuiltContent } from "../types/content.ts";
-
-const contentDirectory = fileURLToPath(
-    new URL("../../content", import.meta.url),
-);
-const distDirectory = fileURLToPath(new URL("../../dist", import.meta.url));
-const writingDirectory = join(contentDirectory, "writing");
 
 function listSourceFiles(): string[] {
     const topLevelPages = readdirSync(contentDirectory)

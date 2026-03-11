@@ -1,13 +1,7 @@
-import { mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
-import { fileURLToPath } from "node:url";
-import { createElement } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
-import { RenderContext } from "./render-context.tsx";
-import { getContentComponents } from "../content-components.tsx";
 import type { BuiltContent, WritingIndexEntry } from "../types/content.ts";
 import { SITE_URL } from "../config.ts";
-const distDirectory = fileURLToPath(new URL("../../dist", import.meta.url));
+import { writeDistFile } from "./dist-fs.ts";
+import { renderContentBody } from "./render-react-page.tsx";
 
 function toISOTimestamp(value: string): string {
     const date = new Date(value);
@@ -47,22 +41,7 @@ export async function buildFeed(
         const content = contentBySlug.get(entry.slug);
         if (!content) continue;
 
-        const bodyElement = createElement(content.Content, {
-            components: getContentComponents(),
-        });
-        const contextValue = {
-            writingIndex,
-            registerIsland: ({ name }: { name: string }) => `${name.toLowerCase()}-feed`,
-            assetManifest: {
-                "style.css": "style.css",
-                "site.js": "site.js",
-                "islands.js": "islands.js",
-            } as const,
-            hasIslands: () => false as boolean,
-        };
-        const bodyHtml = renderToStaticMarkup(
-            createElement(RenderContext.Provider, { value: contextValue }, bodyElement),
-        );
+        const bodyHtml = renderContentBody(content, writingIndex);
 
         const published = toISOTimestamp(entry.published);
         const updated = toISOTimestamp(entry.revised || entry.published);
@@ -101,6 +80,5 @@ export async function buildFeed(
         "",
     ].join("\n");
 
-    mkdirSync(distDirectory, { recursive: true });
-    writeFileSync(join(distDirectory, "feed.xml"), xml);
+    writeDistFile("feed.xml", xml);
 }
