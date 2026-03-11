@@ -1,3 +1,4 @@
+import { useRenderContext } from "../build/render-context.tsx";
 import { PageHeader } from "../components/page-header.tsx";
 import { SiteHead } from "../components/site-head.tsx";
 import type { BaseLayoutProps } from "../types/content.ts";
@@ -15,6 +16,8 @@ export default function BaseLayout({
     revised,
     children,
 }: BaseLayoutProps) {
+    const { assetManifest } = useRenderContext();
+
     return (
         <html lang="en">
             <SiteHead
@@ -23,6 +26,7 @@ export default function BaseLayout({
                 pagePath={pagePath}
                 published={published}
                 revised={revised}
+                cssHref={`/${assetManifest["style.css"]}`}
             />
             <body>
                 <a className="skip-link" href="#main-content">
@@ -32,8 +36,8 @@ export default function BaseLayout({
                 <main id="main-content" className="page">
                     {children}
                 </main>
-                <script src="/site.js" defer></script>
-                <script src="/islands.js" defer></script>
+                <script src={`/${assetManifest["site.js"]}`} defer></script>
+                <script src={`/${assetManifest["islands.js"]}`} defer></script>
                 <script
                     type="speculationrules"
                     dangerouslySetInnerHTML={{ __html: speculationRules }}

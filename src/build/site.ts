@@ -1,6 +1,7 @@
 import { mkdirSync, readdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join, relative } from "node:path";
 import { fileURLToPath } from "node:url";
+import type { AssetManifest } from "./asset-manifest.ts";
 import { buildContent } from "./build-content.ts";
 import { buildFeed } from "./feed.ts";
 import { renderPage } from "./render-react-page.tsx";
@@ -43,7 +44,7 @@ function cleanGeneratedPages() {
     rmSync(join(distDirectory, "writing"), { recursive: true, force: true });
 }
 
-export async function buildSite(): Promise<void> {
+export async function buildSite(assetManifest?: AssetManifest): Promise<void> {
     const writingIndex = listWritingEntries(writingDirectory);
     cleanGeneratedPages();
 
@@ -52,7 +53,7 @@ export async function buildSite(): Promise<void> {
         const outputPath = resolveOutputPath(sourcePath);
 
         mkdirSync(dirname(outputPath), { recursive: true });
-        writeFileSync(outputPath, renderPage(page, writingIndex));
+        writeFileSync(outputPath, renderPage(page, writingIndex, assetManifest));
     }
 
     buildSitemap(contentDirectory, writingIndex);

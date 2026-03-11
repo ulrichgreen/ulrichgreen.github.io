@@ -48,6 +48,11 @@ export async function buildFeed(
         const contextValue = {
             writingIndex,
             registerIsland: ({ name }: { name: string }) => `${name.toLowerCase()}-feed`,
+            assetManifest: {
+                "style.css": "style.css",
+                "site.js": "site.js",
+                "islands.js": "islands.js",
+            } as const,
         };
         const bodyHtml = renderToStaticMarkup(
             createElement(RenderContext.Provider, { value: contextValue }, bodyElement),

@@ -3,8 +3,15 @@ import { renderToStaticMarkup } from "react-dom/server";
 import { getContentComponents } from "../content-components.tsx";
 import type { BuiltContent, WritingIndexEntry } from "../types/content.ts";
 import type { RegisterIslandInput } from "../types/islands.ts";
+import type { AssetManifest } from "./asset-manifest.ts";
 import { renderLayout } from "./layouts.tsx";
 import { RenderContext } from "./render-context.tsx";
+
+const defaultManifest: AssetManifest = {
+    "style.css": "style.css",
+    "site.js": "site.js",
+    "islands.js": "islands.js",
+};
 
 function derivePagePath(sourcePath: string): string {
     const marker = "/content/";
@@ -16,6 +23,7 @@ function derivePagePath(sourcePath: string): string {
 export function renderPage(
     content: BuiltContent,
     writingIndex: WritingIndexEntry[],
+    assetManifest: AssetManifest = defaultManifest,
 ): string {
     let islandCount = 0;
     const registerIsland = ({ name }: RegisterIslandInput): string => {
@@ -32,7 +40,7 @@ export function renderPage(
     const page = renderLayout(meta, body);
 
     return `<!doctype html>\n${renderToStaticMarkup(
-        <RenderContext.Provider value={{ writingIndex, registerIsland }}>
+        <RenderContext.Provider value={{ writingIndex, registerIsland, assetManifest }}>
             {page}
         </RenderContext.Provider>,
     )}`;

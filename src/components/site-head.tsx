@@ -14,12 +14,14 @@ export function SiteHead({
     pagePath,
     published,
     revised,
+    cssHref,
 }: {
     title?: string;
     description?: string;
     pagePath?: string;
     published?: string;
     revised?: string;
+    cssHref?: string;
 }) {
     const canonicalUrl = pagePath ? `${SITE_URL}${pagePath}` : undefined;
     const ogType = pagePath?.startsWith("/writing/") ? "article" : "website";
@@ -66,7 +68,7 @@ export function SiteHead({
                 type="font/woff2"
                 crossOrigin="anonymous"
             />
-            <link rel="stylesheet" href="/style.css" />
+            <link rel="stylesheet" href={cssHref || "/style.css"} />
             <link rel="alternate" type="application/atom+xml" title="Ulrich Green" href="/feed.xml" />
             {pagePath?.startsWith("/writing/") && (
                 <script
