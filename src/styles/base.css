@@ -64,6 +64,27 @@
         margin-block-end: var(--space-1);
     }
 
+    h2 > a[aria-hidden="true"],
+    h3 > a[aria-hidden="true"] {
+        text-decoration: none;
+        color: var(--c-muted);
+        opacity: 0;
+        margin-inline-start: 0.25em;
+        transition: opacity 0.2s var(--ease-out);
+    }
+
+    h2 > a[aria-hidden="true"] .icon-link::before,
+    h3 > a[aria-hidden="true"] .icon-link::before {
+        content: "#";
+    }
+
+    h2:hover > a[aria-hidden="true"],
+    h3:hover > a[aria-hidden="true"],
+    h2 > a[aria-hidden="true"]:focus-visible,
+    h3 > a[aria-hidden="true"]:focus-visible {
+        opacity: 1;
+    }
+
     p {
         font-size: var(--t-base);
         line-height: var(--lh-4u);

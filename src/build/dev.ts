@@ -11,6 +11,17 @@ const MIME: Record<string, string> = {
     ".html": "text/html",
     ".css": "text/css",
     ".js": "application/javascript",
+    ".json": "application/json",
+    ".xml": "application/xml",
+    ".svg": "image/svg+xml",
+    ".png": "image/png",
+    ".jpg": "image/jpeg",
+    ".jpeg": "image/jpeg",
+    ".webp": "image/webp",
+    ".avif": "image/avif",
+    ".woff2": "font/woff2",
+    ".woff": "font/woff",
+    ".txt": "text/plain",
 };
 const INJECT =
     "<script>new WebSocket(`ws://${location.host}`).onmessage=()=>location.reload()</script>";

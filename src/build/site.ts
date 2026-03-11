@@ -5,6 +5,9 @@ import type { AssetManifest } from "./asset-manifest.ts";
 import { buildContent } from "./build-content.ts";
 import { buildFeed } from "./feed.ts";
 import { renderPage } from "./render-react-page.tsx";
+import { buildHeaders } from "./headers.ts";
+import { buildOgImage } from "./og-image.ts";
+import { buildRobots } from "./robots.ts";
 import { buildSitemap } from "./sitemap.ts";
 import { listWritingEntries } from "./writing-index.ts";
 
@@ -57,6 +60,9 @@ export async function buildSite(assetManifest?: AssetManifest): Promise<void> {
     }
 
     buildSitemap(contentDirectory, writingIndex);
+    buildRobots();
+    buildHeaders();
+    buildOgImage();
     await buildFeed(writingDirectory, writingIndex);
 }
 
