@@ -10,7 +10,7 @@ const destination = new URL("../../dist/style.css", import.meta.url).pathname;
 const fontsDir = new URL("../fonts", import.meta.url).pathname;
 const distFontsDir = join(distDir, "fonts");
 
-export function buildCss(): void {
+export async function buildCss(): Promise<void> {
     mkdirSync(distDir, { recursive: true });
     mkdirSync(distFontsDir, { recursive: true });
 

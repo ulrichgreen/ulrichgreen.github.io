@@ -4,8 +4,7 @@ import { buildCss } from "./css.ts";
 import { buildSite } from "./site.ts";
 
 export async function buildAll(): Promise<void> {
-    await buildCss();
-    await buildClient();
+    await Promise.all([buildCss(), buildClient()]);
     const manifest = generateAssetManifest();
     await buildSite(manifest);
     applyHashedFilenames(manifest);

@@ -16,13 +16,15 @@ function assertSupportedMdx(body: string, filePath: string) {
     }
 }
 
+const mdxImport = import("@mdx-js/mdx");
+
 export async function compileMdx(
     body: string,
     filePath: string,
 ): Promise<ContentBodyComponent> {
     assertSupportedMdx(body, filePath);
 
-    const { evaluate } = await import("@mdx-js/mdx");
+    const { evaluate } = await mdxImport;
 
     const module = (await evaluate(
         { value: body, path: filePath },

@@ -10,6 +10,7 @@ import { buildOgImage } from "./og-image.ts";
 import { buildRobots } from "./robots.ts";
 import { buildSitemap } from "./sitemap.ts";
 import { listWritingEntries } from "./writing-index.ts";
+import type { BuiltContent } from "../types/content.ts";
 
 const contentDirectory = fileURLToPath(
     new URL("../../content", import.meta.url),
@@ -51,19 +52,29 @@ export async function buildSite(assetManifest?: AssetManifest): Promise<void> {
     const writingIndex = listWritingEntries(writingDirectory);
     cleanGeneratedPages();
 
-    for (const sourcePath of listSourceFiles()) {
-        const page = await buildContent(sourcePath);
-        const outputPath = resolveOutputPath(sourcePath);
+    const sourceFiles = listSourceFiles();
+    const pages = await Promise.all(
+        sourceFiles.map((sourcePath) => buildContent(sourcePath)),
+    );
+
+    const compiledWriting: BuiltContent[] = [];
+    for (let i = 0; i < sourceFiles.length; i++) {
+        const page = pages[i];
+        const outputPath = resolveOutputPath(sourceFiles[i]);
 
         mkdirSync(dirname(outputPath), { recursive: true });
         writeFileSync(outputPath, renderPage(page, writingIndex, assetManifest));
+
+        if (sourceFiles[i].includes("/writing/")) {
+            compiledWriting.push(page);
+        }
     }
 
     buildSitemap(contentDirectory, writingIndex);
     buildRobots();
     buildHeaders();
     buildOgImage();
-    await buildFeed(writingDirectory, writingIndex);
+    await buildFeed(writingIndex, compiledWriting);
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

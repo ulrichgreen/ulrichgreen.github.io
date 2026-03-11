@@ -3,10 +3,9 @@ import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
-import { buildContent } from "./build-content.ts";
 import { RenderContext } from "./render-context.tsx";
 import { getContentComponents } from "../content-components.tsx";
-import type { WritingIndexEntry } from "../types/content.ts";
+import type { BuiltContent, WritingIndexEntry } from "../types/content.ts";
 import { SITE_URL } from "../config.ts";
 const distDirectory = fileURLToPath(new URL("../../dist", import.meta.url));
 
@@ -26,8 +25,8 @@ function escapeXml(text: string): string {
 }
 
 export async function buildFeed(
-    writingDir: string,
     writingIndex: WritingIndexEntry[],
+    compiledWriting: BuiltContent[],
 ): Promise<void> {
     const latestDate =
         writingIndex.length > 0
@@ -36,11 +35,18 @@ export async function buildFeed(
               )
             : new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
 
+    const contentBySlug = new Map<string, BuiltContent>();
+    for (const content of compiledWriting) {
+        const slug = content.sourcePath.split("/").pop()?.replace(/\.mdx$/, "") ?? "";
+        contentBySlug.set(slug, content);
+    }
+
     const entries: string[] = [];
 
     for (const entry of writingIndex) {
-        const sourcePath = join(writingDir, `${entry.slug}.mdx`);
-        const content = await buildContent(sourcePath);
+        const content = contentBySlug.get(entry.slug);
+        if (!content) continue;
+
         const bodyElement = createElement(content.Content, {
             components: getContentComponents(),
         });
