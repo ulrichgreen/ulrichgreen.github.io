@@ -10,6 +10,14 @@ Add `Cache-Control: immutable` headers for content-hashed assets. The hashed fil
 
 Add `woff2` MIME type to the dev server. `dev.ts` currently maps only `.html`, `.css`, and `.js`; font and XML requests fall back to `text/plain`.
 
+Generate a `robots.txt` at build time pointing to `sitemap.xml`. Trivial complement to the sitemap, helps crawlers find it without a search-console submission.
+
+Remove the manual `words` field from article frontmatter. Reading time is now computed automatically from the MDX body at build time; the six articles still carry a hand-written `words` value that the build overrides. Clean up the redundancy.
+
+Add `og:image` meta tags. A default sharing image (or per-article generated card) would improve link previews on social platforms. The `site-head.tsx` component already emits `og:title` and `og:description`; `og:image` is the remaining gap.
+
+Validate the Atom feed as a post-build check. Ensure `feed.xml` is well-formed XML with the required Atom elements (`<feed>`, `<title>`, `<id>`, `<updated>`, `<entry>`). Catches structural regressions before they reach readers.
+
 ## Later
 
 Year-based archives for the writing — once there's enough to group.
