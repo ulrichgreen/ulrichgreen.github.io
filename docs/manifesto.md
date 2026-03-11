@@ -38,6 +38,8 @@ The progressive enhancement layer owns document-level behavior. Islands own thei
 
 CSS is handwritten, layered, and designed on purpose. No framework. No utility classes. The design system is the CSS.
 
+Code deserves special treatment. Fenced code blocks are syntax-highlighted at build time with shiki — no client-side runtime cost. The monospace font is JetBrains Mono, locally hosted and preloaded, because code on this site is a first-class material, not an afterthought.
+
 Tests verify the rendering and accessibility paths that matter most. If implementation drifts, the build fails. That's the point.
 
 ## What Success Looks Like
