@@ -7,6 +7,12 @@ const speculationRules = JSON.stringify({
     prerender: [{ where: { href_matches: "/*" }, eagerness: "moderate" }],
 });
 
+function IslandsScript() {
+    const { hasIslands, assetManifest } = useRenderContext();
+    if (!hasIslands()) return null;
+    return <script src={`/${assetManifest["islands.js"]}`} defer />;
+}
+
 export default function BaseLayout({
     title,
     description,
@@ -37,7 +43,7 @@ export default function BaseLayout({
                     {children}
                 </main>
                 <script src={`/${assetManifest["site.js"]}`} defer></script>
-                <script src={`/${assetManifest["islands.js"]}`} defer></script>
+                <IslandsScript />
                 <script
                     type="speculationrules"
                     dangerouslySetInnerHTML={{ __html: speculationRules }}

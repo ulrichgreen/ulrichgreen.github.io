@@ -52,6 +52,7 @@ export async function buildFeed(
                 "site.js": "site.js",
                 "islands.js": "islands.js",
             } as const,
+            hasIslands: () => false as boolean,
         };
         const bodyHtml = renderToStaticMarkup(
             createElement(RenderContext.Provider, { value: contextValue }, bodyElement),

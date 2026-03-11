@@ -13,6 +13,7 @@ export interface RenderContextValue {
     writingIndex: WritingIndexEntry[];
     registerIsland: (entry: RegisterIslandInput) => string;
     assetManifest: AssetManifest;
+    hasIslands: () => boolean;
 }
 
 function missingContext(): never {
@@ -23,6 +24,7 @@ export const RenderContext = createContext<RenderContextValue>({
     writingIndex: [],
     registerIsland: missingContext,
     assetManifest: defaultAssetManifest,
+    hasIslands: () => false,
 });
 
 export function useRenderContext(): RenderContextValue {

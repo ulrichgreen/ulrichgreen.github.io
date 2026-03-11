@@ -17,7 +17,7 @@ async function main() {
 
     assert(homeHtml.includes("<title>Ulrich Green</title>"));
     assert(homeHtml.includes('src="/site.js"'));
-    assert(homeHtml.includes('src="/islands.js"'));
+    assert(!homeHtml.includes('src="/islands.js"'), "Home page should not include islands.js (no islands present).");
     assert(homeHtml.includes('<ul class="writing-list">'));
     assert(homeHtml.includes("On Constraints"));
     assert(homeHtml.includes('class="page-header__section">home</span>'));
@@ -91,6 +91,7 @@ async function main() {
         "Article title should have a named view transition.",
     );
     assert(articleHtml.includes("March 1, 2025"));
+    assert(articleHtml.includes('src="/islands.js"'), "Article page with islands should include islands.js.");
     assert(articleHtml.includes('data-island="DemoWidget"'));
     assert(articleHtml.includes("Count the cost before you add capability."));
 
