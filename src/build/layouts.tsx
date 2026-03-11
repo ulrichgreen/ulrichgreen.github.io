@@ -14,6 +14,7 @@ const layoutRegistry = {
             title={meta.title}
             description={meta.description}
             section={meta.section}
+            pagePath={meta.pagePath}
         >
             {children}
         </BaseLayout>
