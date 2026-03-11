@@ -1,6 +1,9 @@
 import { pathToFileURL } from "node:url";
 import * as runtime from "react/jsx-runtime";
+import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
+import rehypeSlug from "rehype-slug";
+import remarkGfm from "remark-gfm";
 import type { ContentBodyComponent } from "../types/content.ts";
 
 const MDX_ESM_PATTERN = /^\s*(import|export)\s/m;
@@ -27,8 +30,11 @@ export async function compileMdx(
             ...runtime,
             baseUrl: pathToFileURL(filePath),
             development: false,
+            remarkPlugins: [remarkGfm],
             rehypePlugins: [
+                rehypeSlug,
                 [rehypePrettyCode, { theme: "github-dark", keepBackground: true }],
+                [rehypeAutolinkHeadings, { behavior: "append" }],
             ],
         },
     )) as {
