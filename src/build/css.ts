@@ -1,5 +1,6 @@
 import { bundle } from "lightningcss";
 import { copyFileSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
+import { BROWSER_TARGETS } from "../config.ts";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -17,9 +18,9 @@ export function buildCss(): void {
         filename: source,
         minify: true,
         targets: {
-            chrome: 120 << 16,
-            firefox: 121 << 16,
-            safari: 17 << 16,
+            chrome: BROWSER_TARGETS.chrome << 16,
+            firefox: BROWSER_TARGETS.firefox << 16,
+            safari: BROWSER_TARGETS.safari << 16,
         },
     });
 

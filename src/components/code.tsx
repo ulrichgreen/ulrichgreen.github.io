@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
 
 interface CodeProps {
-    children: ReactNode;
+    children?: ReactNode;
     language?: string;
     title?: string;
 }

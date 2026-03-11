@@ -1,5 +1,5 @@
 import { createHash } from "node:crypto";
-import { readFileSync, renameSync } from "node:fs";
+import { existsSync, readFileSync, renameSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -12,6 +12,9 @@ export interface AssetManifest {
 }
 
 function contentHash(filePath: string): string {
+    if (!existsSync(filePath)) {
+        throw new Error(`Asset not found: ${filePath}. Was the upstream build step skipped?`);
+    }
     const content = readFileSync(filePath);
     return createHash("sha256").update(content).digest("hex").slice(0, 8);
 }
@@ -26,6 +29,10 @@ export function generateAssetManifest(): AssetManifest {
 
 export function applyHashedFilenames(manifest: AssetManifest): void {
     for (const [original, hashed] of Object.entries(manifest)) {
-        renameSync(join(distDirectory, original), join(distDirectory, hashed));
+        const originalPath = join(distDirectory, original);
+        if (!existsSync(originalPath)) {
+            throw new Error(`Cannot rename missing asset: ${originalPath}`);
+        }
+        renameSync(originalPath, join(distDirectory, hashed));
     }
 }

@@ -4,7 +4,7 @@ import { buildCss } from "./css.ts";
 import { buildSite } from "./site.ts";
 
 export async function buildAll(): Promise<void> {
-    buildCss();
+    await buildCss();
     await buildClient();
     const manifest = generateAssetManifest();
     await buildSite(manifest);

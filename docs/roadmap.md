@@ -22,7 +22,7 @@ Tighten frontmatter types further. The build already validates frontmatter with 
 
 Inline critical CSS — inline above-the-fold styles in `<head>`, async-load the rest. Worth doing once the design settles.
 
-Add build caching — a manifest of file hashes and frontmatter to skip unchanged pages on incremental rebuilds.
+Add build caching — asset hashing is in place; the next step is skipping unchanged pages on incremental rebuilds.
 
 Parallelize page rendering inside the TypeScript build entry. The site build now runs in one process; the next speed win would be parallel work in `site.ts` rather than shell-level target fanout.
 
@@ -33,8 +33,6 @@ Performance budgets for HTML, CSS, JS, and fonts as the site grows.
 Whether the fixed page header and margin-note behavior still earns its place or becomes a distraction.
 
 Whether these docs stay in step with the implementation. (The tests enforce this, but attention still matters.)
-
-Whether CSS `@layer` would clean up the cascade. Migration would be mechanical and every target browser supports it.
 
 Whether container queries become useful as the number of islands grows.
 

@@ -1,6 +1,5 @@
 @layer tokens {
     :root {
-        --unit: 8px;
         --u: 8px;
         --lh-3u: 24px;
         --lh-4u: 32px;

@@ -2,8 +2,7 @@ import { mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
 import type { WritingIndexEntry } from "../types/content.ts";
-
-const SITE_URL = "https://ulrich.green";
+import { SITE_URL } from "../config.ts";
 const distDirectory = fileURLToPath(new URL("../../dist", import.meta.url));
 
 function toISODate(value: string): string {

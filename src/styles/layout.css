@@ -11,14 +11,6 @@
         grid-column: 2;
     }
 
-    .page > .full-bleed {
-        grid-column: 1 / -1;
-    }
-
-    .page > .margin-bleed {
-        grid-column: 2 / -1;
-    }
-
     article {
         grid-column: 2;
         padding-block: var(--space-8);

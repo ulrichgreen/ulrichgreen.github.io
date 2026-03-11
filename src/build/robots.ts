@@ -1,8 +1,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-
-const SITE_URL = "https://ulrich.green";
+import { SITE_URL } from "../config.ts";
 const distDirectory = fileURLToPath(new URL("../../dist", import.meta.url));
 
 export function buildRobots(): void {

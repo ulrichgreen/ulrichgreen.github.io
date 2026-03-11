@@ -67,11 +67,6 @@
         color: var(--c-muted);
     }
 
-    .cv-entry {
-        page-break-inside: avoid;
-        border-block-end: 0.5pt solid #ccc;
-    }
-
     pre,
     blockquote {
         page-break-inside: avoid;
@@ -86,7 +81,6 @@
         padding-block: 0;
     }
 
-    .tag,
     .fn-ref {
         color: inherit;
         border-color: #ccc;

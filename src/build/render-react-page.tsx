@@ -40,7 +40,7 @@ export function renderPage(
     const page = renderLayout(meta, body);
 
     return `<!doctype html>\n${renderToStaticMarkup(
-        <RenderContext.Provider value={{ writingIndex, registerIsland, assetManifest }}>
+        <RenderContext.Provider value={{ writingIndex, registerIsland, assetManifest, hasIslands: () => islandCount > 0 }}>
             {page}
         </RenderContext.Provider>,
     )}`;

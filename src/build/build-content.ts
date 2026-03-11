@@ -65,8 +65,6 @@ function extractDescriptionFromMdx(
             ) {
                 continue;
             }
-
-            continue;
         }
 
         return truncateDescription(candidate);

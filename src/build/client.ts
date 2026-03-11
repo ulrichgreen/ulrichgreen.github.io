@@ -1,5 +1,6 @@
 import { build } from "esbuild";
 import { fileURLToPath } from "node:url";
+import { ESBUILD_TARGET } from "../config.ts";
 
 const targets = [
     {
@@ -21,7 +22,7 @@ export async function buildClient(): Promise<void> {
                 bundle: true,
                 format: "iife",
                 platform: "browser",
-                target: ["chrome120", "firefox121", "safari17"],
+                target: ESBUILD_TARGET,
                 logLevel: "silent",
             }),
         ),

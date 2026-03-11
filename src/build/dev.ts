@@ -68,22 +68,27 @@ async function runBuild() {
 
     buildRunning = true;
 
-    try {
-        await buildAll();
-        wss.clients.forEach((client) => {
-            if (client.readyState === 1) {
-                client.send("reload");
-            }
-        });
-    } catch (error) {
-        process.stderr.write(`${String(error)}\n`);
-    } finally {
-        buildRunning = false;
+    while (true) {
+        try {
+            await buildAll();
+            wss.clients.forEach((client) => {
+                try {
+                    if (client.readyState === 1) {
+                        client.send("reload");
+                    }
+                } catch { /* ignore stale connections */ }
+            });
+        } catch (error) {
+            process.stderr.write(`${String(error)}\n`);
+        }
 
         if (buildQueued) {
             buildQueued = false;
-            void runBuild();
+            continue;
         }
+
+        buildRunning = false;
+        break;
     }
 }
 

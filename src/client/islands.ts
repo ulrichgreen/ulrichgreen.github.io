@@ -5,13 +5,20 @@ import { islandRegistry } from "../islands/registry.ts";
 function hydrateIsland(root: HTMLElement): void {
     if (root.dataset.hydrated === "true") return;
 
-    const name = root.dataset.island as keyof typeof islandRegistry;
-    const Component = islandRegistry[name];
-    if (!Component) return;
+    const name = root.dataset.island;
+    if (!name || !(name in islandRegistry)) return;
 
+    const Component = islandRegistry[name as keyof typeof islandRegistry];
     const rawProps = root.getAttribute("data-island-props") || "{}";
-    const props = JSON.parse(rawProps) as Record<string, unknown>;
-    const identifierPrefix = `${root.dataset.islandId || String(name)}-`;
+
+    let props: Record<string, unknown>;
+    try {
+        props = JSON.parse(rawProps) as Record<string, unknown>;
+    } catch {
+        return;
+    }
+
+    const identifierPrefix = `${root.dataset.islandId || name}-`;
 
     hydrateRoot(root, createElement(Component, props), { identifierPrefix });
     root.dataset.hydrated = "true";

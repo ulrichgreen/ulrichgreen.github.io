@@ -22,7 +22,7 @@ export interface FrontmatterPayload {
     body: string;
 }
 
-export type ContentComponentMap = Record<string, ComponentType<any>>;
+export type ContentComponentMap = Record<string, ComponentType<Record<string, unknown>>>;
 
 export interface MdxContentProps {
     components?: ContentComponentMap;
