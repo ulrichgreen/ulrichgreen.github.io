@@ -10,12 +10,8 @@ import { buildOgImage } from "./og-image.ts";
 import { buildRobots } from "./robots.ts";
 import { buildSitemap } from "./sitemap.ts";
 import { listWritingEntries } from "./writing-index.ts";
-
-const contentDirectory = fileURLToPath(
-    new URL("../../content", import.meta.url),
-);
-const distDirectory = fileURLToPath(new URL("../../dist", import.meta.url));
-const writingDirectory = join(contentDirectory, "writing");
+import { contentDirectory, distDirectory, writingDirectory } from "./paths.ts";
+import type { BuiltContent } from "../types/content.ts";
 
 function listSourceFiles(): string[] {
     const topLevelPages = readdirSync(contentDirectory)
@@ -47,23 +43,50 @@ function cleanGeneratedPages() {
     rmSync(join(distDirectory, "writing"), { recursive: true, force: true });
 }
 
-export async function buildSite(assetManifest?: AssetManifest): Promise<void> {
+export async function buildSite(assetManifest?: AssetManifest): Promise<number> {
     const writingIndex = listWritingEntries(writingDirectory);
     cleanGeneratedPages();
 
-    for (const sourcePath of listSourceFiles()) {
-        const page = await buildContent(sourcePath);
-        const outputPath = resolveOutputPath(sourcePath);
+    const sourceFiles = listSourceFiles();
+    const results = await Promise.allSettled(
+        sourceFiles.map((sourcePath) => buildContent(sourcePath)),
+    );
+
+    const failed: { file: string; error: unknown }[] = [];
+    const compiledWriting: BuiltContent[] = [];
+
+    for (let i = 0; i < sourceFiles.length; i++) {
+        const result = results[i];
+        if (result.status === "rejected") {
+            failed.push({ file: sourceFiles[i], error: result.reason });
+            continue;
+        }
+
+        const page = result.value;
+        const outputPath = resolveOutputPath(sourceFiles[i]);
 
         mkdirSync(dirname(outputPath), { recursive: true });
         writeFileSync(outputPath, renderPage(page, writingIndex, assetManifest));
+
+        if (sourceFiles[i].includes("/writing/")) {
+            compiledWriting.push(page);
+        }
+    }
+
+    if (failed.length > 0) {
+        for (const { file, error } of failed) {
+            process.stderr.write(`Failed to build ${file}: ${String(error)}\n`);
+        }
+        throw new Error(`Build failed: ${failed.length} page(s) had errors`);
     }
 
     buildSitemap(contentDirectory, writingIndex);
     buildRobots();
     buildHeaders();
     buildOgImage();
-    await buildFeed(writingDirectory, writingIndex);
+    await buildFeed(writingIndex, compiledWriting);
+
+    return sourceFiles.length - failed.length;
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

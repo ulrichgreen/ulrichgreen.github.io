@@ -3,6 +3,13 @@ import { join } from "node:path";
 
 const distDir = new URL("../dist", import.meta.url).pathname;
 
+if (!existsSync(distDir)) {
+    console.error(
+        `verify-links.ts: dist/ not found at ${distDir}. Run "pnpm build" first.`,
+    );
+    process.exit(1);
+}
+
 function collectHtmlFiles(dir: string): string[] {
     const files: string[] = [];
     for (const entry of readdirSync(dir, { withFileTypes: true })) {

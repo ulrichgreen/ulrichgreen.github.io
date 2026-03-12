@@ -4,9 +4,10 @@ import http from "node:http";
 import { extname, join } from "node:path";
 import { WebSocketServer } from "ws";
 import { buildAll } from "./build.ts";
+import { distDirectory } from "./paths.ts";
 
 const PORT = 3000;
-const DIST = new URL("../../dist", import.meta.url).pathname;
+const DIST = distDirectory;
 const MIME: Record<string, string> = {
     ".html": "text/html",
     ".css": "text/css",
@@ -23,7 +24,7 @@ const MIME: Record<string, string> = {
     ".woff": "font/woff",
     ".txt": "text/plain",
 };
-const INJECT =
+const LIVE_RELOAD_SCRIPT =
     "<script>new WebSocket(`ws://${location.host}`).onmessage=()=>location.reload()</script>";
 
 const server = http.createServer((req, res) => {
@@ -45,7 +46,7 @@ const server = http.createServer((req, res) => {
     let body = readFileSync(filePath);
     if (extname(filePath) === ".html") {
         body = Buffer.from(
-            body.toString().replace("</body>", `${INJECT}</body>`),
+            body.toString().replace("</body>", `${LIVE_RELOAD_SCRIPT}</body>`),
         );
     }
 
@@ -79,7 +80,9 @@ async function runBuild() {
                 } catch { /* ignore stale connections */ }
             });
         } catch (error) {
-            process.stderr.write(`${String(error)}\n`);
+            process.stderr.write(
+                `Build error:\n${error instanceof Error ? error.stack || error.message : String(error)}\n`,
+            );
         }
 
         if (buildQueued) {
@@ -97,7 +100,8 @@ function debouncedBuild() {
     debounceTimer = setTimeout(() => void runBuild(), DEBOUNCE_MS);
 }
 
-chokidar.watch(["content", "src"], { ignoreInitial: true }).on("all", () => {
+chokidar.watch(["content", "src"], { ignoreInitial: true }).on("all", (_event, path) => {
+    process.stdout.write(`changed: ${path}\n`);
     debouncedBuild();
 });
 

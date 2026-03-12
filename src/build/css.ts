@@ -3,15 +3,15 @@ import { copyFileSync, mkdirSync, readdirSync, writeFileSync } from "node:fs";
 import { BROWSER_TARGETS } from "../config.ts";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
+import { distDirectory } from "./paths.ts";
 
 const source = new URL("../styles/style.css", import.meta.url).pathname;
-const distDir = new URL("../../dist", import.meta.url).pathname;
-const destination = new URL("../../dist/style.css", import.meta.url).pathname;
+const destination = join(distDirectory, "style.css");
 const fontsDir = new URL("../fonts", import.meta.url).pathname;
-const distFontsDir = join(distDir, "fonts");
+const distFontsDir = join(distDirectory, "fonts");
 
-export function buildCss(): void {
-    mkdirSync(distDir, { recursive: true });
+export async function buildCss(): Promise<void> {
+    mkdirSync(distDirectory, { recursive: true });
     mkdirSync(distFontsDir, { recursive: true });
 
     const { code } = bundle({

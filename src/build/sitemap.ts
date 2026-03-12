@@ -1,9 +1,7 @@
-import { mkdirSync, readdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
-import { fileURLToPath } from "node:url";
+import { readdirSync } from "node:fs";
 import type { WritingIndexEntry } from "../types/content.ts";
 import { SITE_URL } from "../config.ts";
-const distDirectory = fileURLToPath(new URL("../../dist", import.meta.url));
+import { writeDistFile } from "./dist-fs.ts";
 
 function toISODate(value: string): string {
     const date = new Date(value);
@@ -41,6 +39,5 @@ export function buildSitemap(
         "",
     ].join("\n");
 
-    mkdirSync(distDirectory, { recursive: true });
-    writeFileSync(join(distDirectory, "sitemap.xml"), xml);
+    writeDistFile("sitemap.xml", xml);
 }

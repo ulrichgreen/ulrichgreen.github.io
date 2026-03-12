@@ -1,10 +1,17 @@
 import assert from "node:assert/strict";
-import { readFileSync } from "node:fs";
+import { existsSync, readFileSync } from "node:fs";
 import { fileURLToPath } from "node:url";
 
 const feedPath = fileURLToPath(new URL("../dist/feed.xml", import.meta.url));
 
 function main() {
+    if (!existsSync(feedPath)) {
+        console.error(
+            `verify-feed.ts: feed.xml not found at ${feedPath}. Run "pnpm build" first.`,
+        );
+        process.exit(1);
+    }
+
     const xml = readFileSync(feedPath, "utf8");
 
     assert(

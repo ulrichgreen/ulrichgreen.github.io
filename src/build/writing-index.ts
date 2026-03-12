@@ -4,7 +4,7 @@ import { parseFrontmatter } from "./frontmatter.ts";
 import type { WritingIndexEntry } from "../types/content.ts";
 
 export function listWritingEntries(directory: string): WritingIndexEntry[] {
-    return readdirSync(directory)
+    const allEntries = readdirSync(directory)
         .filter((file) => file.endsWith(".mdx"))
         .map((file) => {
             const sourcePath = join(directory, file);
@@ -19,16 +19,33 @@ export function listWritingEntries(directory: string): WritingIndexEntry[] {
                 slug,
                 href: `/writing/${slug}.html`,
             } satisfies WritingIndexEntry;
-        })
-        .filter(
+        });
+
+    const filtered = allEntries.filter(
+        (entry) =>
+            Boolean(entry.title) &&
+            entry.published &&
+            !Number.isNaN(new Date(entry.published).getTime()),
+    );
+
+    const skipped = allEntries.length - filtered.length;
+    if (skipped > 0) {
+        const missing = allEntries.filter(
             (entry) =>
-                Boolean(entry.title) &&
-                entry.published &&
-                !Number.isNaN(new Date(entry.published).getTime()),
-        )
-        .sort(
-            (left, right) =>
-                new Date(right.published).getTime() -
-                new Date(left.published).getTime(),
+                !entry.title ||
+                !entry.published ||
+                Number.isNaN(new Date(entry.published).getTime()),
         );
+        for (const entry of missing) {
+            process.stderr.write(
+                `writing-index.ts: skipping "${entry.slug}" (missing or invalid title/published date)\n`,
+            );
+        }
+    }
+
+    return filtered.sort(
+        (left, right) =>
+            new Date(right.published).getTime() -
+            new Date(left.published).getTime(),
+    );
 }

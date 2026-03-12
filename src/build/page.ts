@@ -1,9 +1,7 @@
 import { buildContent } from "./build-content.ts";
 import { renderPage } from "./render-react-page.tsx";
 import { listWritingEntries } from "./writing-index.ts";
-
-const writingDirectory = new URL("../../content/writing", import.meta.url)
-    .pathname;
+import { writingDirectory } from "./paths.ts";
 
 async function main() {
     const sourceFile = process.argv[2];

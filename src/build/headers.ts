@@ -1,8 +1,4 @@
-import { mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
-import { fileURLToPath } from "node:url";
-
-const distDirectory = fileURLToPath(new URL("../../dist", import.meta.url));
+import { writeDistFile } from "./dist-fs.ts";
 
 export function buildHeaders(): void {
     const headers = [
@@ -17,6 +13,5 @@ export function buildHeaders(): void {
         "",
     ].join("\n");
 
-    mkdirSync(distDirectory, { recursive: true });
-    writeFileSync(join(distDirectory, "_headers"), headers);
+    writeDistFile("_headers", headers);
 }

@@ -1,14 +1,7 @@
-import { mkdirSync, writeFileSync } from "node:fs";
-import { join } from "node:path";
-import { fileURLToPath } from "node:url";
-import { createElement } from "react";
-import { renderToStaticMarkup } from "react-dom/server";
-import { buildContent } from "./build-content.ts";
-import { RenderContext } from "./render-context.tsx";
-import { getContentComponents } from "../content-components.tsx";
-import type { WritingIndexEntry } from "../types/content.ts";
+import type { BuiltContent, WritingIndexEntry } from "../types/content.ts";
 import { SITE_URL } from "../config.ts";
-const distDirectory = fileURLToPath(new URL("../../dist", import.meta.url));
+import { writeDistFile } from "./dist-fs.ts";
+import { renderContentBody } from "./render-react-page.tsx";
 
 function toISOTimestamp(value: string): string {
     const date = new Date(value);
@@ -25,9 +18,13 @@ function escapeXml(text: string): string {
         .replace(/'/g, "&apos;");
 }
 
+function escapeCdata(text: string): string {
+    return text.replace(/]]>/g, "]]]]><![CDATA[>");
+}
+
 export async function buildFeed(
-    writingDir: string,
     writingIndex: WritingIndexEntry[],
+    compiledWriting: BuiltContent[],
 ): Promise<void> {
     const latestDate =
         writingIndex.length > 0
@@ -36,27 +33,24 @@ export async function buildFeed(
               )
             : new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
 
+    const contentBySlug = new Map<string, BuiltContent>();
+    for (const content of compiledWriting) {
+        const slug = content.sourcePath.split("/").pop()?.replace(/\.mdx$/, "") ?? "";
+        contentBySlug.set(slug, content);
+    }
+
     const entries: string[] = [];
 
     for (const entry of writingIndex) {
-        const sourcePath = join(writingDir, `${entry.slug}.mdx`);
-        const content = await buildContent(sourcePath);
-        const bodyElement = createElement(content.Content, {
-            components: getContentComponents(),
-        });
-        const contextValue = {
-            writingIndex,
-            registerIsland: ({ name }: { name: string }) => `${name.toLowerCase()}-feed`,
-            assetManifest: {
-                "style.css": "style.css",
-                "site.js": "site.js",
-                "islands.js": "islands.js",
-            } as const,
-            hasIslands: () => false as boolean,
-        };
-        const bodyHtml = renderToStaticMarkup(
-            createElement(RenderContext.Provider, { value: contextValue }, bodyElement),
-        );
+        const content = contentBySlug.get(entry.slug);
+        if (!content) {
+            process.stderr.write(
+                `feed.ts: no compiled content for "${entry.slug}", skipping feed entry\n`,
+            );
+            continue;
+        }
+
+        const bodyHtml = renderContentBody(content, writingIndex);
 
         const published = toISOTimestamp(entry.published);
         const updated = toISOTimestamp(entry.revised || entry.published);
@@ -71,7 +65,7 @@ export async function buildFeed(
                 entry.description
                     ? `    <summary>${escapeXml(entry.description)}</summary>`
                     : undefined,
-                `    <content type="html"><![CDATA[${bodyHtml}]]></content>`,
+                `    <content type="html"><![CDATA[${escapeCdata(bodyHtml)}]]></content>`,
                 "  </entry>",
             ]
                 .filter(Boolean)
@@ -95,6 +89,5 @@ export async function buildFeed(
         "",
     ].join("\n");
 
-    mkdirSync(distDirectory, { recursive: true });
-    writeFileSync(join(distDirectory, "feed.xml"), xml);
+    writeDistFile("feed.xml", xml);
 }
