@@ -5,6 +5,7 @@ function isInsideIsland(node: Element | null): boolean {
 function bootReadingProgress() {
     const progress = document.getElementById("progress");
     if (!(progress instanceof HTMLElement)) return;
+    let rafId = 0;
 
     const syncProgress = () => {
         const { documentElement, body } = document;
@@ -15,15 +16,23 @@ function bootReadingProgress() {
         const maxScroll = Math.max(scrollHeight - clientHeight, 0);
         const ratio = maxScroll === 0 ? 0 : scrollTop / maxScroll;
         progress.style.width = `${Math.min(Math.max(ratio, 0), 1) * 100}%`;
+        rafId = 0;
+    };
+
+    const requestSync = () => {
+        if (rafId) return;
+        rafId = window.requestAnimationFrame(syncProgress);
     };
 
     syncProgress();
-    window.addEventListener("scroll", syncProgress, { passive: true });
-    window.addEventListener("resize", syncProgress);
+    window.addEventListener("scroll", requestSync, { passive: true });
+    window.addEventListener("resize", requestSync);
 }
 
 export function bootEnhancements() {
     if (!document.body) return;
+    if (document.body.dataset.enhancementsBooted === "true") return;
+    document.body.dataset.enhancementsBooted = "true";
 
     bootReadingProgress();
 

@@ -112,7 +112,7 @@
     }
 
     .article-header__byline {
-        line-height: 1.8;
+        line-height: var(--lh-loose);
     }
 
     .article-header__byline strong {
@@ -197,12 +197,14 @@
         text-indent: 1.5em;
     }
 
-    .page--article .article-body > p:first-child::first-letter {
-        float: left;
-        margin-top: 0.04em;
-        margin-right: 0.06em;
-        font-size: 5.5em;
-        line-height: 0.78;
+    @supports ((-webkit-initial-letter: 2) or (initial-letter: 2)) {
+        .page--article .article-body > p:first-child::first-letter {
+            margin-right: var(--dropcap-offset-x);
+            -webkit-initial-letter: 3;
+            initial-letter: 3;
+            font-size: var(--dropcap-size);
+            line-height: var(--dropcap-leading);
+        }
     }
 
     .page--article .article-body > h2 {

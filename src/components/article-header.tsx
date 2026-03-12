@@ -48,6 +48,8 @@ export function getArticleTitleTransitionName(
 export function ArticleHeader({
     title,
     description,
+    section,
+    kickerType,
     published,
     revised,
     words,
@@ -57,6 +59,8 @@ export function ArticleHeader({
 }: {
     title?: string;
     description?: string;
+    section?: string;
+    kickerType?: string;
     published?: string;
     revised?: string;
     words?: number | string;
@@ -68,12 +72,16 @@ export function ArticleHeader({
     const revisedIso = safeISODate(revised);
     const revisedDate = formatDate(revised);
     const publishedDate = formatDate(published);
+    const kickerSection = section || "Writing";
+    const lengthLabel = [readingTime, words ? `${String(words)} words` : ""]
+        .filter(Boolean)
+        .join(" · ");
 
     return (
         <header className="article-header">
             <p className="article-header__kicker">
-                <span>Writing</span>
-                <span>Essay</span>
+                <span>{kickerSection}</span>
+                <span>{kickerType || "Essay"}</span>
             </p>
             <h1
                 style={
@@ -102,13 +110,10 @@ export function ArticleHeader({
                         </strong>
                     </p>
                 )}
-                {(readingTime || words) && (
+                {lengthLabel && (
                     <p className="article-header__byline">
                         Length
-                        <strong>
-                            {readingTime || `${String(words)} words`}
-                            {readingTime && words ? ` · ${String(words)} words` : ""}
-                        </strong>
+                        <strong>{lengthLabel}</strong>
                     </p>
                 )}
                 {description && (

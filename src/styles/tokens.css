@@ -12,6 +12,11 @@
         --t-h1: 40px;
         --measure: 66ch;
         --gutter: clamp(1.5rem, 5vw, 4rem);
+        --lh-loose: 1.8;
+        --dropcap-size: 5.5em;
+        --dropcap-leading: 0.78;
+        --dropcap-offset-x: 0.06em;
+        --dropcap-offset-y: 0.04em;
         --c-bg: #fffbf4;
         --c-bg-soft: #f5efe4;
         --c-text: #11120d;

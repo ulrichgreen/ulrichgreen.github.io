@@ -31,6 +31,8 @@ export default function ArticleLayout({
                 <ArticleHeader
                     title={title}
                     description={description}
+                    section={section}
+                    kickerType="Essay"
                     published={published}
                     revised={revised}
                     words={words}
