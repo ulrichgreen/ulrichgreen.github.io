@@ -25,14 +25,17 @@
 
     /* rehype-pretty-code: highlighted code blocks */
     [data-rehype-pretty-code-figure] {
+        --code-bleed: min(var(--space-4), var(--gutter));
         margin-block: var(--space-3);
+        margin-inline: calc(var(--code-bleed) * -1);
     }
 
     [data-rehype-pretty-code-figure] pre {
         background-color: #24292e;
         border: 1px solid var(--c-rule);
         border-radius: 6px;
-        padding: var(--space-3) var(--space-4);
+        padding-block: var(--space-3);
+        padding-inline: var(--code-bleed);
         overflow-x: auto;
         tab-size: 2;
     }

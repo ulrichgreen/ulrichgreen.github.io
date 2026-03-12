@@ -111,6 +111,53 @@ async function main() {
         "Primary navigation should stay visible on small screens.",
     );
 
+    const articleTitleMatch = componentsCss.match(
+        /\.article-header h1\s*\{([\s\S]*?)\n\s*\}/,
+    );
+    assert(articleTitleMatch?.[1], "Could not find article title styles.");
+    assert(
+        /max-width:\s*20ch;/.test(articleTitleMatch[1]),
+        "Article titles should allow a wider measure.",
+    );
+
+    const pageTitleMatch = componentsCss.match(
+        /\.page > h1:first-child\s*\{([\s\S]*?)\n\s*\}/,
+    );
+    assert(pageTitleMatch?.[1], "Could not find page title styles.");
+    assert(
+        /max-width:\s*18ch;/.test(pageTitleMatch[1]),
+        "Page titles should allow a wider measure.",
+    );
+
+    const codePath = new URL("../src/styles/code.css", import.meta.url)
+        .pathname;
+    const codeCss = readFileSync(codePath, "utf8");
+    const codeFigureMatch = codeCss.match(
+        /\[data-rehype-pretty-code-figure\]\s*\{([\s\S]*?)\n\s*\}/,
+    );
+    assert(codeFigureMatch?.[1], "Could not find highlighted code figure styles.");
+    assert(
+        /--code-bleed:\s*min\(var\(--space-4\),\s*var\(--gutter\)\);/.test(
+            codeFigureMatch[1],
+        ),
+        "Highlighted code blocks should define a controlled width bleed.",
+    );
+    assert(
+        /margin-inline:\s*calc\(var\(--code-bleed\)\s*\*\s*-1\);/.test(
+            codeFigureMatch[1],
+        ),
+        "Highlighted code blocks should extend past the text column.",
+    );
+
+    const codePreMatch = codeCss.match(
+        /\[data-rehype-pretty-code-figure\] pre\s*\{([\s\S]*?)\n\s*\}/,
+    );
+    assert(codePreMatch?.[1], "Could not find highlighted code block styles.");
+    assert(
+        /padding-inline:\s*var\(--code-bleed\);/.test(codePreMatch[1]),
+        "Highlighted code content should stay aligned with the text column.",
+    );
+
     const basePath = new URL("../src/styles/base.css", import.meta.url)
         .pathname;
     const baseCss = readFileSync(basePath, "utf8");
