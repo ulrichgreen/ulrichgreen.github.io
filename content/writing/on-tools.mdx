@@ -7,6 +7,8 @@ layout: article
 
 A tool shapes the work it produces. This is obvious in physical craft. A broad chisel makes different marks than a narrow one. It is easier to forget in software, where the tools are invisible and the shapes they impress are not.
 
+## What the Tool Already Believes
+
 The framework you choose encodes assumptions about what problems are worth solving easily and which ones you are on your own for. The database you choose encodes assumptions about the shape of your data. The language you choose encodes assumptions about what kinds of errors are worth catching at compile time. You are not choosing neutral infrastructure. You are choosing a set of prior opinions about your domain, and you are agreeing to live inside them.
 
 <a className="fn-ref" href="#note-assumptions" aria-label="See note 1">
@@ -15,10 +17,14 @@ The framework you choose encodes assumptions about what problems are worth solvi
 
 This is not an argument against using tools. Tools are good. The right tool makes a hard thing easy, and time spent fighting the wrong tool is time not spent on the actual problem. The argument is for deliberateness: choosing tools because you understand what they assume and agree with most of it, rather than because they are popular or familiar or because someone in a conference talk made them look easy.
 
+> A tool does not just extend your reach. It edits your judgment by making some moves feel native and others feel expensive.
+
 <DemoWidget
     prompt="Count the cost before you add capability."
     initialCount={2}
 />
+
+## The Replacement Test
 
 The test I use is whether I could replace the tool if I needed to. Not whether I would, because the cost is usually not worth it, but whether I understand the system well enough that I could. If the answer is no, I probably do not understand my own system well enough. The tool has become load-bearing in a way I have not accounted for.
 
@@ -26,7 +32,17 @@ The test I use is whether I could replace the tool if I needed to. Not whether I
     2
 </a>
 
+That replacement test changes the questions I ask during adoption:
+
+1. what assumptions does this tool make about my data or my UI
+2. which parts of the system become harder to see once the tool is in place
+3. if the tool disappeared tomorrow, what would I still understand well enough to rebuild
+
+## Prefer the Tool With Smaller Surprises
+
 Reach for the boring tool first. Not because novelty is bad, but because boring tools have sharp edges that have been found and documented. The surprises are smaller. And when you do reach for something new, reach for it because the boring tool has a specific, nameable limitation that the new one solves, not because the new one is interesting.
+
+The point is not to avoid ambition. It is to avoid outsourcing understanding. If a tool is good, it should buy leverage without demanding surrender. If it does demand surrender, the cost should be named plainly before the work begins.
 
 ## Notes
 

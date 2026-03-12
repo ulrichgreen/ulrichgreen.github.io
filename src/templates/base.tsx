@@ -20,6 +20,7 @@ export default function BaseLayout({
     pagePath,
     published,
     revised,
+    mainClassName = "page",
     children,
 }: BaseLayoutProps) {
     const { assetManifest } = useRenderContext();
@@ -35,11 +36,12 @@ export default function BaseLayout({
                 cssHref={`/${assetManifest["style.css"]}`}
             />
             <body>
+                <div id="progress" aria-hidden="true"></div>
                 <a className="skip-link" href="#main-content">
                     Skip to content
                 </a>
                 <PageHeader section={section} title={title} />
-                <main id="main-content" className="page">
+                <main id="main-content" className={mainClassName}>
                     {children}
                 </main>
                 <script src={`/${assetManifest["site.js"]}`} defer></script>

@@ -7,18 +7,36 @@ note: I rewrote the third section four times.
 layout: article
 ---
 
-The assumption embedded in most tool selection is that more capability is better, that the right response to a hard problem is a more powerful instrument. This assumption is wrong often enough to be worth examining.
+The default assumption in design and software is that more freedom must produce better work. More room, more options, more abstractions, more power. The assumption sounds generous, but it is wrong often enough to deserve suspicion.
 
-When a canvas is infinite, the first decision becomes load-bearing in a way it would not be if the canvas had edges. Where do you start? What scale are you working at? What is the implied relationship between one mark and the next? These are questions the constraint answers before you ask them. The 8.5 × 11 inch page is not a limitation on the designer. It is the condition that makes design possible at all.
+## The Edge of the Page
 
-I notice this most clearly in software. The projects I have worked on that produced the cleanest code were not the ones with the most architectural freedom. They were the ones with the clearest constraints. A service that only does one thing. A schema that enforces a shape. A budget, whether time, compute, or lines of code, that made the usual solution impossible and required finding a better one.
+When the canvas is infinite, the first decision becomes load-bearing in a way it would not be if the canvas had edges. Where do you begin? At what scale? According to what rhythm? The unanswered questions multiply quickly enough that the abundance starts to feel like drag.
 
-Constraints force a kind of attention that abundance discourages. When you cannot reach for the library, you must understand the problem. When you cannot add another field to the schema, you must understand the domain. When you cannot spend another week on the feature, you must understand what the feature actually is.
+> The 8.5 × 11 inch page is not a limitation on the designer. It is the condition that makes design possible at all.
 
-This is not an argument for artificial difficulty. Constraints imposed carelessly are just friction. The constraint that earns its place is the one derived from understanding, from knowing why the boundary is there and what it protects. A word count is a bad constraint if it is arbitrary. It is a good constraint if it encodes the attention span of the reader you are trying to reach.
+The page answers basic questions before the designer has to. It gives proportion, scale, and resistance. It narrows the search space until actual decisions can begin. A useful constraint does this: it transforms the problem from "anything is possible" into "something specific can now be made well."
 
-The best constraints are also generative. The twelve-bar blues is a constraint. The sonnet is a constraint. The REST API contract is a constraint. Each one closes some doors and, in doing so, makes audible the music that was always latent in the remaining space. You find things inside a constraint that you would never have found without it, because the search space was too large and you would have stopped looking.
+## Constraints Force Attention
 
-I try to build constraints in deliberately. Fixed type scales rather than arbitrary font sizes. A spacing system rather than ad hoc margins. A small build script instead of a framework, not because scripts are superior in every case, but because their limitations require understanding what the build actually does. The constraint is the documentation.
+I notice this most clearly in software. The cleanest systems I have worked on were not the ones with the most architectural freedom. They were the ones with the clearest limits: a service that did one thing, a schema that enforced a shape, a timeline that made the bloated solution impossible.
 
-The work that lasts tends to have been made under pressure: of time, of medium, of form. The pressure is not incidental. It is, I think, the point.
+Constraints force a kind of attention that abundance discourages. When you cannot reach for another library, you have to understand the problem. When you cannot add another field to the schema, you have to understand the domain. When you cannot spend another week on the feature, you have to decide what the feature actually is.
+
+The distinction that matters is not between constraint and freedom. It is between constraints that clarify and constraints that merely irritate. A bad constraint is arbitrary. A good constraint encodes something real.
+
+- a word count can encode the attention span of the reader
+- a type scale can encode the rhythm of the page
+- a narrow service boundary can encode the responsibilities of a system
+
+Those are not bureaucratic limits. They are judgments, made once, that prevent weaker decisions from recurring.
+
+## Generative Pressure
+
+The best constraints do more than reduce options. They generate form. The twelve-bar blues is a constraint. The sonnet is a constraint. The API contract is a constraint. Each closes certain doors and, in doing so, makes the remaining space more legible.
+
+That is why I prefer systems that admit their boundaries clearly. Fixed type scales instead of arbitrary font sizes. A spacing system instead of ad hoc margins. A small build script instead of a framework when the script is enough. In each case the limitation becomes a form of documentation. It tells you how the work wants to be made.
+
+> The constraint is the documentation.
+
+The work that lasts tends to have been made under pressure: of medium, of time, of form, of cost. The pressure is not incidental to the outcome. It is the thing that keeps the outcome from dissolving into possibility.

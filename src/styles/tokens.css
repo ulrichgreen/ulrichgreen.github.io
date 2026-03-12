@@ -10,12 +10,19 @@
         --t-base: 18px;
         --t-h2: 28px;
         --t-h1: 40px;
-        --measure: 65ch;
-        --c-bg: #f8f7f5;
-        --c-text: #1c1b19;
-        --c-muted: #6b6861;
-        --c-rule: #dbd9d4;
-        --c-accent: #2a3f5f;
+        --measure: 66ch;
+        --gutter: clamp(1.5rem, 5vw, 4rem);
+        --lh-loose: 1.8;
+        --dropcap-size: 5.5em;
+        --dropcap-leading: 0.78;
+        --dropcap-offset-x: 0.06em;
+        --dropcap-offset-y: 0.04em;
+        --c-bg: #fffbf4;
+        --c-bg-soft: #f5efe4;
+        --c-text: #11120d;
+        --c-muted: #565449;
+        --c-rule: #d8cfbc;
+        --c-accent: #4f4028;
         --ff-body: ui-serif, "New York", "Iowan Old Style", Georgia, serif;
         --ff-ui: system-ui, -apple-system, "Segoe UI", sans-serif;
         --ff-mono: "JetBrains Mono", ui-monospace, "Cascadia Code", "Source Code Pro", Menlo, monospace;
@@ -31,11 +38,12 @@
 
     @media (prefers-color-scheme: dark) {
         :root {
-            --c-bg: #1a1917;
-            --c-text: #edecea;
-            --c-muted: #9e9c97;
-            --c-rule: #38372f;
-            --c-accent: #8aafd4;
+            --c-bg: #171611;
+            --c-bg-soft: #22201a;
+            --c-text: #f3ede2;
+            --c-muted: #cbc2b3;
+            --c-rule: #4b4438;
+            --c-accent: #f0d7ad;
         }
     }
 }

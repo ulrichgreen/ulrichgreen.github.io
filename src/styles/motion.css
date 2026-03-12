@@ -2,6 +2,58 @@
     navigation: auto;
 }
 
+@keyframes fade-up {
+    from {
+        opacity: 0;
+        transform: translateY(1rem);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+#progress {
+    position: fixed;
+    inset-block-start: 0;
+    inset-inline-start: 0;
+    width: 0%;
+    height: 2px;
+    background: var(--c-muted);
+    z-index: 200;
+    transition: width 0.1s linear;
+}
+
+@media (prefers-reduced-motion: no-preference) {
+    .page > h1:first-child,
+    .writing-list,
+    .article-header__kicker,
+    .article-header h1,
+    .article-header__rule,
+    .article-meta {
+        animation: fade-up 0.7s var(--ease-out) both;
+    }
+
+    .page > h1:first-child,
+    .article-header__kicker {
+        animation-delay: 0.1s;
+    }
+
+    .article-header h1 {
+        animation-delay: 0.2s;
+    }
+
+    .article-header__rule {
+        animation-delay: 0.32s;
+    }
+
+    .article-meta,
+    .writing-list {
+        animation-delay: 0.42s;
+    }
+}
+
 @media (prefers-reduced-motion: reduce) {
 
     @view-transition {

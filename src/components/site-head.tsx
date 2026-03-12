@@ -1,7 +1,7 @@
 const SITE_URL = "https://ulrich.green";
 const OG_IMAGE_URL = `${SITE_URL}/og-image.svg`;
-const LIGHT_THEME_COLOR = "#f8f7f5";
-const DARK_THEME_COLOR = "#1a1917";
+const LIGHT_THEME_COLOR = "#fffbf4";
+const DARK_THEME_COLOR = "#171611";
 
 function safeISODate(value: string): string | undefined {
     const date = new Date(value);
@@ -63,7 +63,7 @@ export function SiteHead({
             />
             <link
                 rel="icon"
-                href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%232a3f5f'/><text x='50' y='72' font-size='60' text-anchor='middle' fill='%23f8f7f5' font-family='system-ui'>U</text></svg>"
+                href="data:image/svg+xml,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'><rect width='100' height='100' rx='16' fill='%2311120d'/><text x='50' y='72' font-size='60' text-anchor='middle' fill='%23fffbf4' font-family='system-ui'>U</text></svg>"
             />
             <link
                 rel="preload"

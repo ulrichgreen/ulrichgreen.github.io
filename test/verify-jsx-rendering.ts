@@ -18,6 +18,7 @@ async function main() {
     assert(homeHtml.includes("<title>Ulrich Green</title>"));
     assert(homeHtml.includes('src="/site.js"'));
     assert(!homeHtml.includes('src="/islands.js"'), "Home page should not include islands.js (no islands present).");
+    assert(homeHtml.includes('id="progress" aria-hidden="true"'));
     assert(homeHtml.includes('<ul class="writing-list">'));
     assert(homeHtml.includes("On Constraints"));
     assert(homeHtml.includes('class="page-header__section">home</span>'));
@@ -56,13 +57,13 @@ async function main() {
     );
     assert(
         homeHtml.includes(
-            'name="theme-color" media="(prefers-color-scheme: light)" content="#f8f7f5"',
+            'name="theme-color" media="(prefers-color-scheme: light)" content="#fffbf4"',
         ),
         "Home page should include the light theme-color meta tag.",
     );
     assert(
         homeHtml.includes(
-            'name="theme-color" media="(prefers-color-scheme: dark)" content="#1a1917"',
+            'name="theme-color" media="(prefers-color-scheme: dark)" content="#171611"',
         ),
         "Home page should include the dark theme-color meta tag.",
     );
@@ -90,6 +91,10 @@ async function main() {
         ),
         "Article title should have a named view transition.",
     );
+    assert(articleHtml.includes('class="page page--article"'));
+    assert(articleHtml.includes('class="article-header__kicker"'));
+    assert(articleHtml.includes('class="article-header__rule"'));
+    assert(articleHtml.includes('class="article-header__abstract"'));
     assert(articleHtml.includes("March 1, 2025"));
     assert(articleHtml.includes('src="/islands.js"'), "Article page with islands should include islands.js.");
     assert(articleHtml.includes('data-island="DemoWidget"'));
@@ -118,8 +123,8 @@ async function main() {
         "Article should have a computed word count.",
     );
     assert(
-        articleHtml.includes('class="reading-time"'),
-        "Article should render the reading time.",
+        articleHtml.includes("min read") && articleHtml.includes("words"),
+        "Article should render the reading time and word count.",
     );
 
     assert(

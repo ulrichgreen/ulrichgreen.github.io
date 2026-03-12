@@ -49,6 +49,7 @@ export interface BaseLayoutProps {
     pagePath?: string;
     published?: string;
     revised?: string;
+    mainClassName?: string;
     children?: ReactNode;
 }
 

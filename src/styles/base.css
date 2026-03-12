@@ -1,6 +1,6 @@
 @layer base {
     html {
-        font-size: 16px;
+        font-size: 18px;
         -webkit-text-size-adjust: 100%;
         scroll-behavior: smooth;
         color-scheme: light dark;
@@ -12,9 +12,10 @@
         line-height: var(--lh-4u);
         color: var(--c-text);
         background-color: var(--c-bg);
-        font-feature-settings: "liga" 1, "kern" 1;
+        font-feature-settings: "liga" 1, "kern" 1, "onum" 1;
         -webkit-font-smoothing: antialiased;
         -moz-osx-font-smoothing: grayscale;
+        text-rendering: optimizeLegibility;
     }
 
     .skip-link {
@@ -35,9 +36,9 @@
 
     h1 {
         font-family: var(--ff-body);
-        font-size: clamp(32px, 5vw, 56px);
-        line-height: var(--lh-7u);
-        font-weight: 700;
+        font-size: clamp(2.6rem, 7vw, 5rem);
+        line-height: 0.98;
+        font-weight: 400;
         letter-spacing: -0.02em;
         font-feature-settings: "liga" 1, "kern" 1, "swsh" 1;
         margin-block-end: var(--space-3);
@@ -47,7 +48,8 @@
         font-family: var(--ff-body);
         font-size: var(--t-h2);
         line-height: var(--lh-5u);
-        font-weight: 600;
+        font-weight: 400;
+        font-style: italic;
         letter-spacing: -0.01em;
         margin-block-start: var(--space-6);
         margin-block-end: var(--space-2);
@@ -87,9 +89,10 @@
 
     p {
         font-size: var(--t-base);
-        line-height: var(--lh-4u);
+        line-height: 1.75;
         max-width: var(--measure);
         hanging-punctuation: first last;
+        hyphens: auto;
     }
 
     p + p {
@@ -152,11 +155,11 @@
     }
 
     blockquote {
-        border-inline-start: 2px solid var(--c-accent);
+        border-inline-start: 1px solid var(--c-rule);
         padding-inline-start: var(--space-3);
         margin-inline: 0;
         margin-block: var(--space-4);
-        color: var(--c-muted);
+        color: var(--c-text);
         font-style: italic;
     }
 
@@ -212,7 +215,7 @@
     }
 
     ::selection {
-        background-color: color-mix(in srgb, var(--c-accent) 20%, transparent);
+        background-color: var(--c-rule);
         color: var(--c-text);
     }
 

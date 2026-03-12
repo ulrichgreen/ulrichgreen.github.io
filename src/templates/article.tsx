@@ -25,10 +25,14 @@ export default function ArticleLayout({
             pagePath={pagePath}
             published={published}
             revised={revised}
+            mainClassName="page page--article"
         >
             <article>
                 <ArticleHeader
                     title={title}
+                    description={description}
+                    section={section}
+                    kickerType="Essay"
                     published={published}
                     revised={revised}
                     words={words}
