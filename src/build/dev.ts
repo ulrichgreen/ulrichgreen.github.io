@@ -17,7 +17,7 @@ import { listWritingEntries } from "./content/writing-index.ts";
 import { writePages } from "./render/write-pages.ts";
 import { distDirectory, writingDirectory } from "./shared/paths.ts";
 
-const PORT = 3000;
+const PORT = 3009;
 const DIST = distDirectory;
 const MIME: Record<string, string> = {
     ".html": "text/html",

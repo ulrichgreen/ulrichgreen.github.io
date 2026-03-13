@@ -14,6 +14,17 @@
     }
 }
 
+@keyframes fade-in {
+    from { opacity: 0; }
+    to   { opacity: 1; }
+}
+
+/* Expand from left — used for the hero hairline rule */
+@keyframes expand-x {
+    from { transform: scaleX(0); }
+    to   { transform: scaleX(1); }
+}
+
 #progress {
     position: fixed;
     inset-block-start: 0;
@@ -26,6 +37,32 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
+
+    /* Hero entrance — staggered from top to bottom */
+    .hero__kicker {
+        animation: fade-up 0.7s var(--ease-out) 0.05s both;
+    }
+
+    .hero__name {
+        animation: fade-up 0.7s var(--ease-out) 0.18s both;
+    }
+
+    .hero__portrait {
+        animation: fade-in 1s var(--ease-out) 0.24s both;
+    }
+
+    .hero__rule {
+        animation: expand-x 0.9s var(--ease-out) 0.38s both;
+        transform-origin: left center;
+    }
+
+    .hero__tagline {
+        animation: fade-up 0.7s var(--ease-out) 0.5s both;
+    }
+
+    .hero__meta {
+        animation: fade-up 0.7s var(--ease-out) 0.6s both;
+    }
 
     .page > h1:first-child,
     .writing-list,

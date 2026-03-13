@@ -1,4 +1,147 @@
 @layer components {
+    /* ─── Hero ───────────────────────────────────────────────── */
+
+    .hero {
+        padding-block: clamp(3rem, 10vw, 6rem) clamp(2.5rem, 6vw, 4rem);
+        border-block-end: 1px solid var(--c-rule);
+    }
+
+    /* Kicker: ── PRODUCT ENGINEER & DESIGNER */
+    .hero__kicker {
+        display: flex;
+        align-items: center;
+        gap: 1rem;
+        margin-block-end: clamp(1.5rem, 4vw, 2.5rem);
+        font-family: var(--ff-mono);
+        font-size: 0.65rem;
+        letter-spacing: 0.2em;
+        text-transform: uppercase;
+        color: var(--c-muted);
+    }
+
+    .hero__kicker::before {
+        content: "";
+        flex-shrink: 0;
+        display: inline-block;
+        width: 2rem;
+        height: 1px;
+        background: currentColor;
+    }
+
+    /* Body: name (+ portrait when present) */
+    .hero__body {
+        display: flex;
+        align-items: flex-start;
+        gap: clamp(1.5rem, 5vw, 3rem);
+        margin-block-end: clamp(2rem, 6vw, 3.5rem);
+    }
+
+    .hero__name {
+        flex: 1;
+        margin: 0;
+        font-size: clamp(3.5rem, 11vw, 7.5rem);
+        font-weight: 400;
+        line-height: 0.93;
+        letter-spacing: -0.025em;
+    }
+
+    /* Upright forename / italic surname — a classic typographic distinction */
+    .hero__name em {
+        display: block;
+        font-style: italic;
+        color: var(--c-muted);
+    }
+
+    /* Portrait slot */
+    .hero__portrait {
+        flex-shrink: 0;
+        width: clamp(96px, 16vw, 180px);
+        aspect-ratio: 4 / 5;
+        overflow: hidden;
+        background-color: var(--c-bg-soft);
+        position: relative;
+    }
+
+    /* Grain overlay — editorial print quality */
+    .hero__portrait::after {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+        opacity: 0.04;
+        mix-blend-mode: multiply;
+        pointer-events: none;
+    }
+
+    .hero__portrait picture,
+    .hero__portrait img {
+        display: block;
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        /* Desaturate slightly for editorial warmth */
+        filter: saturate(0.72) contrast(1.06);
+    }
+
+    /* When no portrait, hide the slot */
+    .hero:not(.hero--has-portrait) .hero__portrait {
+        display: none;
+    }
+
+    /* Hairline gradient rule — fades from ink to bone */
+    .hero__rule {
+        width: 100%;
+        height: 1px;
+        margin-block-end: clamp(1.5rem, 4vw, 2.5rem);
+        background: linear-gradient(
+            90deg,
+            var(--c-text) 0%,
+            var(--c-rule) 100%
+        );
+        transform-origin: left center;
+    }
+
+    /* Tagline — italic, muted, considered width */
+    .hero__tagline {
+        max-width: 44ch;
+        margin: 0;
+        font-size: 1.05rem;
+        line-height: 1.65;
+        color: var(--c-muted);
+        font-style: italic;
+    }
+
+    /* Meta bar — mono identifiers separated by mid-dots */
+    .hero__meta {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 0.75rem 1rem;
+        margin-block-start: clamp(1.25rem, 3vw, 2rem);
+        margin-block-end: 0;
+        font-family: var(--ff-mono);
+        font-size: 0.62rem;
+        letter-spacing: 0.14em;
+        text-transform: uppercase;
+        color: var(--c-muted);
+    }
+
+    .hero__meta a {
+        color: inherit;
+        text-decoration: none;
+    }
+
+    .hero__meta a:hover,
+    .hero__meta a:focus-visible {
+        color: var(--c-text);
+    }
+
+    .hero__meta-dot {
+        opacity: 0.4;
+        user-select: none;
+    }
+
+    /* ─── Page header ────────────────────────────────────────── */
     .page-header {
         position: sticky;
         inset-block-start: 0;

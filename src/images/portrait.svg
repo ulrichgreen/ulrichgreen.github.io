@@ -1,0 +1,52 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 320 400" width="320" height="400">
+  <defs>
+    <filter id="grain" x="-10%" y="-10%" width="120%" height="120%">
+      <feTurbulence type="fractalNoise" baseFrequency="0.72" numOctaves="4" stitchTiles="stitch" result="noise"/>
+      <feColorMatrix type="saturate" values="0" in="noise" result="grayNoise"/>
+      <feComposite in="grayNoise" in2="SourceGraphic" operator="in" result="maskedNoise"/>
+      <feBlend mode="multiply" in="SourceGraphic" in2="maskedNoise"/>
+    </filter>
+  </defs>
+
+  <!-- Warm paper ground -->
+  <rect width="320" height="400" fill="#f5efe4"/>
+
+  <!-- Ghost grain across the whole field -->
+  <rect width="320" height="400" fill="#c4b99a" opacity="0.08" filter="url(#grain)"/>
+
+  <!-- Printmaker registration corners (hairline) -->
+  <g stroke="#d8cfbc" stroke-width="0.75" fill="none">
+    <polyline points="0,18 18,18 18,0"/>
+    <polyline points="302,0 302,18 320,18"/>
+    <polyline points="0,382 18,382 18,400"/>
+    <polyline points="302,400 302,382 320,382"/>
+  </g>
+
+  <!-- Centred horizontal hairline rule -->
+  <line x1="48" y1="200" x2="272" y2="200" stroke="#d8cfbc" stroke-width="0.5"/>
+
+  <!-- Monogram watermark – low contrast, strictly typographic -->
+  <text
+    x="160" y="208"
+    text-anchor="middle"
+    dominant-baseline="middle"
+    font-family="Georgia, 'Iowan Old Style', 'Times New Roman', serif"
+    font-size="100"
+    font-weight="400"
+    fill="#d8cfbc"
+    letter-spacing="-0.04em"
+    opacity="0.9"
+  >UG</text>
+
+  <!-- Caption label at the base -->
+  <text
+    x="160" y="368"
+    text-anchor="middle"
+    font-family="'Courier New', ui-monospace, monospace"
+    font-size="8"
+    font-weight="400"
+    fill="#c4b99a"
+    letter-spacing="0.18em"
+    text-transform="uppercase"
+  >PORTRAIT</text>
+</svg>
