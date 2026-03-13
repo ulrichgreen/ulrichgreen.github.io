@@ -44,13 +44,15 @@ export function SeriesNav({ seriesInfo }: { seriesInfo: SeriesInfo }) {
                                     ? "series-nav__item series-nav__item--current"
                                     : "series-nav__item"
                             }
-                            aria-current={isCurrent ? "page" : undefined}
                         >
                             <span className="series-nav__ordinal">
                                 {String(index + 1).padStart(2, "0")}
                             </span>
                             {isCurrent ? (
-                                <span className="series-nav__link series-nav__link--current">
+                                <span
+                                    className="series-nav__link series-nav__link--current"
+                                    aria-current="page"
+                                >
                                     {entry.title}
                                 </span>
                             ) : (

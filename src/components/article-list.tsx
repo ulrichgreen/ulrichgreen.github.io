@@ -46,7 +46,7 @@ function EntryItem({ entry }: { entry: WritingIndexEntry }) {
     const titleTransitionName = getArticleTitleTransitionName(entry.slug);
 
     return (
-        <li key={entry.slug}>
+        <li>
             <a
                 href={entry.href}
                 style={
@@ -75,7 +75,6 @@ export function ArticleList({ items }: { items?: WritingIndexEntry[] }) {
                     <li
                         key={`series-${seriesName}`}
                         className="writing-list__series-label"
-                        aria-label={`Series: ${seriesName}`}
                     >
                         Series · {seriesName}
                     </li>,
