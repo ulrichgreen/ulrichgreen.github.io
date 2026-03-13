@@ -25,20 +25,30 @@
 
     /* rehype-pretty-code: highlighted code blocks */
     [data-rehype-pretty-code-figure] {
+        --code-bleed: var(--gutter);
+        inline-size: calc(100% + (var(--code-bleed) * 2));
+        max-inline-size: none;
         margin-block: var(--space-3);
+        margin-inline: calc(var(--code-bleed) * -1);
     }
 
     [data-rehype-pretty-code-figure] pre {
         background-color: #24292e;
         border: 1px solid var(--c-rule);
-        border-radius: 6px;
-        padding: var(--space-3) var(--space-4);
+        border-radius: 0;
+        inline-size: 100%;
+        max-inline-size: 100%;
+        padding-block: var(--space-3);
+        padding-inline: var(--code-bleed);
         overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
         tab-size: 2;
     }
 
     [data-rehype-pretty-code-figure] code {
         display: block;
+        min-width: 100%;
+        width: max-content;
         font-family: var(--ff-mono);
         font-size: var(--t-sm);
         line-height: var(--lh-3u);
@@ -77,5 +87,15 @@
     [data-rehype-pretty-code-figure] code [style] {
         background: none;
         padding: 0;
+    }
+
+    @media (min-width: 821px) {
+        [data-rehype-pretty-code-figure] {
+            --code-bleed: min(var(--space-4), var(--gutter));
+        }
+
+        [data-rehype-pretty-code-figure] pre {
+            border-radius: 6px;
+        }
     }
 }

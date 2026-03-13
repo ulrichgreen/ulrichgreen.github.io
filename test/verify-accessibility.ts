@@ -96,6 +96,9 @@ async function main() {
         import.meta.url,
     ).pathname;
     const componentsCss = readFileSync(componentsPath, "utf8");
+    const layoutPath = new URL("../src/styles/layout.css", import.meta.url)
+        .pathname;
+    const layoutCss = readFileSync(layoutPath, "utf8");
     const mobileBlock = extractBlock(
         componentsCss,
         /@media \(max-width: 820px\)\s*\{([\s\S]*)\}\s*$/,
@@ -109,6 +112,111 @@ async function main() {
     assert(
         !/display:\s*none;/.test(mobileNavMatch[1]),
         "Primary navigation should stay visible on small screens.",
+    );
+
+    const articleTitleMatch = componentsCss.match(
+        /\.article-header h1\s*\{([\s\S]*?)\n\s*\}/,
+    );
+    assert(articleTitleMatch?.[1], "Could not find article title styles.");
+    assert(
+        /max-width:\s*20ch;/.test(articleTitleMatch[1]),
+        "Article titles should allow a wider measure.",
+    );
+
+    const pageTitleMatch = componentsCss.match(
+        /\.page > h1:first-child\s*\{([\s\S]*?)\n\s*\}/,
+    );
+    assert(pageTitleMatch?.[1], "Could not find page title styles.");
+    assert(
+        /max-width:\s*18ch;/.test(pageTitleMatch[1]),
+        "Page titles should allow a wider measure.",
+    );
+
+    const articleBodyMatch = componentsCss.match(
+        /\.page--article \.article-body\s*\{([\s\S]*?)\n\s*\}/,
+    );
+    assert(articleBodyMatch?.[1], "Could not find article body styles.");
+    assert(
+        /grid-template-columns:\s*minmax\(0,\s*1fr\);/.test(
+            articleBodyMatch[1],
+        ),
+        "The article body grid should constrain children to the available column width.",
+    );
+
+    const pageLayoutMatch = layoutCss.match(/\.page\s*\{([\s\S]*?)\n\s*\}/);
+    assert(pageLayoutMatch?.[1], "Could not find page layout styles.");
+    assert(
+        /grid-template-columns:\s*minmax\(0,\s*var\(--measure\)\);/.test(
+            pageLayoutMatch[1],
+        ),
+        "The default page layout should start from a single mobile column.",
+    );
+    assert(
+        /padding-inline:\s*var\(--gutter\);/.test(pageLayoutMatch[1]),
+        "The default page layout should use gutter padding on narrow screens.",
+    );
+
+    const desktopLayoutBlock = extractBlock(
+        layoutCss,
+        /@media \(min-width: 821px\)\s*\{([\s\S]*)\}\s*$/,
+        "desktop layout",
+    );
+    assert(
+        /grid-template-columns:\s*minmax\(var\(--gutter\),\s*1fr\)\s*minmax\(0,\s*var\(--measure\)\)\s*minmax\(var\(--gutter\),\s*1fr\);/.test(
+            desktopLayoutBlock,
+        ),
+        "Wider screens should restore the three-column page grid.",
+    );
+
+    const codePath = new URL("../src/styles/code.css", import.meta.url)
+        .pathname;
+    const codeCss = readFileSync(codePath, "utf8");
+    const codeFigureMatch = codeCss.match(
+        /\[data-rehype-pretty-code-figure\]\s*\{([\s\S]*?)\n\s*\}/,
+    );
+    assert(codeFigureMatch?.[1], "Could not find highlighted code figure styles.");
+    assert(
+        /--code-bleed:\s*var\(--gutter\);/.test(
+            codeFigureMatch[1],
+        ),
+        "Highlighted code blocks should reach the viewport edge on narrow screens.",
+    );
+    assert(
+        /margin-inline:\s*calc\(var\(--code-bleed\)\s*\*\s*-1\);/.test(
+            codeFigureMatch[1],
+        ),
+        "Highlighted code blocks should extend past the text column.",
+    );
+    assert(
+        /inline-size:\s*calc\(100%\s*\+\s*\(var\(--code-bleed\)\s*\*\s*2\)\);/.test(
+            codeFigureMatch[1],
+        ),
+        "Highlighted code blocks should size themselves to the available bleed width.",
+    );
+
+    const codePreMatch = codeCss.match(
+        /\[data-rehype-pretty-code-figure\] pre\s*\{([\s\S]*?)\n\s*\}/,
+    );
+    assert(codePreMatch?.[1], "Could not find highlighted code block styles.");
+    assert(
+        /padding-inline:\s*var\(--code-bleed\);/.test(codePreMatch[1]),
+        "Highlighted code content should stay aligned with the text column.",
+    );
+    assert(
+        /inline-size:\s*100%;/.test(codePreMatch[1]),
+        "Highlighted code blocks should keep their scroll area inside the figure width.",
+    );
+
+    const desktopCodeBlock = extractBlock(
+        codeCss,
+        /@media \(min-width: 821px\)\s*\{([\s\S]*)\}\s*$/,
+        "desktop code",
+    );
+    assert(
+        /--code-bleed:\s*min\(var\(--space-4\),\s*var\(--gutter\)\);/.test(
+            desktopCodeBlock,
+        ),
+        "Wider screens should restore the measured code bleed.",
     );
 
     const basePath = new URL("../src/styles/base.css", import.meta.url)
