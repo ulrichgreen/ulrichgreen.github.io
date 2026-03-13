@@ -2,13 +2,12 @@
     "name": "ulrich.green",
     "version": "1.0.0",
     "description": "",
-    "main": "index.js",
     "scripts": {
         "build": "pnpm exec tsx src/build/build.ts",
         "clean": "pnpm exec tsx src/build/clean.ts",
         "dev": "pnpm exec tsx src/build/dev.ts",
         "check-links": "pnpm exec tsx test/verify-links.ts",
-        "test": "pnpm exec tsx test/verify-jsx-rendering.ts && pnpm exec tsx test/verify-accessibility.ts && pnpm exec tsx test/verify-links.ts && pnpm exec tsx test/verify-feed.ts && pnpm exec tsx test/verify-seo-artifacts.ts",
+        "test": "pnpm exec tsx test/run-tests.ts",
         "typecheck": "tsc --noEmit",
         "verify": "pnpm run typecheck && pnpm run build && pnpm run test",
         "watch": "pnpm run dev"

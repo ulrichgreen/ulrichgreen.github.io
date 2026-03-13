@@ -1,7 +1,7 @@
 import { createHash } from "node:crypto";
 import { existsSync, readFileSync, renameSync } from "node:fs";
 import { join } from "node:path";
-import { distDirectory } from "./paths.ts";
+import { distDirectory } from "../shared/paths.ts";
 
 export interface AssetManifest {
     "style.css": string;
@@ -11,11 +11,19 @@ export interface AssetManifest {
 
 function contentHash(filePath: string): string {
     if (!existsSync(filePath)) {
-        throw new Error(`Asset not found: ${filePath}. Was the upstream build step skipped?`);
+        throw new Error(
+            `Asset not found: ${filePath}. Was the upstream build step skipped?`,
+        );
     }
     const content = readFileSync(filePath);
     return createHash("sha256").update(content).digest("hex").slice(0, 8);
 }
+
+export const devAssetManifest: AssetManifest = {
+    "style.css": "style.css",
+    "site.js": "site.js",
+    "islands.js": "islands.js",
+};
 
 export function generateAssetManifest(): AssetManifest {
     return {

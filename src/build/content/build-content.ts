@@ -1,7 +1,7 @@
 import { readFileSync } from "node:fs";
 import { compileMdx } from "./compile-mdx.ts";
 import { parseFrontmatter } from "./frontmatter.ts";
-import type { BuiltContent, FrontmatterPayload } from "../types/content.ts";
+import type { BuiltContent, FrontmatterPayload } from "../../types/content.ts";
 
 const DESCRIPTION_MAX_LENGTH = 160;
 
@@ -73,7 +73,6 @@ function extractDescriptionFromMdx(
     return undefined;
 }
 
-
 export function resolveMetaDescription(
     input: FrontmatterPayload,
 ): string | undefined {
@@ -91,7 +90,10 @@ export function resolveMetaDescription(
     );
 }
 
-function computeReadingTime(body: string): { wordCount: number; readingTime: string } {
+function computeReadingTime(body: string): {
+    wordCount: number;
+    readingTime: string;
+} {
     const text = stripMdxSyntax(body);
     const words = text.split(/\s+/).filter(Boolean);
     const count = words.length;

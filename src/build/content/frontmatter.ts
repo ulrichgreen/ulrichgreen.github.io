@@ -1,7 +1,7 @@
 import matter from "gray-matter";
 import { createInterface } from "node:readline";
 import { z } from "zod";
-import type { FrontmatterPayload } from "../types/content.ts";
+import type { FrontmatterPayload } from "../../types/content.ts";
 
 const yamlDateString = z.preprocess(
     (value) =>
@@ -17,7 +17,9 @@ const contentMetaSchema = z
         section: z.string().trim().min(1).optional(),
         published: yamlDateString.optional(),
         revised: yamlDateString.optional(),
-        words: z.union([z.number().positive(), z.string().trim().min(1)]).optional(),
+        words: z
+            .union([z.number().positive(), z.string().trim().min(1)])
+            .optional(),
         note: z.string().trim().min(1).optional(),
         summary: z.string().trim().min(1).optional(),
     })

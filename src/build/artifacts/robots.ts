@@ -1,5 +1,5 @@
-import { SITE_URL } from "../config.ts";
-import { writeDistFile } from "./dist-fs.ts";
+import { SITE_URL } from "../../config.ts";
+import { writeDistFile } from "../shared/dist-fs.ts";
 
 export function buildRobots(): void {
     const content = [

@@ -1,5 +1,5 @@
 import { buildContent } from "./build-content.ts";
-import type { BuiltContent } from "../types/content.ts";
+import type { BuiltContent } from "../../types/content.ts";
 
 export interface CompileResult {
     compiled: BuiltContent[];

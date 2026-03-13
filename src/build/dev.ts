@@ -5,7 +5,17 @@ import { extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { WebSocketServer } from "ws";
 import { buildAll } from "./build.ts";
-import { distDirectory } from "./paths.ts";
+import { buildClient } from "./assets/client.ts";
+import { buildCss } from "./assets/css.ts";
+import { devAssetManifest } from "./assets/asset-manifest.ts";
+import { compilePages } from "./content/compile-pages.ts";
+import {
+    cleanGeneratedPages,
+    discoverSourceFiles,
+} from "./content/discover.ts";
+import { listWritingEntries } from "./content/writing-index.ts";
+import { writePages } from "./render/write-pages.ts";
+import { distDirectory, writingDirectory } from "./shared/paths.ts";
 
 const PORT = 3000;
 const DIST = distDirectory;
@@ -28,6 +38,33 @@ const MIME: Record<string, string> = {
 const LIVE_RELOAD_SCRIPT =
     "<script>new WebSocket(`ws://${location.host}`).onmessage=()=>location.reload()</script>";
 
+type RebuildKind = "content" | "styles" | "client" | "full";
+
+function classifyChange(changedPath: string): RebuildKind {
+    if (changedPath.startsWith("content")) return "content";
+    if (
+        changedPath.startsWith("src/styles") ||
+        changedPath.startsWith("src/fonts")
+    )
+        return "styles";
+    if (changedPath.startsWith("src/client")) return "client";
+    return "full";
+}
+
+async function rebuildContent(): Promise<void> {
+    const start = performance.now();
+    const writingIndex = listWritingEntries(writingDirectory);
+    const sourceFiles = discoverSourceFiles();
+    const { compiled, failed } = await compilePages(sourceFiles);
+    cleanGeneratedPages();
+    writePages(compiled, writingIndex, devAssetManifest);
+    for (const { file, error } of failed) {
+        process.stderr.write(`  error  ${file}\n  ${String(error)}\n`);
+    }
+    const elapsed = ((performance.now() - start) / 1000).toFixed(2);
+    process.stdout.write(`built ${compiled.length} pages in ${elapsed}s\n`);
+}
+
 export function startDevServer(): void {
     const server = http.createServer((req, res) => {
         if (!req.url) {
@@ -39,8 +76,20 @@ export function startDevServer(): void {
         let filePath = join(DIST, req.url === "/" ? "index.html" : req.url);
         if (!existsSync(filePath)) filePath = join(DIST, req.url, "index.html");
         if (!existsSync(filePath)) {
-            res.writeHead(404);
-            res.end("Not found");
+            const notFoundPage = join(DIST, "404.html");
+            if (existsSync(notFoundPage)) {
+                let body = readFileSync(notFoundPage);
+                body = Buffer.from(
+                    body
+                        .toString()
+                        .replace("</body>", `${LIVE_RELOAD_SCRIPT}</body>`),
+                );
+                res.writeHead(404, { "Content-Type": "text/html" });
+                res.end(body);
+            } else {
+                res.writeHead(404);
+                res.end("Not found");
+            }
             return;
         }
 
@@ -48,7 +97,9 @@ export function startDevServer(): void {
         let body = readFileSync(filePath);
         if (extname(filePath) === ".html") {
             body = Buffer.from(
-                body.toString().replace("</body>", `${LIVE_RELOAD_SCRIPT}</body>`),
+                body
+                    .toString()
+                    .replace("</body>", `${LIVE_RELOAD_SCRIPT}</body>`),
             );
         }
 
@@ -58,10 +109,21 @@ export function startDevServer(): void {
 
     const wss = new WebSocketServer({ server });
 
+    const pendingChanges = new Set<string>();
     let buildQueued = false;
     let buildRunning = false;
     let debounceTimer: ReturnType<typeof setTimeout> | undefined;
     const DEBOUNCE_MS = 80;
+
+    function reload() {
+        wss.clients.forEach((client) => {
+            try {
+                if (client.readyState === 1) client.send("reload");
+            } catch {
+                /* ignore stale connections */
+            }
+        });
+    }
 
     async function runBuild() {
         if (buildRunning) {
@@ -72,18 +134,28 @@ export function startDevServer(): void {
         buildRunning = true;
 
         while (true) {
+            const changedPaths = [...pendingChanges];
+            pendingChanges.clear();
+
             try {
-                await buildAll();
-                wss.clients.forEach((client) => {
-                    try {
-                        if (client.readyState === 1) {
-                            client.send("reload");
-                        }
-                    } catch { /* ignore stale connections */ }
-                });
+                if (changedPaths.length === 0) {
+                    await buildAll({ dev: true });
+                } else {
+                    const kinds = new Set(changedPaths.map(classifyChange));
+                    if (kinds.has("full")) {
+                        await buildAll({ dev: true });
+                    } else {
+                        const tasks: Promise<unknown>[] = [];
+                        if (kinds.has("styles")) tasks.push(buildCss());
+                        if (kinds.has("client")) tasks.push(buildClient());
+                        if (kinds.has("content")) tasks.push(rebuildContent());
+                        await Promise.all(tasks);
+                    }
+                }
+                reload();
             } catch (error) {
                 process.stderr.write(
-                    `Build error:\n${error instanceof Error ? error.stack || error.message : String(error)}\n`,
+                    `\n  error  ${error instanceof Error ? error.message : String(error)}\n\n`,
                 );
             }
 
@@ -102,15 +174,18 @@ export function startDevServer(): void {
         debounceTimer = setTimeout(() => void runBuild(), DEBOUNCE_MS);
     }
 
-    chokidar.watch(["content", "src"], { ignoreInitial: true }).on("all", (_event, path) => {
-        process.stdout.write(`changed: ${path}\n`);
-        debouncedBuild();
-    });
+    chokidar
+        .watch(["content", "src"], { ignoreInitial: true })
+        .on("all", (_event, path) => {
+            process.stdout.write(`  ~ ${path}\n`);
+            pendingChanges.add(path);
+            debouncedBuild();
+        });
 
     void runBuild();
 
     server.listen(PORT, () =>
-        process.stdout.write(`dev server: http://localhost:${PORT}\n`),
+        process.stdout.write(`\n  http://localhost:${PORT}\n\n`),
     );
 }
 

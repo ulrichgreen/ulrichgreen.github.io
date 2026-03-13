@@ -4,7 +4,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
-import type { ContentBodyComponent } from "../types/content.ts";
+import type { ContentBodyComponent } from "../../types/content.ts";
 
 const MDX_ESM_PATTERN = /^\s*(import|export)\s/m;
 
@@ -35,7 +35,10 @@ export async function compileMdx(
             remarkPlugins: [remarkGfm],
             rehypePlugins: [
                 rehypeSlug,
-                [rehypePrettyCode, { theme: "github-dark", keepBackground: true }],
+                [
+                    rehypePrettyCode,
+                    { theme: "github-dark", keepBackground: true },
+                ],
                 [rehypeAutolinkHeadings, { behavior: "append" }],
             ],
         },

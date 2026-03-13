@@ -1,11 +1,11 @@
 import assert from "node:assert/strict";
-import { parseFrontmatter } from "../src/build/frontmatter.ts";
+import { parseFrontmatter } from "../src/build/content/frontmatter.ts";
 import {
     buildContent,
     resolveMetaDescription,
-} from "../src/build/build-content.ts";
-import { renderPage } from "../src/build/render-react-page.tsx";
-import { listWritingEntries } from "../src/build/writing-index.ts";
+} from "../src/build/content/build-content.ts";
+import { renderPage } from "../src/build/render/render-react-page.tsx";
+import { listWritingEntries } from "../src/build/content/writing-index.ts";
 
 async function main() {
     const writingDir = new URL("../content/writing", import.meta.url).pathname;
@@ -17,14 +17,19 @@ async function main() {
 
     assert(homeHtml.includes("<title>Ulrich Green</title>"));
     assert(homeHtml.includes('src="/site.js"'));
-    assert(!homeHtml.includes('src="/islands.js"'), "Home page should not include islands.js (no islands present).");
+    assert(
+        !homeHtml.includes('src="/islands.js"'),
+        "Home page should not include islands.js (no islands present).",
+    );
     assert(homeHtml.includes('id="progress" aria-hidden="true"'));
     assert(homeHtml.includes('<ul class="writing-list">'));
     assert(homeHtml.includes("On Constraints"));
     assert(homeHtml.includes('class="page-header__section">home</span>'));
 
     assert(
-        homeHtml.includes('rel="canonical" href="https://ulrich.green/index.html"'),
+        homeHtml.includes(
+            'rel="canonical" href="https://ulrich.green/index.html"',
+        ),
         "Home page should include a canonical URL.",
     );
     assert(
@@ -36,7 +41,9 @@ async function main() {
         "Home page should have og:type website.",
     );
     assert(
-        homeHtml.includes('property="og:image" content="https://ulrich.green/og-image.svg"'),
+        homeHtml.includes(
+            'property="og:image" content="https://ulrich.green/og-image.svg"',
+        ),
         "Home page should include og:image.",
     );
     assert(
@@ -68,9 +75,7 @@ async function main() {
         "Home page should include the dark theme-color meta tag.",
     );
     assert(
-        /style="view-transition-name:article-title-[a-z0-9_-]+"/.test(
-            homeHtml,
-        ),
+        /style="view-transition-name:article-title-[a-z0-9_-]+"/.test(homeHtml),
         "Writing index links should have named view transitions.",
     );
 
@@ -96,12 +101,17 @@ async function main() {
     assert(articleHtml.includes('class="article-header__rule"'));
     assert(articleHtml.includes('class="article-header__abstract"'));
     assert(articleHtml.includes("March 1, 2025"));
-    assert(articleHtml.includes('src="/islands.js"'), "Article page with islands should include islands.js.");
+    assert(
+        articleHtml.includes('src="/islands.js"'),
+        "Article page with islands should include islands.js.",
+    );
     assert(articleHtml.includes('data-island="DemoWidget"'));
     assert(articleHtml.includes("Count the cost before you add capability."));
 
     assert(
-        articleHtml.includes('rel="canonical" href="https://ulrich.green/writing/on-tools.html"'),
+        articleHtml.includes(
+            'rel="canonical" href="https://ulrich.green/writing/on-tools.html"',
+        ),
         "Article page should include a canonical URL.",
     );
     assert(
@@ -115,7 +125,8 @@ async function main() {
     );
 
     assert(
-        article.meta.readingTime && /\d+ min read/.test(article.meta.readingTime),
+        article.meta.readingTime &&
+            /\d+ min read/.test(article.meta.readingTime),
         "Article should have a computed reading time.",
     );
     assert(
@@ -154,7 +165,8 @@ async function main() {
         "Home page should include RSS feed autodiscovery link.",
     );
 
-    const colophonPath = new URL("../content/colophon.mdx", import.meta.url).pathname;
+    const colophonPath = new URL("../content/colophon.mdx", import.meta.url)
+        .pathname;
     const colophon = await buildContent(colophonPath);
     const colophonHtml = renderPage(colophon, writingIndex);
 
@@ -167,7 +179,8 @@ async function main() {
         "Headings should have autolink anchors from rehype-autolink-headings.",
     );
 
-    const notFoundPath = new URL("../content/404.mdx", import.meta.url).pathname;
+    const notFoundPath = new URL("../content/404.mdx", import.meta.url)
+        .pathname;
     const notFound = await buildContent(notFoundPath);
     const notFoundHtml = renderPage(notFound, writingIndex);
 

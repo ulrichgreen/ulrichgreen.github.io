@@ -1,4 +1,4 @@
-import { writeDistFile } from "./dist-fs.ts";
+import { writeDistFile } from "../shared/dist-fs.ts";
 
 export function buildHeaders(): void {
     const headers = [

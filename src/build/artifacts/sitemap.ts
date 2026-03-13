@@ -1,7 +1,7 @@
 import { readdirSync } from "node:fs";
-import type { WritingIndexEntry } from "../types/content.ts";
-import { SITE_URL } from "../config.ts";
-import { writeDistFile } from "./dist-fs.ts";
+import type { WritingIndexEntry } from "../../types/content.ts";
+import { SITE_URL } from "../../config.ts";
+import { writeDistFile } from "../shared/dist-fs.ts";
 
 function toISODate(value: string): string {
     const date = new Date(value);

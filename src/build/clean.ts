@@ -1,6 +1,6 @@
 import { rmSync } from "node:fs";
 import { fileURLToPath } from "node:url";
-import { distDirectory } from "./paths.ts";
+import { distDirectory } from "./shared/paths.ts";
 
 export function cleanDist(): void {
     rmSync(distDirectory, {

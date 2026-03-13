@@ -1,16 +1,17 @@
 import { build } from "esbuild";
 import { join } from "node:path";
 import { fileURLToPath } from "node:url";
-import { ESBUILD_TARGET } from "../config.ts";
-import { distDirectory } from "./paths.ts";
+import { ESBUILD_TARGET } from "../../config.ts";
+import { distDirectory } from "../shared/paths.ts";
 
 const targets = [
     {
-        entryPoint: new URL("../client/site.ts", import.meta.url).pathname,
+        entryPoint: new URL("../../client/site.ts", import.meta.url).pathname,
         outfile: join(distDirectory, "site.js"),
     },
     {
-        entryPoint: new URL("../client/islands.ts", import.meta.url).pathname,
+        entryPoint: new URL("../../client/islands.ts", import.meta.url)
+            .pathname,
         outfile: join(distDirectory, "islands.js"),
     },
 ];
@@ -29,8 +30,6 @@ export async function buildClient(): Promise<void> {
             }),
         ),
     );
-
-    process.stdout.write("client.ts: wrote dist/site.js and dist/islands.js\n");
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {

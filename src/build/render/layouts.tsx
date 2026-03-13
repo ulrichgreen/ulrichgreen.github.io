@@ -1,7 +1,7 @@
 import type { ReactNode } from "react";
-import ArticleLayout from "../templates/article.tsx";
-import BaseLayout from "../templates/base.tsx";
-import type { PageMeta } from "../types/content.ts";
+import ArticleLayout from "../../templates/article.tsx";
+import BaseLayout from "../../templates/base.tsx";
+import type { PageMeta } from "../../types/content.ts";
 
 type LayoutRenderer = (meta: PageMeta, children: ReactNode) => ReactNode;
 

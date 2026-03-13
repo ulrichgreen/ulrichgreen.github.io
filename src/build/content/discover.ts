@@ -1,6 +1,10 @@
 import { mkdirSync, readdirSync, rmSync } from "node:fs";
 import { join, relative } from "node:path";
-import { contentDirectory, distDirectory, writingDirectory } from "./paths.ts";
+import {
+    contentDirectory,
+    distDirectory,
+    writingDirectory,
+} from "../shared/paths.ts";
 
 export function discoverSourceFiles(): string[] {
     const topLevelPages = readdirSync(contentDirectory)

@@ -1,7 +1,7 @@
-import type { BuiltContent, WritingIndexEntry } from "../types/content.ts";
-import { SITE_URL } from "../config.ts";
-import { writeDistFile } from "./dist-fs.ts";
-import { renderContentBody } from "./render-react-page.tsx";
+import type { BuiltContent, WritingIndexEntry } from "../../types/content.ts";
+import { SITE_URL } from "../../config.ts";
+import { writeDistFile } from "../shared/dist-fs.ts";
+import { renderContentBody } from "../render/render-react-page.tsx";
 
 function toISOTimestamp(value: string): string {
     const date = new Date(value);
@@ -35,7 +35,11 @@ export async function buildFeed(
 
     const contentBySlug = new Map<string, BuiltContent>();
     for (const content of compiledWriting) {
-        const slug = content.sourcePath.split("/").pop()?.replace(/\.mdx$/, "") ?? "";
+        const slug =
+            content.sourcePath
+                .split("/")
+                .pop()
+                ?.replace(/\.mdx$/, "") ?? "";
         contentBySlug.set(slug, content);
     }
 
@@ -45,7 +49,7 @@ export async function buildFeed(
         const content = contentBySlug.get(entry.slug);
         if (!content) {
             process.stderr.write(
-                `feed.ts: no compiled content for "${entry.slug}", skipping feed entry\n`,
+                `  skip  feed entry "${entry.slug}" — no compiled content\n`,
             );
             continue;
         }

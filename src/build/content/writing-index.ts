@@ -1,7 +1,7 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parseFrontmatter } from "./frontmatter.ts";
-import type { WritingIndexEntry } from "../types/content.ts";
+import type { WritingIndexEntry } from "../../types/content.ts";
 
 export function listWritingEntries(directory: string): WritingIndexEntry[] {
     const allEntries = readdirSync(directory)
@@ -38,7 +38,7 @@ export function listWritingEntries(directory: string): WritingIndexEntry[] {
         );
         for (const entry of missing) {
             process.stderr.write(
-                `writing-index.ts: skipping "${entry.slug}" (missing or invalid title/published date)\n`,
+                `  skip  "${entry.slug}" — missing title or published date\n`,
             );
         }
     }

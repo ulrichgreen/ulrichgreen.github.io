@@ -1,9 +1,9 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { dirname } from "node:path";
-import type { AssetManifest } from "./asset-manifest.ts";
-import { resolveOutputPath } from "./discover.ts";
+import type { AssetManifest } from "../assets/asset-manifest.ts";
+import { resolveOutputPath } from "../content/discover.ts";
 import { renderPage } from "./render-react-page.tsx";
-import type { BuiltContent, WritingIndexEntry } from "../types/content.ts";
+import type { BuiltContent, WritingIndexEntry } from "../../types/content.ts";
 
 export function writePages(
     compiled: BuiltContent[],
@@ -13,6 +13,9 @@ export function writePages(
     for (const page of compiled) {
         const outputPath = resolveOutputPath(page.sourcePath);
         mkdirSync(dirname(outputPath), { recursive: true });
-        writeFileSync(outputPath, renderPage(page, writingIndex, assetManifest));
+        writeFileSync(
+            outputPath,
+            renderPage(page, writingIndex, assetManifest),
+        );
     }
 }

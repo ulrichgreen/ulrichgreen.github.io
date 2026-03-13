@@ -1,8 +1,8 @@
 import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
-import { buildContent } from "../src/build/build-content.ts";
-import { renderPage } from "../src/build/render-react-page.tsx";
-import { listWritingEntries } from "../src/build/writing-index.ts";
+import { buildContent } from "../src/build/content/build-content.ts";
+import { renderPage } from "../src/build/render/render-react-page.tsx";
+import { listWritingEntries } from "../src/build/content/writing-index.ts";
 
 function extractBlock(source: string, pattern: RegExp, label: string) {
     const match = source.match(pattern);
@@ -174,11 +174,12 @@ async function main() {
     const codeFigureMatch = codeCss.match(
         /\[data-rehype-pretty-code-figure\]\s*\{([\s\S]*?)\n\s*\}/,
     );
-    assert(codeFigureMatch?.[1], "Could not find highlighted code figure styles.");
     assert(
-        /--code-bleed:\s*var\(--gutter\);/.test(
-            codeFigureMatch[1],
-        ),
+        codeFigureMatch?.[1],
+        "Could not find highlighted code figure styles.",
+    );
+    assert(
+        /--code-bleed:\s*var\(--gutter\);/.test(codeFigureMatch[1]),
         "Highlighted code blocks should reach the viewport edge on narrow screens.",
     );
     assert(
