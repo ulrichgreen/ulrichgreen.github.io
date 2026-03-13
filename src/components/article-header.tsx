@@ -56,6 +56,7 @@ export function ArticleHeader({
     readingTime,
     note,
     titleTransitionName,
+    seriesName,
 }: {
     title?: string;
     description?: string;
@@ -67,12 +68,13 @@ export function ArticleHeader({
     readingTime?: string;
     note?: string;
     titleTransitionName?: string;
+    seriesName?: string;
 }) {
     const publishedIso = safeISODate(published);
     const revisedIso = safeISODate(revised);
     const revisedDate = formatDate(revised);
     const publishedDate = formatDate(published);
-    const kickerSection = section || "Writing";
+    const kickerSection = seriesName || section || "Writing";
     const lengthLabel = [readingTime, words ? `${String(words)} words` : ""]
         .filter(Boolean)
         .join(" · ");

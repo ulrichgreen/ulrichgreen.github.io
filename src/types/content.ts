@@ -14,6 +14,22 @@ export interface PageMeta {
     note?: string;
     summary?: string;
     pagePath?: string;
+    series?: string;
+    seriesOrder?: number;
+}
+
+export interface SeriesEntry {
+    title: string;
+    slug: string;
+    href: string;
+    order: number;
+    published: string;
+}
+
+export interface SeriesInfo {
+    name: string;
+    entries: SeriesEntry[];
+    currentOrder: number;
 }
 
 export interface FrontmatterPayload {
@@ -40,6 +56,8 @@ export interface WritingIndexEntry extends PageMeta {
     published: string;
     slug: string;
     href: string;
+    series?: string;
+    seriesOrder?: number;
 }
 
 export interface BaseLayoutProps {
@@ -50,6 +68,7 @@ export interface BaseLayoutProps {
     published?: string;
     revised?: string;
     mainClassName?: string;
+    seriesName?: string;
     children?: ReactNode;
 }
 
@@ -59,4 +78,5 @@ export interface ArticleLayoutProps extends BaseLayoutProps {
     words?: number | string;
     readingTime?: string;
     note?: string;
+    seriesInfo?: SeriesInfo;
 }

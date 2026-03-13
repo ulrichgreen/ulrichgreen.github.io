@@ -18,6 +18,8 @@ export function listWritingEntries(directory: string): WritingIndexEntry[] {
                 published: String(meta.published || ""),
                 slug,
                 href: `/writing/${slug}.html`,
+                series: meta.series,
+                seriesOrder: meta.seriesOrder,
             } satisfies WritingIndexEntry;
         });
 

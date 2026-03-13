@@ -22,6 +22,8 @@ const contentMetaSchema = z
             .optional(),
         note: z.string().trim().min(1).optional(),
         summary: z.string().trim().min(1).optional(),
+        series: z.string().trim().min(1).optional(),
+        seriesOrder: z.number().int().positive().optional(),
     })
     .transform((meta) => ({
         ...meta,

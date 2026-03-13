@@ -1,7 +1,7 @@
 import { createElement } from "react";
 import { renderToStaticMarkup } from "react-dom/server";
 import { getContentComponents } from "../../content-components.tsx";
-import type { BuiltContent, WritingIndexEntry } from "../../types/content.ts";
+import type { BuiltContent, SeriesInfo, WritingIndexEntry } from "../../types/content.ts";
 import type { RegisterIslandInput } from "../../types/islands.ts";
 import type { AssetManifest } from "../assets/asset-manifest.ts";
 import { renderLayout } from "./layouts.tsx";
@@ -54,6 +54,7 @@ export function renderPage(
     content: BuiltContent,
     writingIndex: WritingIndexEntry[],
     assetManifest: AssetManifest = defaultAssetManifest,
+    seriesInfo?: SeriesInfo,
 ): string {
     const { context } = createRenderContext(writingIndex, assetManifest);
 
@@ -66,7 +67,7 @@ export function renderPage(
         components: getContentComponents(),
     });
 
-    const page = renderLayout(meta, body);
+    const page = renderLayout(meta, body, seriesInfo);
 
     return `<!doctype html>\n${renderToStaticMarkup(
         <RenderContext.Provider value={context}>{page}</RenderContext.Provider>,

@@ -21,6 +21,7 @@ export default function BaseLayout({
     published,
     revised,
     mainClassName = "page",
+    seriesName,
     children,
 }: BaseLayoutProps) {
     const { assetManifest } = useRenderContext();
@@ -34,6 +35,7 @@ export default function BaseLayout({
                 published={published}
                 revised={revised}
                 cssHref={`/${assetManifest["style.css"]}`}
+                seriesName={seriesName}
             />
             <body>
                 <div id="progress" aria-hidden="true"></div>

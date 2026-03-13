@@ -1,13 +1,13 @@
 import type { ReactNode } from "react";
 import ArticleLayout from "../../templates/article.tsx";
 import BaseLayout from "../../templates/base.tsx";
-import type { PageMeta } from "../../types/content.ts";
+import type { PageMeta, SeriesInfo } from "../../types/content.ts";
 
-type LayoutRenderer = (meta: PageMeta, children: ReactNode) => ReactNode;
+type LayoutRenderer = (meta: PageMeta, children: ReactNode, seriesInfo?: SeriesInfo) => ReactNode;
 
 const layoutRegistry = {
-    article: (meta, children) => (
-        <ArticleLayout {...meta}>{children}</ArticleLayout>
+    article: (meta, children, seriesInfo) => (
+        <ArticleLayout {...meta} seriesInfo={seriesInfo}>{children}</ArticleLayout>
     ),
     base: (meta, children) => (
         <BaseLayout
@@ -21,6 +21,6 @@ const layoutRegistry = {
     ),
 } satisfies Record<PageMeta["layout"], LayoutRenderer>;
 
-export function renderLayout(meta: PageMeta, children: ReactNode): ReactNode {
-    return layoutRegistry[meta.layout](meta, children);
+export function renderLayout(meta: PageMeta, children: ReactNode, seriesInfo?: SeriesInfo): ReactNode {
+    return layoutRegistry[meta.layout](meta, children, seriesInfo);
 }

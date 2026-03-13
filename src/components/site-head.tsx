@@ -16,6 +16,7 @@ export function SiteHead({
     published,
     revised,
     cssHref,
+    seriesName,
 }: {
     title?: string;
     description?: string;
@@ -23,6 +24,7 @@ export function SiteHead({
     published?: string;
     revised?: string;
     cssHref?: string;
+    seriesName?: string;
 }) {
     const canonicalUrl = pagePath ? `${SITE_URL}${pagePath}` : undefined;
     const ogType = pagePath?.startsWith("/writing/") ? "article" : "website";
@@ -90,6 +92,14 @@ export function SiteHead({
                                 name: "Ulrich Green",
                                 url: "https://ulrich.green",
                             },
+                            ...(seriesName
+                                ? {
+                                      isPartOf: {
+                                          "@type": "CreativeWorkSeries",
+                                          name: seriesName,
+                                      },
+                                  }
+                                : {}),
                         }),
                     }}
                 />
