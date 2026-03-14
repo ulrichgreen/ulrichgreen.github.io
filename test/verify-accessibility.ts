@@ -119,13 +119,22 @@ async function main() {
         "Primary navigation should stay visible on small screens.",
     );
 
-    const articleTitleMatch = componentsCss.match(
-        /\.article-header h1\s*\{([\s\S]*?)\n\s*\}/,
-    );
-    assert(articleTitleMatch?.[1], "Could not find article title styles.");
+    const sharedTitleMatch = componentsCss.match(/\.title\s*\{([\s\S]*?)\n\s*\}/);
+    assert(sharedTitleMatch?.[1], "Could not find shared title styles.");
     assert(
-        /max-width:\s*20ch;/.test(articleTitleMatch[1]),
+        /max-width:\s*var\(--title-measure,\s*20ch\);/.test(sharedTitleMatch[1]),
         "Article titles should allow a wider measure.",
+    );
+
+    const cardMatch = componentsCss.match(/\.card\s*\{([\s\S]*?)\n\s*\}/);
+    assert(cardMatch?.[1], "Could not find shared card styles.");
+    assert(
+        /border:\s*1px solid var\(--color-border\);/.test(cardMatch[1]),
+        "Shared cards should keep the site border treatment.",
+    );
+    assert(
+        /background-color:\s*color-mix\(/.test(cardMatch[1]),
+        "Shared cards should use the raised surface treatment.",
     );
 
     const pageTitleMatch = componentsCss.match(
@@ -159,6 +168,13 @@ async function main() {
     assert(
         /padding-inline:\s*var\(--layout-gutter\);/.test(pageLayoutMatch[1]),
         "The default page layout should use gutter padding on narrow screens.",
+    );
+
+    const containerMatch = layoutCss.match(/\.container\s*\{([\s\S]*?)\n\s*\}/);
+    assert(containerMatch?.[1], "Could not find shared container styles.");
+    assert(
+        /padding-inline:\s*var\(--layout-gutter\);/.test(containerMatch[1]),
+        "Shared containers should align to the page gutter.",
     );
 
     const desktopLayoutBlock = extractBlock(

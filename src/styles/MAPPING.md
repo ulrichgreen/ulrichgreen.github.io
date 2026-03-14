@@ -5,8 +5,14 @@
 | `.hero__kicker` | `.label` | Replaces mono/uppercase/tracked/tiny/muted block |
 | `.hero__name` | `.heading-display` | Display serif heading |
 | `.hero__meta` | `.label` | Mono label pattern |
+| `.header__eyebrow` | — | Shared kicker layout and rule for hero/article headers |
+| `.title` | — | Shared title measure used by hero/article/series headings |
+| `.lede` | — | Shared serif intro copy for hero/article summaries |
+| `.header__meta` | — | Shared metadata container for hero/article headers |
+| `.card` | — | Shared bordered raised surface for boxed components |
+| `.container` | — | Shared max-width and gutter wrapper for full-width regions |
 | `.article-header__kicker` | `.label` | Same label pattern |
-| `.article-header h1` | `.heading-display` | Display serif heading |
+| `.article-header .title` | `.heading-display` | Display serif heading |
 | `.article-meta` | `.label` | Same label pattern |
 | `.article-header__abstract` | — | Keeps local serif italic override |
 | `.article-footer` | `.label` | Same label pattern |
@@ -28,7 +34,7 @@
 | `.series-nav__title` | — | Fluid italic, local style |
 | `.series-nav__link` | `.body-sm` | Small body text for link titles |
 | `article blockquote p` | — | Fluid quote size, local |
-| `.writing-list a` | — | Fluid link size |
+| `.writing-list__link` | — | Fluid link size |
 | `.page > h1:first-child` | — | Display-sm heading, kept local |
 | `.demo-widget__value` | `.mono` | Mono display value |
 | `.demo-widget__prompt` | — | Sans small text |

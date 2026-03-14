@@ -35,15 +35,15 @@ export function Hero({
 
     return (
         <section
-            className={`hero${hasPortrait ? " hero--has-portrait" : ""}`}
+            className={`section header hero${hasPortrait ? " hero--has-portrait" : ""}`}
             aria-labelledby="hero-name"
         >
-            <p className="hero__kicker label" aria-hidden="true">
+            <p className="hero__kicker header__eyebrow label" aria-hidden="true">
                 Product engineer & designer
             </p>
 
             <div className="hero__body">
-                <h1 className="hero__name heading-display" id="hero-name">
+                <h1 className="hero__name title heading-display" id="hero-name">
                     Ulrich{" "}
                     <em>Green</em>
                 </h1>
@@ -64,11 +64,11 @@ export function Hero({
                 )}
             </div>
 
-            <div className="hero__rule" role="presentation" />
+            <div className="hero__rule header__rule" role="presentation" />
 
-            <p className="hero__tagline">{tagline}</p>
+            <p className="hero__tagline lede">{tagline}</p>
 
-            <p className="hero__meta label" aria-label="About">
+            <p className="hero__meta header__meta label" aria-label="About">
                 <span>London</span>
                 <span className="hero__meta-dot" aria-hidden="true">·</span>
                 <span>ulrich.green</span>

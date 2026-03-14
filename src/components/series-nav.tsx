@@ -12,10 +12,10 @@ export function SeriesNav({ seriesInfo }: { seriesInfo: SeriesInfo }) {
     const current = currentIndex + 1;
 
     return (
-        <nav className="series-nav" aria-label={`${name} series navigation`}>
+        <nav className="section semi-bleed card series-nav" aria-label={`${name} series navigation`}>
             <div className="series-nav__header">
                 <p className="series-nav__label label">Series</p>
-                <p className="series-nav__title">{name}</p>
+                <p className="series-nav__title title">{name}</p>
                 <p className="series-nav__progress label">
                     Part {current} of {total}
                 </p>

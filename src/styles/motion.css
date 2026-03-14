@@ -66,27 +66,27 @@
 
     .page > h1:first-child,
     .writing-list,
-    .article-header__kicker,
-    .article-header h1,
-    .article-header__rule,
-    .article-meta {
+    .article-header .header__eyebrow,
+    .article-header .title,
+    .article-header .header__rule,
+    .article-header .header__meta {
         animation: fade-up 0.7s var(--easing-default) both;
     }
 
     .page > h1:first-child,
-    .article-header__kicker {
+    .article-header .header__eyebrow {
         animation-delay: 0.1s;
     }
 
-    .article-header h1 {
+    .article-header .title {
         animation-delay: 0.2s;
     }
 
-    .article-header__rule {
+    .article-header .header__rule {
         animation-delay: 0.32s;
     }
 
-    .article-meta,
+    .article-header .header__meta,
     .writing-list {
         animation-delay: 0.42s;
     }

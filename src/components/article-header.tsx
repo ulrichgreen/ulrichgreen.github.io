@@ -80,13 +80,13 @@ export function ArticleHeader({
         .join(" · ");
 
     return (
-        <header className="article-header">
-            <p className="article-header__kicker label">
+        <header className="section header article-header">
+            <p className="article-header__kicker header__eyebrow label">
                 <span>{kickerSection}</span>
                 <span>{kickerType || "Essay"}</span>
             </p>
             <h1
-                className="heading-display"
+                className="title heading-display"
                 style={
                     titleTransitionName
                         ? { viewTransitionName: titleTransitionName }
@@ -95,8 +95,8 @@ export function ArticleHeader({
             >
                 {title || ""}
             </h1>
-            <div className="article-header__rule" aria-hidden="true"></div>
-            <div className="article-meta label">
+            <div className="article-header__rule header__rule" aria-hidden="true"></div>
+            <div className="article-meta header__meta label">
                 {publishedDate && (
                     <p className="article-header__byline">
                         Published
@@ -120,7 +120,7 @@ export function ArticleHeader({
                     </p>
                 )}
                 {description && (
-                    <p className="article-header__abstract">{description}</p>
+                    <p className="article-header__abstract lede">{description}</p>
                 )}
             </div>
             {note && <p className="author-note">{note}</p>}

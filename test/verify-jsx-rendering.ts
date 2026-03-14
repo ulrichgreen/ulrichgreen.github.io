@@ -26,7 +26,11 @@ async function main() {
         "Home page should not include islands.js (no islands present).",
     );
     assert(homeHtml.includes('id="progress" aria-hidden="true"'));
-    assert(homeHtml.includes('<ul class="writing-list">'));
+    assert(homeHtml.includes('class="site-header full-bleed"'));
+    assert(homeHtml.includes('class="site-nav container label"'));
+    assert(homeHtml.includes('class="section header hero hero--has-portrait"'));
+    assert(homeHtml.includes('<ul class="section writing-list">'));
+    assert(homeHtml.includes('class="writing-list__item"'));
     assert(homeHtml.includes("On Constraints"));
     assert(homeHtml.includes('class="site-logo"'));
 
@@ -96,14 +100,16 @@ async function main() {
     );
     assert(
         articleHtml.includes(
-            '<h1 class="heading-display" style="view-transition-name:article-title-on-tools"',
+            '<h1 class="title heading-display" style="view-transition-name:article-title-on-tools"',
         ),
         "Article title should have a named view transition.",
     );
     assert(articleHtml.includes('class="page page--article"'));
-    assert(articleHtml.includes('class="article-header__kicker label"'));
-    assert(articleHtml.includes('class="article-header__rule"'));
-    assert(articleHtml.includes('class="article-header__abstract"'));
+    assert(articleHtml.includes('class="section header article-header"'));
+    assert(articleHtml.includes('class="article-header__kicker header__eyebrow label"'));
+    assert(articleHtml.includes('class="article-header__rule header__rule"'));
+    assert(articleHtml.includes('class="article-header__abstract lede"'));
+    assert(articleHtml.includes('class="section article-body"'));
     assert(articleHtml.includes("March 1, 2025"));
     assert(
         articleHtml.includes('src="/islands.js"'),
@@ -258,8 +264,12 @@ async function main() {
     const markupHtml = renderPage(markup, writingIndex, undefined, markupSeriesInfo);
 
     assert(
-        markupHtml.includes('class="series-nav"'),
+        markupHtml.includes('class="section semi-bleed card series-nav"'),
         "Series article should render the series-nav component.",
+    );
+    assert(
+        markupHtml.includes('class="series-nav__title title"'),
+        "Series nav should use the shared title class.",
     );
     assert(
         markupHtml.includes('aria-label="The Web Trilogy series navigation"'),

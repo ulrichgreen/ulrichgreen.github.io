@@ -44,9 +44,9 @@ export default function ArticleLayout({
                     titleTransitionName={getArticleTitleTransitionName(pagePath)}
                     seriesName={seriesInfo?.name}
                 />
-                <div className="article-body">{children}</div>
+                <div className="section article-body">{children}</div>
                 {seriesInfo && <SeriesNav seriesInfo={seriesInfo} />}
-                <footer className="article-footer label">
+                <footer className="section article-footer label">
                     <a href="/index.html">← All writing</a>
                 </footer>
             </article>

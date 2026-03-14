@@ -46,8 +46,9 @@ function EntryItem({ entry }: { entry: WritingIndexEntry }) {
     const titleTransitionName = getArticleTitleTransitionName(entry.slug);
 
     return (
-        <li>
+        <li className="writing-list__item">
             <a
+                className="writing-list__link"
                 href={entry.href}
                 style={
                     titleTransitionName
@@ -68,7 +69,7 @@ export function ArticleList({ items }: { items?: WritingIndexEntry[] }) {
     const { standalone, series, seriesOrder } = groupBySeries(entries);
 
     return (
-        <ul className="writing-list">
+        <ul className="section writing-list">
             {seriesOrder.map((seriesName) => {
                 const group = series.get(seriesName) ?? [];
                 return [
