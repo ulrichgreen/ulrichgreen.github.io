@@ -12,11 +12,6 @@
         align-items: center;
         gap: 1rem;
         margin-block-end: clamp(1.5rem, 4vw, 2.5rem);
-        font-family: var(--type-family-mono);
-        font-size: var(--type-size-2xs);
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: var(--color-text-secondary);
     }
 
     .hero__kicker::before {
@@ -39,10 +34,6 @@
     .hero__name {
         flex: 1;
         margin: 0;
-        font-size: var(--type-size-display);
-        font-weight: 400;
-        line-height: var(--type-leading-display);
-        letter-spacing: -0.025em;
     }
 
     /* Upright forename / italic surname — a classic typographic distinction */
@@ -119,11 +110,6 @@
         gap: 0.75rem 1rem;
         margin-block-start: clamp(1.25rem, 3vw, 2rem);
         margin-block-end: 0;
-        font-family: var(--type-family-mono);
-        font-size: var(--type-size-2xs);
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--color-text-secondary);
     }
 
     .hero__meta a {
@@ -154,11 +140,6 @@
         padding: 0.6rem var(--layout-gutter);
         background-color: var(--color-surface-base);
         border-block-end: 1px solid var(--color-border);
-        font-family: var(--type-family-mono);
-        font-size: var(--type-size-2xs);
-        text-transform: uppercase;
-        letter-spacing: 0.18em;
-        color: var(--color-text-secondary);
         transition: opacity 0.3s var(--easing-default);
     }
 
@@ -208,11 +189,6 @@
         align-items: center;
         gap: 1rem;
         margin-block-end: 1.8rem;
-        font-family: var(--type-family-mono);
-        font-size: var(--type-size-2xs);
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: var(--color-text-secondary);
     }
 
     .article-header__kicker::before {
@@ -226,10 +202,6 @@
     .article-header h1 {
         max-width: 20ch;
         margin-block-end: 2.5rem;
-        font-size: var(--type-size-display);
-        line-height: var(--type-leading-display);
-        font-weight: 400;
-        letter-spacing: -0.02em;
     }
 
     .article-header__rule {
@@ -248,11 +220,6 @@
         flex-wrap: wrap;
         gap: 2rem;
         align-items: flex-start;
-        font-family: var(--type-family-mono);
-        font-size: var(--type-size-2xs);
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        color: var(--color-text-secondary);
     }
 
     .article-header__byline {
@@ -296,11 +263,6 @@
     .article-footer {
         padding-block-start: clamp(2rem, 5vw, 4rem);
         border-block-start: 1px solid var(--color-border);
-        font-family: var(--type-family-mono);
-        font-size: var(--type-size-2xs);
-        letter-spacing: 0.14em;
-        text-transform: uppercase;
-        color: var(--color-text-secondary);
     }
 
     .article-footer a {
@@ -412,13 +374,6 @@
         text-decoration: none;
         font-size: var(--type-size-fluid-lg);
         line-height: 1.25;
-    }
-
-    .writing-list time {
-        font-family: var(--type-family-mono);
-        font-size: var(--type-size-2xs);
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
     }
 
     .margin-note {
@@ -630,14 +585,6 @@
         margin-block-end: 1.25rem;
     }
 
-    .series-nav__label {
-        font-family: var(--type-family-mono);
-        font-size: var(--type-size-2xs);
-        letter-spacing: 0.2em;
-        text-transform: uppercase;
-        color: var(--color-text-secondary);
-    }
-
     .series-nav__title {
         font-size: var(--type-size-fluid-md);
         line-height: 1.3;
@@ -648,11 +595,6 @@
 
     .series-nav__progress {
         margin-inline-start: auto;
-        font-family: var(--type-family-mono);
-        font-size: var(--type-size-2xs);
-        letter-spacing: 0.15em;
-        text-transform: uppercase;
-        color: var(--color-text-secondary);
     }
 
     .series-nav__track {
@@ -690,10 +632,6 @@
 
     .series-nav__ordinal {
         flex-shrink: 0;
-        font-family: var(--type-family-mono);
-        font-size: var(--type-size-2xs);
-        letter-spacing: 0.1em;
-        color: var(--color-text-secondary);
     }
 
     .series-nav__item--current .series-nav__ordinal {
@@ -729,11 +667,6 @@
 
     .series-nav__prev,
     .series-nav__next {
-        font-family: var(--type-family-mono);
-        font-size: var(--type-size-2xs);
-        letter-spacing: 0.12em;
-        text-transform: uppercase;
-        color: var(--color-text-secondary);
         text-decoration: none;
         transition: color 0.2s var(--easing-default);
         line-height: 1.6;
@@ -755,11 +688,6 @@
         margin-block-start: var(--space-3);
         padding-block-end: 0.5rem;
         border-block-end: 1px solid var(--color-border);
-        font-family: var(--type-family-mono);
-        font-size: var(--type-size-2xs);
-        letter-spacing: 0.18em;
-        text-transform: uppercase;
-        color: var(--color-text-secondary);
     }
 
     .writing-list__series-label:first-child {

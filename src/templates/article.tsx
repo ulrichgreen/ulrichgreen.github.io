@@ -46,7 +46,7 @@ export default function ArticleLayout({
                 />
                 <div className="article-body">{children}</div>
                 {seriesInfo && <SeriesNav seriesInfo={seriesInfo} />}
-                <footer className="article-footer">
+                <footer className="article-footer label">
                     <a href="/index.html">← All writing</a>
                 </footer>
             </article>
