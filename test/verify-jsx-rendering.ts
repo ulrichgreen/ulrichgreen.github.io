@@ -28,7 +28,7 @@ async function main() {
     assert(homeHtml.includes('id="progress" aria-hidden="true"'));
     assert(homeHtml.includes('<ul class="writing-list">'));
     assert(homeHtml.includes("On Constraints"));
-    assert(homeHtml.includes('class="page-header__section">home</span>'));
+    assert(homeHtml.includes('class="site-logo"'));
 
     assert(
         homeHtml.includes(

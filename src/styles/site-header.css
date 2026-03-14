@@ -1,0 +1,111 @@
+@layer components {
+    /* ─── Site nav ───────────────────────────────────────────── */
+
+    .site-nav {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: var(--space-4);
+        padding-block: var(--space-3);
+        border-block-end: 1px solid var(--c-rule);
+        font-family: var(--ff-mono);
+        font-size: 0.62rem;
+        text-transform: uppercase;
+        letter-spacing: 0.18em;
+        color: var(--c-muted);
+    }
+
+    .site-nav__group {
+        display: flex;
+        gap: var(--space-3);
+        align-items: center;
+        flex: 1;
+    }
+
+    .site-nav__group--right {
+        justify-content: flex-end;
+    }
+
+    .site-nav a {
+        color: var(--c-muted);
+        text-decoration: none;
+        transition: color 0.2s var(--ease-out);
+    }
+
+    .site-nav a:hover,
+    .site-nav a:focus-visible {
+        color: var(--c-text);
+    }
+
+    /* Logo */
+
+    .site-logo {
+        display: inline-flex;
+        align-items: baseline;
+        font-family: var(--ff-mono);
+        font-size: 0.9rem;
+        letter-spacing: 0.05em;
+        text-transform: lowercase;
+        color: var(--c-text);
+        text-decoration: none;
+        white-space: nowrap;
+        flex-shrink: 0;
+    }
+
+    .site-logo:hover,
+    .site-logo:focus-visible {
+        outline: none;
+    }
+
+    .site-logo__brace {
+        color: var(--c-muted);
+        transition: color 0.25s var(--ease-out);
+    }
+
+    .site-logo:hover .site-logo__brace,
+    .site-logo:focus-visible .site-logo__brace {
+        color: var(--c-accent);
+    }
+
+    .site-logo__name {
+        display: inline-flex;
+        align-items: baseline;
+    }
+
+    .site-logo__core {
+        display: inline-block;
+    }
+
+    .site-logo__char {
+        display: inline-block;
+        overflow: hidden;
+        max-width: 0;
+        opacity: 0;
+        transition:
+            max-width 0.12s var(--ease-out) calc(var(--logo-i, 1) * 0.045s),
+            opacity 0.1s var(--ease-out) calc(var(--logo-i, 1) * 0.045s);
+    }
+
+    .site-logo:hover .site-logo__char,
+    .site-logo:focus-visible .site-logo__char {
+        max-width: 1.2ch;
+        opacity: 1;
+    }
+
+    @media (prefers-reduced-motion: reduce) {
+        .site-logo__char {
+            transition: none;
+        }
+    }
+
+    @media (max-width: 820px) {
+        .site-nav {
+            gap: var(--space-2);
+            padding-block: var(--space-2);
+        }
+
+        .site-nav__group {
+            gap: var(--space-2);
+        }
+    }
+}

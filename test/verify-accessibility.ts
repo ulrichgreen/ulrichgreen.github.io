@@ -96,17 +96,22 @@ async function main() {
         import.meta.url,
     ).pathname;
     const componentsCss = readFileSync(componentsPath, "utf8");
+    const siteHeaderPath = new URL(
+        "../src/styles/site-header.css",
+        import.meta.url,
+    ).pathname;
+    const siteHeaderCss = readFileSync(siteHeaderPath, "utf8");
     const layoutPath = new URL("../src/styles/layout.css", import.meta.url)
         .pathname;
     const layoutCss = readFileSync(layoutPath, "utf8");
     const mobileBlock = extractBlock(
-        componentsCss,
-        /@media \(max-width: 820px\)\s*\{([\s\S]*)\}\s*$/,
-        "mobile components",
+        siteHeaderCss,
+        /@media \(max-width: 820px\)\s*\{([\s\S]*)\}\s*\}\s*$/,
+        "mobile site-header",
     );
 
     const mobileNavMatch = mobileBlock.match(
-        /\.page-header__nav\s*\{([\s\S]*?)\n\s*\}/,
+        /\.site-nav\s*\{([\s\S]*?)\n\s*\}/,
     );
     assert(mobileNavMatch?.[1], "Could not find small-screen nav styles.");
     assert(

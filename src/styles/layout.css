@@ -72,7 +72,6 @@
                 minmax(var(--gutter), 1fr);
             justify-content: stretch;
             padding-inline: 0;
-            padding-block-start: var(--header-h);
         }
 
         .page > *,

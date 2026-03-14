@@ -42,7 +42,7 @@ export default function BaseLayout({
                 <a className="skip-link" href="#main-content">
                     Skip to content
                 </a>
-                <PageHeader section={section} title={title} />
+                <PageHeader />
                 <main id="main-content" className={mainClassName}>
                     {children}
                 </main>
