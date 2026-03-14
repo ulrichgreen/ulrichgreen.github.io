@@ -29,7 +29,7 @@
         min-width: 0;
     }
 
-    article > .section + .section {
+    article > :is(.article-body, .series-nav, .article-footer).section {
         margin-block-start: clamp(2.5rem, 7vw, 6rem);
     }
 
