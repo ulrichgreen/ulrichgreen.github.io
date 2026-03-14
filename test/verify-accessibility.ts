@@ -57,14 +57,14 @@ async function main() {
         "dark mode root",
     );
 
-    const rootBg = extractColor(rootBlock, "c-bg");
-    const rootText = extractColor(rootBlock, "c-text");
-    const rootMuted = extractColor(rootBlock, "c-muted");
-    const rootAccent = extractColor(rootBlock, "c-accent");
-    const darkBg = extractColor(darkBlock, "c-bg");
-    const darkText = extractColor(darkBlock, "c-text");
-    const darkMuted = extractColor(darkBlock, "c-muted");
-    const darkAccent = extractColor(darkBlock, "c-accent");
+    const rootBg = extractColor(rootBlock, "color-surface-base");
+    const rootText = extractColor(rootBlock, "color-text-primary");
+    const rootMuted = extractColor(rootBlock, "color-text-secondary");
+    const rootAccent = extractColor(rootBlock, "color-accent");
+    const darkBg = extractColor(darkBlock, "color-surface-base");
+    const darkText = extractColor(darkBlock, "color-text-primary");
+    const darkMuted = extractColor(darkBlock, "color-text-secondary");
+    const darkAccent = extractColor(darkBlock, "color-accent");
 
     assert(
         contrastRatio(rootText, rootBg) >= 4.5,
@@ -151,13 +151,13 @@ async function main() {
     const pageLayoutMatch = layoutCss.match(/\.page\s*\{([\s\S]*?)\n\s*\}/);
     assert(pageLayoutMatch?.[1], "Could not find page layout styles.");
     assert(
-        /grid-template-columns:\s*minmax\(0,\s*var\(--measure\)\);/.test(
+        /grid-template-columns:\s*minmax\(0,\s*var\(--layout-content-width\)\);/.test(
             pageLayoutMatch[1],
         ),
         "The default page layout should start from a single mobile column.",
     );
     assert(
-        /padding-inline:\s*var\(--gutter\);/.test(pageLayoutMatch[1]),
+        /padding-inline:\s*var\(--layout-gutter\);/.test(pageLayoutMatch[1]),
         "The default page layout should use gutter padding on narrow screens.",
     );
 
@@ -167,7 +167,7 @@ async function main() {
         "desktop layout",
     );
     assert(
-        /grid-template-columns:\s*minmax\(var\(--gutter\),\s*1fr\)\s*minmax\(0,\s*var\(--measure\)\)\s*minmax\(var\(--gutter\),\s*1fr\);/.test(
+        /grid-template-columns:\s*minmax\(var\(--layout-gutter\),\s*1fr\)\s*minmax\(0,\s*var\(--layout-content-width\)\)\s*minmax\(var\(--layout-gutter\),\s*1fr\);/.test(
             desktopLayoutBlock,
         ),
         "Wider screens should restore the three-column page grid.",
@@ -184,7 +184,7 @@ async function main() {
         "Could not find highlighted code figure styles.",
     );
     assert(
-        /--code-bleed:\s*var\(--gutter\);/.test(codeFigureMatch[1]),
+        /--code-bleed:\s*var\(--layout-gutter\);/.test(codeFigureMatch[1]),
         "Highlighted code blocks should reach the viewport edge on narrow screens.",
     );
     assert(
@@ -219,7 +219,7 @@ async function main() {
         "desktop code",
     );
     assert(
-        /--code-bleed:\s*min\(var\(--space-4\),\s*var\(--gutter\)\);/.test(
+        /--code-bleed:\s*min\(var\(--space-4\),\s*var\(--layout-gutter\)\);/.test(
             desktopCodeBlock,
         ),
         "Wider screens should restore the measured code bleed.",

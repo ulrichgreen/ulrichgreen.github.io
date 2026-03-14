@@ -7,12 +7,7 @@
         justify-content: center;
         gap: var(--space-4);
         padding-block: var(--space-3);
-        border-block-end: 1px solid var(--c-rule);
-        font-family: var(--ff-mono);
-        font-size: 0.62rem;
-        text-transform: uppercase;
-        letter-spacing: 0.18em;
-        color: var(--c-muted);
+        border-block-end: 1px solid var(--color-border);
     }
 
     .site-nav__group {
@@ -27,14 +22,14 @@
     }
 
     .site-nav a {
-        color: var(--c-muted);
+        color: var(--color-text-secondary);
         text-decoration: none;
-        transition: color 0.2s var(--ease-out);
+        transition: color 0.2s var(--easing-default);
     }
 
     .site-nav a:hover,
     .site-nav a:focus-visible {
-        color: var(--c-text);
+        color: var(--color-text-primary);
     }
 
     /* Logo */
@@ -42,11 +37,11 @@
     .site-logo {
         display: inline-flex;
         align-items: baseline;
-        font-family: var(--ff-mono);
+        font-family: var(--type-family-mono);
         font-size: 0.9rem;
         letter-spacing: 0.05em;
         text-transform: lowercase;
-        color: var(--c-text);
+        color: var(--color-text-primary);
         text-decoration: none;
         white-space: nowrap;
         flex-shrink: 0;
@@ -58,13 +53,13 @@
     }
 
     .site-logo__brace {
-        color: var(--c-muted);
-        transition: color 0.25s var(--ease-out);
+        color: var(--color-text-secondary);
+        transition: color 0.25s var(--easing-default);
     }
 
     .site-logo:hover .site-logo__brace,
     .site-logo:focus-visible .site-logo__brace {
-        color: var(--c-accent);
+        color: var(--color-accent);
     }
 
     .site-logo__name {
@@ -82,8 +77,8 @@
         max-width: 0;
         opacity: 0;
         transition:
-            max-width 0.12s var(--ease-out) calc(var(--logo-i, 1) * 0.045s),
-            opacity 0.1s var(--ease-out) calc(var(--logo-i, 1) * 0.045s);
+            max-width 0.12s var(--easing-default) calc(var(--logo-i, 1) * 0.045s),
+            opacity 0.1s var(--easing-default) calc(var(--logo-i, 1) * 0.045s);
     }
 
     .site-logo:hover .site-logo__char,

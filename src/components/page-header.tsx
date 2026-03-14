@@ -17,7 +17,7 @@ const LOGO_EXPAND_CHARS = [
 export function PageHeader() {
     return (
         <header className="site-header">
-            <nav className="site-nav" aria-label="Primary">
+            <nav className="site-nav label" aria-label="Primary">
                 <div className="site-nav__group site-nav__group--left">
                     <a href="/index.html">Home</a>
                     <a href="/#writing">Articles</a>

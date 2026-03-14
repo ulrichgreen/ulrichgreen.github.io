@@ -31,7 +31,7 @@
     inset-inline-start: 0;
     width: 0%;
     height: 2px;
-    background: var(--c-muted);
+    background: var(--color-text-secondary);
     z-index: 200;
     transition: width 0.1s linear;
 }
@@ -40,28 +40,28 @@
 
     /* Hero entrance — staggered from top to bottom */
     .hero__kicker {
-        animation: fade-up 0.7s var(--ease-out) 0.05s both;
+        animation: fade-up 0.7s var(--easing-default) 0.05s both;
     }
 
     .hero__name {
-        animation: fade-up 0.7s var(--ease-out) 0.18s both;
+        animation: fade-up 0.7s var(--easing-default) 0.18s both;
     }
 
     .hero__portrait {
-        animation: fade-in 1s var(--ease-out) 0.24s both;
+        animation: fade-in 1s var(--easing-default) 0.24s both;
     }
 
     .hero__rule {
-        animation: expand-x 0.9s var(--ease-out) 0.38s both;
+        animation: expand-x 0.9s var(--easing-default) 0.38s both;
         transform-origin: left center;
     }
 
     .hero__tagline {
-        animation: fade-up 0.7s var(--ease-out) 0.5s both;
+        animation: fade-up 0.7s var(--easing-default) 0.5s both;
     }
 
     .hero__meta {
-        animation: fade-up 0.7s var(--ease-out) 0.6s both;
+        animation: fade-up 0.7s var(--easing-default) 0.6s both;
     }
 
     .page > h1:first-child,
@@ -70,7 +70,7 @@
     .article-header h1,
     .article-header__rule,
     .article-meta {
-        animation: fade-up 0.7s var(--ease-out) both;
+        animation: fade-up 0.7s var(--easing-default) both;
     }
 
     .page > h1:first-child,
@@ -95,8 +95,8 @@
         opacity: 0;
         transform: translateY(1rem);
         transition:
-            opacity 0.7s var(--ease-out),
-            transform 0.7s var(--ease-out);
+            opacity 0.7s var(--easing-default),
+            transform 0.7s var(--easing-default);
         will-change: opacity, transform;
     }
 

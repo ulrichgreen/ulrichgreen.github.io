@@ -81,11 +81,12 @@ export function ArticleHeader({
 
     return (
         <header className="article-header">
-            <p className="article-header__kicker">
+            <p className="article-header__kicker label">
                 <span>{kickerSection}</span>
                 <span>{kickerType || "Essay"}</span>
             </p>
             <h1
+                className="heading-display"
                 style={
                     titleTransitionName
                         ? { viewTransitionName: titleTransitionName }
@@ -95,7 +96,7 @@ export function ArticleHeader({
                 {title || ""}
             </h1>
             <div className="article-header__rule" aria-hidden="true"></div>
-            <div className="article-meta">
+            <div className="article-meta label">
                 {publishedDate && (
                     <p className="article-header__byline">
                         Published

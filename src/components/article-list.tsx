@@ -57,7 +57,7 @@ function EntryItem({ entry }: { entry: WritingIndexEntry }) {
             >
                 {entry.title}
             </a>
-            <time dateTime={isoDate}>{formatDate(entry.published)}</time>
+            <time className="label" dateTime={isoDate}>{formatDate(entry.published)}</time>
         </li>
     );
 }
@@ -74,7 +74,7 @@ export function ArticleList({ items }: { items?: WritingIndexEntry[] }) {
                 return [
                     <li
                         key={`series-${seriesName}`}
-                        className="writing-list__series-label"
+                        className="writing-list__series-label label"
                     >
                         Series · {seriesName}
                     </li>,

@@ -14,9 +14,9 @@ export function SeriesNav({ seriesInfo }: { seriesInfo: SeriesInfo }) {
     return (
         <nav className="series-nav" aria-label={`${name} series navigation`}>
             <div className="series-nav__header">
-                <p className="series-nav__label">Series</p>
+                <p className="series-nav__label label">Series</p>
                 <p className="series-nav__title">{name}</p>
-                <p className="series-nav__progress">
+                <p className="series-nav__progress label">
                     Part {current} of {total}
                 </p>
             </div>
@@ -45,7 +45,7 @@ export function SeriesNav({ seriesInfo }: { seriesInfo: SeriesInfo }) {
                                     : "series-nav__item"
                             }
                         >
-                            <span className="series-nav__ordinal">
+                            <span className="series-nav__ordinal label">
                                 {String(index + 1).padStart(2, "0")}
                             </span>
                             {isCurrent ? (
@@ -67,14 +67,14 @@ export function SeriesNav({ seriesInfo }: { seriesInfo: SeriesInfo }) {
             {(prev || next) && (
                 <div className="series-nav__arrows">
                     {prev ? (
-                        <a className="series-nav__prev" href={prev.href}>
+                        <a className="series-nav__prev label" href={prev.href}>
                             ← {prev.title}
                         </a>
                     ) : (
                         <span />
                     )}
                     {next ? (
-                        <a className="series-nav__next" href={next.href}>
+                        <a className="series-nav__next label" href={next.href}>
                             {next.title} →
                         </a>
                     ) : (

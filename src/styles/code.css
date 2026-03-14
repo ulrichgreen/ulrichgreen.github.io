@@ -25,7 +25,7 @@
 
     /* rehype-pretty-code: highlighted code blocks */
     [data-rehype-pretty-code-figure] {
-        --code-bleed: var(--gutter);
+        --code-bleed: var(--layout-gutter);
         inline-size: calc(100% + (var(--code-bleed) * 2));
         max-inline-size: none;
         margin-block: var(--space-3);
@@ -34,7 +34,7 @@
 
     [data-rehype-pretty-code-figure] pre {
         background-color: #24292e;
-        border: 1px solid var(--c-rule);
+        border: 1px solid var(--color-border);
         border-radius: 0;
         inline-size: 100%;
         max-inline-size: 100%;
@@ -49,9 +49,9 @@
         display: block;
         min-width: 100%;
         width: max-content;
-        font-family: var(--ff-mono);
-        font-size: var(--t-sm);
-        line-height: var(--lh-3u);
+        font-family: var(--type-family-mono);
+        font-size: var(--type-size-sm);
+        line-height: var(--type-leading-tight);
         background: none;
         padding: 0;
         border-radius: 0;
@@ -59,14 +59,14 @@
     }
 
     [data-rehype-pretty-code-figure] code span {
-        font-family: var(--ff-mono);
+        font-family: var(--type-family-mono);
     }
 
     [data-rehype-pretty-code-title] {
-        font-family: var(--ff-mono);
-        font-size: var(--t-xs);
-        line-height: var(--lh-3u);
-        color: var(--c-muted);
+        font-family: var(--type-family-mono);
+        font-size: var(--type-size-xs);
+        line-height: var(--type-leading-tight);
+        color: var(--color-text-secondary);
         margin-block-end: var(--space-1);
     }
 
@@ -76,10 +76,10 @@
     }
 
     .code-block__title {
-        font-family: var(--ff-mono);
-        font-size: var(--t-xs);
-        line-height: var(--lh-3u);
-        color: var(--c-muted);
+        font-family: var(--type-family-mono);
+        font-size: var(--type-size-xs);
+        line-height: var(--type-leading-tight);
+        color: var(--color-text-secondary);
         margin-block-end: var(--space-1);
     }
 
@@ -91,7 +91,7 @@
 
     @media (min-width: 821px) {
         [data-rehype-pretty-code-figure] {
-            --code-bleed: min(var(--space-4), var(--gutter));
+            --code-bleed: min(var(--space-4), var(--layout-gutter));
         }
 
         [data-rehype-pretty-code-figure] pre {

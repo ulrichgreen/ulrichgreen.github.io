@@ -1,10 +1,10 @@
 @media print {
     :root {
-        --c-bg: #ffffff;
-        --c-text: #000000;
-        --c-muted: #555555;
-        --c-rule: #cccccc;
-        --c-accent: #000000;
+        --color-surface-base: #ffffff;
+        --color-text-primary: #000000;
+        --color-text-secondary: #555555;
+        --color-border: #cccccc;
+        --color-accent: #000000;
     }
 
     .page-header {
@@ -16,8 +16,8 @@
         width: auto;
         max-width: none;
         display: block;
-        font-size: var(--t-xs);
-        color: var(--c-muted);
+        font-size: var(--type-size-xs);
+        color: var(--color-text-secondary);
         margin-block-start: var(--space-1);
         page-break-inside: avoid;
     }
@@ -64,7 +64,7 @@
     a[href^="http"]::after {
         content: " (" attr(href) ")";
         font-size: 0.8em;
-        color: var(--c-muted);
+        color: var(--color-text-secondary);
     }
 
     pre,

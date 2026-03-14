@@ -96,12 +96,12 @@ async function main() {
     );
     assert(
         articleHtml.includes(
-            '<h1 style="view-transition-name:article-title-on-tools"',
+            '<h1 class="heading-display" style="view-transition-name:article-title-on-tools"',
         ),
         "Article title should have a named view transition.",
     );
     assert(articleHtml.includes('class="page page--article"'));
-    assert(articleHtml.includes('class="article-header__kicker"'));
+    assert(articleHtml.includes('class="article-header__kicker label"'));
     assert(articleHtml.includes('class="article-header__rule"'));
     assert(articleHtml.includes('class="article-header__abstract"'));
     assert(articleHtml.includes("March 1, 2025"));
@@ -278,11 +278,11 @@ async function main() {
         "Current series entry should have aria-current=page.",
     );
     assert(
-        markupHtml.includes('class="series-nav__next"'),
+        markupHtml.includes('class="series-nav__next label"'),
         "First series article should have a next link.",
     );
     assert(
-        !markupHtml.includes('class="series-nav__prev"'),
+        !markupHtml.includes('class="series-nav__prev label"'),
         "First series article should not have a prev link.",
     );
     assert(

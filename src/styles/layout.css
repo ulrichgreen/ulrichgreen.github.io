@@ -1,10 +1,10 @@
 @layer layout {
     .page {
         display: grid;
-        grid-template-columns: minmax(0, var(--measure));
+        grid-template-columns: minmax(0, var(--layout-content-width));
         justify-content: center;
         min-height: 100dvh;
-        padding-inline: var(--gutter);
+        padding-inline: var(--layout-gutter);
     }
 
     .page > * {
@@ -44,10 +44,10 @@
     }
 
     footer.site-footer {
-        border-block-start: 1px solid var(--c-rule);
-        color: var(--c-muted);
-        font-size: var(--t-sm);
-        font-family: var(--ff-ui);
+        border-block-start: 1px solid var(--color-border);
+        color: var(--color-text-secondary);
+        font-size: var(--type-size-sm);
+        font-family: var(--type-family-sans);
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -67,9 +67,9 @@
     @media (min-width: 821px) {
         .page {
             grid-template-columns:
-                minmax(var(--gutter), 1fr)
-                minmax(0, var(--measure))
-                minmax(var(--gutter), 1fr);
+                minmax(var(--layout-gutter), 1fr)
+                minmax(0, var(--layout-content-width))
+                minmax(var(--layout-gutter), 1fr);
             justify-content: stretch;
             padding-inline: 0;
         }
