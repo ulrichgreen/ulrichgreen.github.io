@@ -1,0 +1,105 @@
+@layer typography {
+    /* ─── Scale classes ──────────────────────────────────── */
+
+    .heading-display {
+        font-family: var(--type-family-serif);
+        font-size: var(--type-size-display);
+        line-height: var(--type-leading-display);
+        font-weight: 400;
+        letter-spacing: -0.025em;
+    }
+
+    .heading-xl {
+        font-family: var(--type-family-serif);
+        font-size: var(--type-size-xl);
+        line-height: var(--type-leading-loose);
+        font-weight: 400;
+        letter-spacing: -0.02em;
+    }
+
+    .heading-lg {
+        font-family: var(--type-family-serif);
+        font-size: var(--type-size-lg);
+        line-height: var(--type-leading-loose);
+        font-weight: 400;
+        letter-spacing: -0.01em;
+    }
+
+    .heading-md {
+        font-family: var(--type-family-serif);
+        font-size: var(--type-size-md);
+        line-height: var(--type-leading-normal);
+        font-weight: 600;
+    }
+
+    .heading-sm {
+        font-family: var(--type-family-serif);
+        font-size: var(--type-size-sm);
+        line-height: var(--type-leading-tight);
+        font-weight: 600;
+    }
+
+    .body-lg {
+        font-size: var(--type-size-fluid-lg);
+        line-height: var(--type-leading-relaxed);
+        font-weight: 400;
+    }
+
+    .body-md {
+        font-size: var(--type-size-md);
+        line-height: var(--type-leading-body);
+        font-weight: 400;
+    }
+
+    .body-sm {
+        font-size: var(--type-size-sm);
+        line-height: var(--type-leading-tight);
+        font-weight: 400;
+    }
+
+    .label {
+        font-family: var(--type-family-mono);
+        font-size: var(--type-size-2xs);
+        letter-spacing: 0.18em;
+        text-transform: uppercase;
+        color: var(--color-text-secondary);
+    }
+
+    .caption {
+        font-size: var(--type-size-xs);
+        line-height: var(--type-leading-tight);
+        color: var(--color-text-secondary);
+    }
+
+    .mono {
+        font-family: var(--type-family-mono);
+    }
+
+    /* ─── Prose wrapper ──────────────────────────────────── */
+
+    .prose :is(h1, h2, h3, h4) {
+        max-width: var(--layout-content-width);
+    }
+
+    .prose :is(p, ul, ol, li) {
+        font-size: var(--type-size-md);
+        line-height: var(--type-leading-body);
+        max-width: var(--layout-content-width);
+    }
+
+    .prose :is(blockquote) {
+        font-style: italic;
+    }
+
+    .prose :is(pre) {
+        font-family: var(--type-family-mono);
+        font-size: var(--type-size-sm);
+        line-height: var(--type-leading-tight);
+    }
+
+    .prose :is(figcaption) {
+        font-size: var(--type-size-xs);
+        line-height: var(--type-leading-tight);
+        color: var(--color-text-secondary);
+    }
+}
