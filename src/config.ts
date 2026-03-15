@@ -1,9 +1,5 @@
-export const SITE_URL = "https://ulrich.green";
+import { siteConfig } from "../site.config.ts";
 
-export const BROWSER_TARGETS = {
-    chrome: 120,
-    firefox: 121,
-    safari: 17,
-} as const;
-
-export const ESBUILD_TARGET = ["chrome120", "firefox121", "safari17"];
+export const SITE_URL = siteConfig.site.url;
+export const BROWSER_TARGETS = siteConfig.build.browserTargets;
+export const ESBUILD_TARGET = [...siteConfig.build.esbuildTarget];

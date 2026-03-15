@@ -1,4 +1,5 @@
-const SITE_URL = "https://ulrich.green";
+import { SITE_URL } from "../config.ts";
+
 const OG_IMAGE_URL = `${SITE_URL}/og-image.svg`;
 const LIGHT_THEME_COLOR = "#fffbf4";
 const DARK_THEME_COLOR = "#171611";
@@ -90,7 +91,7 @@ export function SiteHead({
                             author: {
                                 "@type": "Person",
                                 name: "Ulrich Green",
-                                url: "https://ulrich.green",
+                                url: SITE_URL,
                             },
                             ...(seriesName
                                 ? {

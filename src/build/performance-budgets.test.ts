@@ -3,9 +3,11 @@ import { mkdtempSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { describe, it } from "node:test";
+import { siteConfig } from "../../site.config.ts";
 import {
     formatPerformanceBudgetReport,
     measurePerformanceBudgets,
+    performanceBudgets,
     type PerformanceBudget,
 } from "./performance-budgets.ts";
 
@@ -14,6 +16,10 @@ function bytes(size: number): Buffer {
 }
 
 describe("measurePerformanceBudgets", () => {
+    it("uses the root site config as the default budget source", () => {
+        assert.equal(performanceBudgets, siteConfig.performance.budgets);
+    });
+
     it("sums matching files recursively and ignores other asset types", () => {
         const directory = mkdtempSync(join(tmpdir(), "budget-test-"));
         try {

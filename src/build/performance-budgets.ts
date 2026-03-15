@@ -1,10 +1,11 @@
 import { readdirSync, statSync } from "node:fs";
 import { extname, join } from "node:path";
+import { siteConfig } from "../../site.config.ts";
 import { distDirectory } from "./shared/paths.ts";
 
 export interface PerformanceBudget {
     label: string;
-    extensions: string[];
+    extensions: readonly string[];
     warnAtBytes: number;
     maximumBytes: number;
 }
@@ -16,32 +17,8 @@ export interface PerformanceBudgetResult extends PerformanceBudget {
 
 const kibibyte = 1024;
 
-export const performanceBudgets: PerformanceBudget[] = [
-    {
-        label: "HTML",
-        extensions: [".html"],
-        warnAtBytes: 112 * kibibyte,
-        maximumBytes: 128 * kibibyte,
-    },
-    {
-        label: "CSS",
-        extensions: [".css"],
-        warnAtBytes: 28 * kibibyte,
-        maximumBytes: 32 * kibibyte,
-    },
-    {
-        label: "JS",
-        extensions: [".js"],
-        warnAtBytes: 36 * kibibyte,
-        maximumBytes: 40 * kibibyte,
-    },
-    {
-        label: "Fonts",
-        extensions: [".woff2", ".woff", ".ttf", ".otf"],
-        warnAtBytes: 288 * kibibyte,
-        maximumBytes: 320 * kibibyte,
-    },
-];
+export const performanceBudgets = siteConfig.performance
+    .budgets satisfies readonly PerformanceBudget[];
 
 function listFiles(directory: string): string[] {
     const files: string[] = [];
@@ -58,7 +35,7 @@ function listFiles(directory: string): string[] {
     return files;
 }
 
-function sumBytes(paths: string[], extensions: string[]): number {
+function sumBytes(paths: string[], extensions: readonly string[]): number {
     const allowed = new Set(extensions);
     return paths.reduce((total, filePath) => {
         if (!allowed.has(extname(filePath))) return total;
@@ -81,7 +58,7 @@ function formatKiB(bytes: number): string {
 
 export function measurePerformanceBudgets(
     directory = distDirectory,
-    budgets = performanceBudgets,
+    budgets: readonly PerformanceBudget[] = performanceBudgets,
 ): PerformanceBudgetResult[] {
     const files = listFiles(directory);
     return budgets.map((budget) => {
@@ -118,7 +95,7 @@ export function formatPerformanceBudgetReport(
 
 export function enforcePerformanceBudgets(
     directory = distDirectory,
-    budgets = performanceBudgets,
+    budgets: readonly PerformanceBudget[] = performanceBudgets,
 ): PerformanceBudgetResult[] {
     const results = measurePerformanceBudgets(directory, budgets);
     process.stdout.write(formatPerformanceBudgetReport(results));
