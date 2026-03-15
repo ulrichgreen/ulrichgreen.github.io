@@ -1,53 +1,61 @@
 # Manifesto
 
-I build this personal site the way I'd build furniture — by hand, with good materials, no filler. The writing is the point. Everything else exists to make the reading experience feel inevitable.
+The web is mostly text files.
 
-This is a craft project. The kind of site where `view source` is part of the work. Where the HTML is authored, not spat out. Where the typography, the spacing, the weight of every element is a decision, not a default.
+That is still the magic of it. Also the joke. An absurd amount of our industry is people building towering abstractions on top of a system that, at heart, is documents, links, and a browser doing its best.
 
-## What It Optimizes For
+This site starts there.
 
-**The reading experience above all else.** The page renders meaning before the browser runs a single line of JavaScript. If the network drops every script and stylesheet, the words still land.
+It is my own pile of text files: a place to publish what I know, what I've learned, and what I think is worth keeping after two decades of working on the web. It is an outlet for ideas, experience, and strong opinions earned the slow way.
 
-**A build one person can hold in their head.** Every layer earns its place by being explainable in plain language. If I can't sketch the whole pipeline on the back of an envelope, something needs to go.
+The point is not to cosplay 1997 or pretend complexity never has a place. The point is to remember the baseline. The web is simpler than we often allow it to be. Better, too.
 
-**Authored HTML.** The output should be clean enough that viewing source feels like reading a second version of the site. Markup is a craft material, not an intermediate format.
+## North Star
 
-**A small surface area, fiercely maintained.** Every dependency, every abstraction, every file carries weight. The default answer to "should I add this?" is no.
+Make a site that treats the web like what it is: a durable, readable, linkable body of text.
 
-## What It Refuses
+If a decision makes the site harder to read, harder to inspect, harder to explain, or harder to keep, it is probably the wrong decision.
 
-No full-page hydration — React renders at build time and only explicit islands get client-side life.
+## Principles
 
-No arbitrary MDX imports — content components are approved through `src/content-components.tsx` and that boundary is load-bearing.
+**Writing is the product.**  
+Everything else is support structure. Nice support structure, hopefully. But still support structure.
 
-No analytics, tracking pixels, or third-party widgets. Not even "lightweight" ones.
+**Start from the text file.**  
+Before this is a design system, a component tree, or a build pipeline, it is a collection of files meant to say something clearly.
 
-No client-side routing. A page is a URL. A link is a navigation.
+**The web is enough more often than people admit.**  
+HTML, CSS, URLs, and a little restraint get you a long way. Usually farther than whatever somebody is currently calling the future.
 
-No cargo-culted complexity. Nothing gets added because "real sites have this."
+**Source should stay legible.**  
+A person should be able to view source, read the files, and understand the shape of the site without needing a guided tour and three architecture diagrams.
 
-No planning docs that drift from reality. These files describe the system as it is, not as it might be someday.
+**Complexity must defend itself.**  
+Not everything needs to be simple. But everything complicated should have a reason better than habit, fashion, or "this is what serious sites do."
 
-## What The Code Must Keep True
+**Publish to contribute.**  
+This site exists to share useful knowledge, hard-earned judgment, and two decades of lessons from working on the web. Ideally it helps a few peers feel less alone, less confused, or at least more justified in distrusting unnecessary nonsense.
 
-The pipeline is: content → frontmatter → MDX → React SSR → HTML. That sequence stays legible or it gets simplified, never complicated.
+## What This Refuses
 
-TypeScript guards the seams — the content model, the rendering path, the template contracts. It's a safety net for the build, not an architecture astronaut's playground.
+No treating a document like an app just because the tooling makes that easy.
 
-The progressive enhancement layer owns document-level behavior. Islands own their own DOM. The two never cross.
+No adding layers that make the web feel more obscure than it is.
 
-CSS is handwritten, layered, and designed on purpose. No framework. No utility classes. The design system is the CSS.
+No trend-chasing for its own sake.
 
-Code deserves special treatment. Fenced code blocks are syntax-highlighted at build time with shiki — no client-side runtime cost. The monospace font is JetBrains Mono, locally hosted and preloaded, because code on this site is a first-class material, not an afterthought.
+No surveillance disguised as product thinking.
 
-Tests verify the rendering and accessibility paths that matter most. If implementation drifts, the build fails. That's the point.
+No docs that describe an imaginary future system instead of the one sitting in the repo.
 
 ## What Success Looks Like
 
-Someone visits and the writing is unmistakably the center.
+Someone lands here and the writing is clearly the center of gravity.
 
-The site loads fast and works fully without JavaScript.
+The site is fast, calm, and works without drama.
 
-A developer reads the source and understands the entire project — where content lives, how the build works, what the browser receives — in one sitting.
+A developer can read the source and more or less get it in one sitting.
 
-The whole thing still feels like one person's considered, opinionated work. Not a template. Not a framework starter kit. A site that could only be this site.
+The whole thing feels like one person's work: opinionated, cared for, and built on purpose.
+
+And over time, it becomes a body of work — a useful set of text files that helps other people think a little more clearly about the web.
