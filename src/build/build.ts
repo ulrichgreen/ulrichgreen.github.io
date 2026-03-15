@@ -13,6 +13,7 @@ import {
     cleanGeneratedPages,
     discoverSourceFiles,
 } from "./content/discover.ts";
+import { enforcePerformanceBudgets } from "./performance-budgets.ts";
 import { writingDirectory } from "./shared/paths.ts";
 import { writePages } from "./render/write-pages.ts";
 import { listWritingEntries } from "./content/writing-index.ts";
@@ -43,6 +44,7 @@ export async function buildAll(options: { dev?: boolean } = {}): Promise<void> {
     );
     await buildAncillary(writingIndex, compiledWriting);
     if (!options.dev) applyHashedFilenames(manifest);
+    if (!options.dev) enforcePerformanceBudgets();
 
     const elapsed = ((performance.now() - start) / 1000).toFixed(2);
     process.stdout.write(`built ${compiled.length} pages in ${elapsed}s\n`);

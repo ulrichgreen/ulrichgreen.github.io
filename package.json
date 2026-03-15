@@ -3,11 +3,11 @@
     "version": "1.0.0",
     "description": "",
     "scripts": {
-        "build": "pnpm exec tsx src/build/build.ts",
-        "clean": "pnpm exec tsx src/build/clean.ts",
-        "dev": "pnpm exec tsx src/build/dev.ts",
-        "check-links": "pnpm exec tsx test/verify-links.ts",
-        "test": "pnpm exec tsx test/run-tests.ts",
+        "build": "tsx src/build/build.ts",
+        "clean": "tsx src/build/clean.ts",
+        "dev": "tsx src/build/dev.ts",
+        "check-links": "tsx test/verify-links.ts",
+        "test": "tsx test/run-tests.ts",
         "typecheck": "tsc --noEmit",
         "verify": "pnpm run typecheck && pnpm run build && pnpm run test",
         "watch": "pnpm run dev"

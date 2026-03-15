@@ -14,8 +14,6 @@ Article summaries on the home page — pull descriptions and dates into a richer
 
 Revision notes for essays that change meaningfully. Show the thinking, not just the result.
 
-Add performance budget enforcement — a post-build check measuring total HTML, CSS, JS size. Warn or fail if anything crosses a defined threshold.
-
 Add an image pipeline. Optimize, resize, convert to AVIF/WebP, generate `<picture>` elements. Worth it once image content grows.
 
 Tighten frontmatter types further. The build already validates frontmatter with `zod`; the next step is a stronger TypeScript model, likely a discriminated union on `layout`, so article-only fields stay explicit at compile time too.
@@ -26,7 +24,7 @@ Add build caching — asset hashing is in place; the next step is skipping uncha
 
 ## Keep An Eye On
 
-Performance budgets for HTML, CSS, JS, and fonts as the site grows.
+Whether the current build-enforced budgets for HTML, CSS, JS, and fonts still fit as the site grows.
 
 Whether the fixed page header and margin-note behavior still earns its place or becomes a distraction.
 
