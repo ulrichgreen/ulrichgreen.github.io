@@ -1,43 +1,161 @@
 # Architecture
 
-Static-first, one person's build. Content in as MDX, out as HTML. React renders at build time. The browser gets clean documents with a thin progressive enhancement layer and a handful of interactive islands where they've earned it.
+This site is built on a simple idea: author content as files, run them through a small build pipeline, and ship plain HTML.
 
-## How It Builds
+The implementation uses a few modern tools, but the goal is not modernity for its own sake. The goal is to keep the system understandable, maintainable, and close to the shape of the web itself.
 
-`pnpm build` produces everything in `dist/`. One TypeScript build entry reads the full content graph, validates YAML frontmatter, compiles MDX into React components, then renders every page with `renderToStaticMarkup`. The output is plain HTML — no client framework needed to read a page.
+## Overview
 
-Templates and shared components are standard React TSX. MDX content renders through the same tree, but only components exposed through `src/content-components.tsx` are available to authors. That boundary is deliberate.
+Content lives in `content/` as MDX files with YAML frontmatter.
 
-`layout: article` in frontmatter routes a page through the article template by way of a small layout registry. Everything else gets the base layout. The `section` field is purely presentational — it controls the header breadcrumb and is inferred from the content directory path when not set explicitly. Islands — the only parts that hydrate — use `hydrateRoot` through a dedicated client entry. The rest of the page stays static.
+The build reads that content, validates the frontmatter, compiles the MDX into React components, renders the pages to static HTML, and writes the final site to `dist/`.
 
-The browser receives two separate scripts. `site.js` handles progressive enhancement — scroll effects, footnote reveals, and other document-level behavior. `islands.js` bundles React and hydrates interactive islands; it loads only on pages that contain islands. Islands support four hydration strategies — `load` (immediate), `visible` (IntersectionObserver), `idle` (requestIdleCallback), and `interaction` (on first user event) — configured via the `hydrate` prop in the island wrapper.
+The browser gets documents first. JavaScript is used for progressive enhancement and a small number of interactive islands, not for making basic pages exist in the first place.
 
-`site.config.ts` at the repo root holds the shared site and build configuration — the canonical site URL, browser targets, and the performance budgets enforced at build time. `pnpm build` ends with a small performance budget report for total HTML, CSS, JS, and font weight in `dist/`, warning as the site nears the thresholds and failing once it crosses them. `pnpm test` runs two layers of checks: co-located unit tests for the content pipeline and standalone verifiers for the rendered output. The current verifier set checks JSX rendering, accessibility, internal links, the Atom feed, and the generated SEO artifacts (`robots.txt`, `sitemap.xml`, `_headers`, `og-image.svg`). CI runs `typecheck → build → test` on pull requests and before deployment.
+## Build Pipeline
 
-## The Stack
+`pnpm build` produces the site in `dist/`.
 
-Every tool was chosen on purpose. Package scripts provide the command surface. TypeScript guards the seams — the content model, the rendering path, the template contracts. React and `react-dom/server` render everything at build time. MDX with `gray-matter` keeps content expressive without runtime compilation. `lightningcss` bundles the CSS. `esbuild` bundles the browser code. `chokidar` and `ws` power the dev server. That's it.
+At a high level, the build does this:
 
-No full-page hydration. No client-side routing. No CSS framework. No tool added because it's popular.
+1. read the content graph from `content/`
+2. parse and validate frontmatter
+3. compile MDX into React component trees
+4. render those trees to static HTML with `react-dom/server`
+5. bundle CSS and browser JavaScript
+6. write additional generated artifacts such as feeds and SEO files
+7. check performance budgets for the final output
 
-## Where Things Live
+The end result is plain HTML, plus CSS, plus a small amount of JavaScript where it has actually earned a job.
 
-`content/` holds MDX source — pages, essays, everything the reader sees. `src/` holds all code that builds the site: build steps in `src/build/`, templates in `src/templates/`, shared pieces in `src/components/`, browser code in `src/client/`, islands in `src/islands/`, styles in `src/styles/`, shared React context in `src/context/`, and type definitions in `src/types/`. `docs/` is these files. `dist/` is generated output — never edited by hand.
+## Layout and Rendering
 
-The component gate for MDX authors is `src/content-components.tsx`. Only what's exposed there is available in content. No `import` or `export` inside MDX files.
+Templates and shared UI are standard React TSX components.
 
-## Authoring Content
+MDX content renders through the same tree, but content authors only get access to components exposed through `src/content-components.tsx`. That boundary is intentional. It keeps content authoring controlled and prevents MDX from turning into an ungoverned import party.
 
-MDX is the content format. Frontmatter stays YAML, but it now passes through a typed validation step before the page enters the rest of the pipeline. The current author-facing frontmatter fields are `title`, `description`, `layout`, `section`, `published`, `revised`, `note`, `summary`, `series`, and `seriesOrder`. Set `layout: article` for essay-style pages; the default is the base layout, and article pages must include `published`.
+`layout: article` routes a page through the article template. Everything else uses the base layout.
 
-Some metadata is computed during the build rather than authored by hand. `words` and `readingTime` are derived from the body content and fed into the article layout. `summary` is optional frontmatter that authors can provide; when `description` is absent, the build promotes `summary` into the page description. `section` remains presentational — it controls the header breadcrumb and is inferred from the content directory path when not set explicitly.
+The `section` field is presentational. It controls the header breadcrumb and can be inferred from the content directory path when it is not set explicitly.
 
-Series are opt-in. `series` names the sequence and `seriesOrder` gives the article's order inside it. When a page belongs to a series, the article footer renders the series navigation automatically.
+## Client-Side Code
 
-Only approved components from `src/content-components.tsx` are available inside MDX: `ArticleList`, `Code`, `Hero`, and `DemoWidget`. `DemoWidget` is an island; the rest are static build-time components. Most prose should stay prose — components in content earn their place by being genuinely necessary.
+The site ships two browser entry points.
 
-Progressive enhancement handles document-level behavior such as scroll effects and footnote reveals. The fixed header itself stays static. Islands handle interactive state. The two stay separate.
+`site.js` handles document-level progressive enhancement such as scroll effects and footnote reveals.
 
-## Direction
+`islands.js` hydrates interactive islands and is only loaded on pages that actually contain islands.
 
-The CSS is handwritten, layered, and designed. The output HTML should be clean enough to read in `view source`. The build should stay small enough that one person can hold the whole pipeline in their head. If a layer can't be explained plainly, it hasn't earned its place.
+Islands use `hydrateRoot` and support four hydration strategies:
+
+- `load` — hydrate immediately
+- `visible` — hydrate when the island enters the viewport
+- `idle` — hydrate when the browser is idle
+- `interaction` — hydrate on first user interaction
+
+The default posture is simple: if something can stay static, it stays static.
+
+## Content Model
+
+MDX is the content format.
+
+Frontmatter is YAML and is validated before the page moves further through the pipeline.
+
+The current author-facing fields are:
+
+- `title`
+- `description`
+- `layout`
+- `section`
+- `published`
+- `revised`
+- `note`
+- `summary`
+- `series`
+- `seriesOrder`
+
+Article pages use `layout: article` and must include `published`.
+
+Some metadata is derived during the build instead of being authored manually:
+
+- `words`
+- `readingTime`
+
+`summary` is optional. If `description` is absent, the build uses `summary` as the page description.
+
+Series support is opt-in. `series` names the sequence and `seriesOrder` determines order within it. When present, the article footer renders series navigation automatically.
+
+## Approved MDX Components
+
+MDX content can only use the components exposed through `src/content-components.tsx`.
+
+At the moment those are:
+
+- `ArticleList`
+- `Code`
+- `Hero`
+- `DemoWidget`
+
+`DemoWidget` is an island. The others are rendered at build time.
+
+This is deliberate. Most prose should stay prose. Components in content should solve a real problem, not serve as an excuse to smuggle application behavior into documents.
+
+## Project Structure
+
+The main directories are:
+
+- `content/` — MDX source content
+- `src/build/` — build pipeline code
+- `src/templates/` — page templates
+- `src/components/` — shared React components
+- `src/client/` — browser-side scripts
+- `src/islands/` — interactive islands
+- `src/styles/` — site styles
+- `src/context/` — shared React context
+- `src/types/` — type definitions
+- `docs/` — project documentation
+- `dist/` — generated output
+
+`dist/` is build output. It is not edited by hand.
+
+## Tooling
+
+The stack is intentionally small.
+
+- TypeScript for the build and contracts
+- React and `react-dom/server` for render-time composition
+- MDX and `gray-matter` for content authoring
+- `lightningcss` for CSS bundling
+- `esbuild` for browser bundles
+- `chokidar` and `ws` for the dev server
+
+No full-page hydration. No client-side routing. No CSS framework. No extra machinery added just to keep up appearances.
+
+## Verification
+
+`pnpm test` runs two kinds of checks:
+
+- co-located unit tests for the content pipeline
+- standalone verifiers for rendered output
+
+The current verifier set checks:
+
+- JSX rendering
+- accessibility
+- internal links
+- Atom feed output
+- generated SEO artifacts:
+  - `robots.txt`
+  - `sitemap.xml`
+  - `_headers`
+  - `og-image.svg`
+
+`site.config.ts` holds shared site and build configuration, including the canonical site URL, browser targets, and performance budgets.
+
+During `pnpm build`, the final output is checked against budgets for total HTML, CSS, JavaScript, and font weight. The build warns as the site approaches the limits and fails if it crosses them.
+
+CI runs:
+
+`typecheck → build → test`
+
+That is the system. Small enough to reason about, strict enough to catch drift, and boring in the ways that matter.
