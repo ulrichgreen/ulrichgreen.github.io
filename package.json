@@ -9,8 +9,8 @@
         "check-links": "tsx test/verify-links.ts",
         "test": "tsx test/run-tests.ts",
         "typecheck": "tsc --noEmit",
-        "verify": "pnpm run typecheck && pnpm run build && pnpm run test",
-        "watch": "pnpm run dev"
+        "verify": "tsc --noEmit && tsx src/build/build.ts && tsx test/run-tests.ts",
+        "watch": "tsx src/build/dev.ts"
     },
     "keywords": [],
     "author": "",
