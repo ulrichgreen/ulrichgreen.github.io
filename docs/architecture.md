@@ -41,7 +41,8 @@ Frontmatter is validated before a page moves further through the pipeline. The b
 
 Some metadata is authored directly, while some is derived during the build:
 
-- `description` can come from explicit frontmatter, a summary field, or the first suitable prose block in the body
+- `description` can come from explicit frontmatter, a summary field, or the first usable prose paragraph in the body
+- heading-only blocks and other non-content blocks are skipped when that description is derived
 - `section` can be inferred from the content path when it is not set explicitly
 - word count and reading-time metadata are computed from the body
 
@@ -103,7 +104,9 @@ That keeps the architecture honest. Static-first only matters if the shipped sit
 
 ## Rendering Model
 
-The render layer uses TSX components for both templates and approved content components. The important architectural point is not the specific UI library, but the split of responsibilities:
+The render layer uses TSX components for both templates and approved content components.
+
+The important architectural point is not the specific UI library, but the split of responsibilities:
 
 - templates define the document shell
 - shared components handle reusable presentational pieces
@@ -172,7 +175,7 @@ That boundary is enforced in two ways:
 - MDX does not get free-form module imports
 - content only sees the components exported through `src/content-components.tsx`
 
-Today that approved surface includes a small set of presentational components plus the demo island. The exact list may change, but the architectural rule should stay the same: content authors use a curated surface, not the whole codebase.
+Today that approved surface includes `ArticleList`, `Code`, `Hero`, and `DemoWidget`, with `src/content-components.tsx` as the source of truth. The exact list may change, but the architectural rule should stay the same: content authors use a curated surface, not the whole codebase.
 
 ## Project Structure
 
@@ -194,7 +197,7 @@ The repository is organized by responsibility.
 
 ## Tooling Posture
 
-The implementation uses a small set of libraries and build tools, but the architecture does not depend on any one choice being permanent.
+The implementation uses a small set of libraries and build tools, but the architecture is not tied to any specific tool choice.
 
 The durable decisions are:
 
@@ -204,7 +207,7 @@ The durable decisions are:
 - progressive enhancement and islands over full-page hydration
 - explicit performance budgets over unchecked asset growth
 
-That means the architecture document should stay focused on responsibilities and boundaries. A separate tooling note would make sense if the rationale for specific dependencies grows large enough to deserve its own home, but it should complement this document rather than replace it.
+Specific dependencies can change over time as long as they continue to support those constraints.
 
 ## Verification
 
