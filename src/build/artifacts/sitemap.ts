@@ -1,5 +1,5 @@
 import { readdirSync } from "node:fs";
-import type { WritingIndexEntry } from "../../types/content.ts";
+import type { ArticleIndexEntry } from "../../types/content.ts";
 import { SITE_URL } from "../../config.ts";
 import { writeDistFile } from "../shared/dist-fs.ts";
 
@@ -11,7 +11,7 @@ function toISODate(value: string): string {
 
 export function buildSitemap(
     contentDir: string,
-    writingIndex: WritingIndexEntry[],
+    articleIndex: ArticleIndexEntry[],
 ): void {
     const topLevelPages = readdirSync(contentDir)
         .filter((file) => file.endsWith(".mdx") && file !== "404.mdx")
@@ -23,7 +23,7 @@ export function buildSitemap(
         urls.push(`  <url>\n    <loc>${SITE_URL}/${page}</loc>\n  </url>`);
     }
 
-    for (const entry of writingIndex) {
+    for (const entry of articleIndex) {
         const lastmod = toISODate(entry.revised || entry.published);
         const lastmodTag = lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : "";
         urls.push(

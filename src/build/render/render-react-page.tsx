@@ -1,7 +1,7 @@
 import { createElement } from "preact/compat";
 import { renderToStaticMarkup } from "preact-render-to-string";
 import { getContentComponents } from "../../content-components.tsx";
-import type { BuiltContent, SeriesInfo, WritingIndexEntry } from "../../types/content.ts";
+import type { BuiltContent, SeriesInfo, ArticleIndexEntry } from "../../types/content.ts";
 import type { RegisterIslandInput } from "../../types/islands.ts";
 import type { AssetManifest } from "../assets/asset-manifest.ts";
 import { renderLayout } from "./layouts.tsx";
@@ -21,7 +21,7 @@ function derivePagePath(sourcePath: string): string {
 }
 
 function createRenderContext(
-    writingIndex: WritingIndexEntry[],
+    articleIndex: ArticleIndexEntry[],
     assetManifest: AssetManifest,
 ): { context: RenderContextValue; hasIslands: () => boolean } {
     let islandCount = 0;
@@ -31,17 +31,17 @@ function createRenderContext(
     };
     const hasIslands = () => islandCount > 0;
     return {
-        context: { writingIndex, registerIsland, assetManifest, hasIslands },
+        context: { articleIndex, registerIsland, assetManifest, hasIslands },
         hasIslands,
     };
 }
 
 export function renderContentBody(
     content: BuiltContent,
-    writingIndex: WritingIndexEntry[],
+    articleIndex: ArticleIndexEntry[],
     assetManifest: AssetManifest = defaultAssetManifest,
 ): string {
-    const { context } = createRenderContext(writingIndex, assetManifest);
+    const { context } = createRenderContext(articleIndex, assetManifest);
     const body = createElement(content.Content, {
         components: getContentComponents(),
     });
@@ -52,11 +52,11 @@ export function renderContentBody(
 
 export function renderPage(
     content: BuiltContent,
-    writingIndex: WritingIndexEntry[],
+    articleIndex: ArticleIndexEntry[],
     assetManifest: AssetManifest = defaultAssetManifest,
     seriesInfo?: SeriesInfo,
 ): string {
-    const { context } = createRenderContext(writingIndex, assetManifest);
+    const { context } = createRenderContext(articleIndex, assetManifest);
 
     const meta = {
         ...content.meta,

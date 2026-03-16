@@ -31,7 +31,7 @@ export function getArticleTitleTransitionName(
     if (!slugOrPath) return undefined;
 
     const slug = slugOrPath
-        .replace(/^\/writing\//, "")
+        .replace(/^\/articles\//, "")
         .replace(/\.html$/, "")
         .trim();
 
@@ -74,7 +74,7 @@ export function ArticleHeader({
     const revisedIso = safeISODate(revised);
     const revisedDate = formatDate(revised);
     const publishedDate = formatDate(published);
-    const kickerSection = seriesName || section || "Writing";
+    const kickerSection = seriesName || section || "Articles";
     const lengthLabel = [readingTime, words ? `${String(words)} words` : ""]
         .filter(Boolean)
         .join(" · ");
@@ -83,7 +83,7 @@ export function ArticleHeader({
         <header className="section header article-header">
             <p className="article-header__kicker header__eyebrow label">
                 <span>{kickerSection}</span>
-                <span>{kickerType || "Essay"}</span>
+                <span>{kickerType || "Article"}</span>
             </p>
             <h1
                 className="title heading-display"

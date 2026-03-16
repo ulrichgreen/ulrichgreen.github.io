@@ -29,9 +29,9 @@ The build is organized as a few clear stages.
 Source pages are discovered from:
 
 - top-level `.mdx` files in `content/`
-- writing entries in `content/writing/`
+- articles in `content/articles/`
 
-That keeps the authored content model simple: standalone pages at the top level, and essay-like writing collected under `writing/`.
+That keeps the authored content model simple: standalone pages at the top level, and articles collected under `articles/`.
 
 ### 2. Parse and validate frontmatter
 
@@ -116,11 +116,11 @@ The important architectural point is not the specific UI library, but the split 
 There are two primary layouts:
 
 - `base` for general pages
-- `article` for essay-like writing
+- `article` for articles
 
-The article layout adds the additional structure expected for writing: publication metadata, article framing, and optional series navigation.
+The article layout adds the additional structure expected for articles: publication metadata, article framing, and optional series navigation.
 
-Render context also carries shared information that templates and components need at build time, such as the writing index and the current asset manifest.
+Render context also carries shared information that templates and components need at build time, such as the article index and the current asset manifest.
 
 ## Client Runtime
 
@@ -162,9 +162,9 @@ The important content fields are:
 
 Not every field is required for every page type. In particular, article-style content is expected to include publication metadata.
 
-The writing index is built from the `content/writing/` directory and then reused across the site for article lists, feed generation, and series navigation.
+The article index is built from the `content/articles/` directory and then reused across the site for article lists, feed generation, and series navigation.
 
-Series support is opt-in. When a writing entry declares a series name and order, the build groups related entries and the article template can render next/previous context automatically.
+Series support is opt-in. When an article declares a series name and order, the build groups related entries and the article template can render next/previous context automatically.
 
 ## Content Boundaries
 
@@ -181,7 +181,7 @@ Today that approved surface includes `ArticleList`, `Code`, `Hero`, and `DemoWid
 
 The repository is organized by responsibility.
 
-- `content/` — authored pages and writing
+- `content/` — authored pages and articles
 - `src/build/` — the build pipeline, split into content, render, asset, and artifact concerns
 - `src/templates/` — page-level templates
 - `src/components/` — shared UI components used by templates and content

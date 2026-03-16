@@ -71,7 +71,7 @@ If a dependency stops serving those constraints, it is replaceable.
 
 ### remark-gfm
 
-- **Why it was chosen:** writing benefits from familiar GitHub-flavored markdown features such as tables, task lists, and strikethrough.
+- **Why it was chosen:** articles benefit from familiar GitHub-flavored markdown features such as tables, task lists, and strikethrough.
 - **How it fits the architecture:** it expands the prose authoring surface without changing the core document-first model.
 
 ### rehype-slug
@@ -81,7 +81,7 @@ If a dependency stops serving those constraints, it is replaceable.
 
 ### rehype-autolink-headings
 
-- **Why it was chosen:** linked headings are useful on essay pages without requiring authors to hand-maintain anchor markup.
+- **Why it was chosen:** linked headings are useful on article pages without requiring authors to hand-maintain anchor markup.
 - **How it fits the architecture:** it keeps heading-link behavior in the build pipeline instead of pushing it onto content authors or client-side scripts.
 
 ### rehype-pretty-code

@@ -347,14 +347,14 @@
         letter-spacing: -0.01em;
     }
 
-    .writing-list {
+    .article-list {
         margin-block-start: clamp(2rem, 6vw, 4rem);
         padding: 0;
         list-style: none;
         border-block-start: 1px solid var(--color-border);
     }
 
-    .writing-list__item {
+    .article-list__item {
         display: grid;
         grid-template-columns: minmax(0, 1fr) auto;
         gap: var(--space-2);
@@ -363,7 +363,7 @@
         border-block-end: 1px solid var(--color-border);
     }
 
-    .writing-list__link {
+    .article-list__link {
         color: var(--color-text-primary);
         text-decoration: none;
         font-size: var(--type-size-fluid-lg);
@@ -540,7 +540,7 @@
             padding: var(--space-4) var(--space-3);
         }
 
-        .writing-list__item {
+        .article-list__item {
             grid-template-columns: 1fr;
         }
 
@@ -688,14 +688,14 @@
         text-align: right;
     }
 
-    .writing-list__series-label {
+    .article-list__series-label {
         grid-column: 1 / -1;
         margin-block-start: var(--space-3);
         padding-block-end: 0.5rem;
         border-block-end: 1px solid var(--color-border);
     }
 
-    .writing-list__series-label:first-child {
+    .article-list__series-label:first-child {
         margin-block-start: 0;
     }
 }

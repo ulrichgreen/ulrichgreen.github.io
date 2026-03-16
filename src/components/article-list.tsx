@@ -1,6 +1,6 @@
 import { getArticleTitleTransitionName } from "./article-header.tsx";
 import { useRenderContext } from "../context/render-context.tsx";
-import type { WritingIndexEntry } from "../types/content.ts";
+import type { ArticleIndexEntry } from "../types/content.ts";
 
 function formatDate(value: string): string {
     return new Date(value).toLocaleDateString("en-US", {
@@ -11,13 +11,13 @@ function formatDate(value: string): string {
     });
 }
 
-function groupBySeries(entries: WritingIndexEntry[]): {
-    standalone: WritingIndexEntry[];
-    series: Map<string, WritingIndexEntry[]>;
+function groupBySeries(entries: ArticleIndexEntry[]): {
+    standalone: ArticleIndexEntry[];
+    series: Map<string, ArticleIndexEntry[]>;
     seriesOrder: string[];
 } {
-    const standalone: WritingIndexEntry[] = [];
-    const series = new Map<string, WritingIndexEntry[]>();
+    const standalone: ArticleIndexEntry[] = [];
+    const series = new Map<string, ArticleIndexEntry[]>();
     const seriesOrder: string[] = [];
 
     for (const entry of entries) {
@@ -41,14 +41,14 @@ function groupBySeries(entries: WritingIndexEntry[]): {
     return { standalone, series, seriesOrder };
 }
 
-function EntryItem({ entry }: { entry: WritingIndexEntry }) {
+function EntryItem({ entry }: { entry: ArticleIndexEntry }) {
     const isoDate = new Date(entry.published).toISOString().slice(0, 10);
     const titleTransitionName = getArticleTitleTransitionName(entry.slug);
 
     return (
-        <li className="writing-list__item">
+        <li className="article-list__item">
             <a
-                className="writing-list__link"
+                className="article-list__link"
                 href={entry.href}
                 style={
                     titleTransitionName
@@ -63,19 +63,19 @@ function EntryItem({ entry }: { entry: WritingIndexEntry }) {
     );
 }
 
-export function ArticleList({ items }: { items?: WritingIndexEntry[] }) {
-    const { writingIndex } = useRenderContext();
-    const entries = items || writingIndex;
+export function ArticleList({ items }: { items?: ArticleIndexEntry[] }) {
+    const { articleIndex } = useRenderContext();
+    const entries = items || articleIndex;
     const { standalone, series, seriesOrder } = groupBySeries(entries);
 
     return (
-        <ul className="section writing-list">
+        <ul className="section article-list">
             {seriesOrder.map((seriesName) => {
                 const group = series.get(seriesName) ?? [];
                 return [
                     <li
                         key={`series-${seriesName}`}
-                        className="writing-list__series-label label"
+                        className="article-list__series-label label"
                     >
                         Series · {seriesName}
                     </li>,

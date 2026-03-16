@@ -7,4 +7,4 @@ export const distDirectory = fileURLToPath(
 export const contentDirectory = fileURLToPath(
     new URL("../../../content", import.meta.url),
 );
-export const writingDirectory = join(contentDirectory, "writing");
+export const articlesDirectory = join(contentDirectory, "articles");

@@ -13,9 +13,9 @@ import {
     cleanGeneratedPages,
     discoverSourceFiles,
 } from "./content/discover.ts";
-import { listWritingEntries } from "./content/writing-index.ts";
+import { listArticleEntries } from "./content/article-index.ts";
 import { writePages } from "./render/write-pages.ts";
-import { distDirectory, writingDirectory } from "./shared/paths.ts";
+import { distDirectory, articlesDirectory } from "./shared/paths.ts";
 
 const PORT = 3009;
 const DIST = distDirectory;
@@ -53,11 +53,11 @@ function classifyChange(changedPath: string): RebuildKind {
 
 async function rebuildContent(): Promise<void> {
     const start = performance.now();
-    const writingIndex = listWritingEntries(writingDirectory);
+    const articleIndex = listArticleEntries(articlesDirectory);
     const sourceFiles = discoverSourceFiles();
     const { compiled, failed } = await compilePages(sourceFiles);
     cleanGeneratedPages();
-    writePages(compiled, writingIndex, devAssetManifest);
+    writePages(compiled, articleIndex, devAssetManifest);
     for (const { file, error } of failed) {
         process.stderr.write(`  error  ${file}\n  ${String(error)}\n`);
     }

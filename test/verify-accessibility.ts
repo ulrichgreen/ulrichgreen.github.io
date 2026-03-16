@@ -2,7 +2,7 @@ import assert from "node:assert/strict";
 import { readFileSync } from "node:fs";
 import { buildContent } from "../src/build/content/build-content.ts";
 import { renderPage } from "../src/build/render/render-react-page.tsx";
-import { listWritingEntries } from "../src/build/content/writing-index.ts";
+import { listArticleEntries } from "../src/build/content/article-index.ts";
 
 function extractBlock(source: string, pattern: RegExp, label: string) {
     const match = source.match(pattern);
@@ -250,11 +250,11 @@ async function main() {
         "A visible-on-focus skip link style should exist.",
     );
 
-    const writingDir = new URL("../content/writing", import.meta.url).pathname;
-    const writingIndex = listWritingEntries(writingDir);
+    const articlesDir = new URL("../content/articles", import.meta.url).pathname;
+    const articleIndex = listArticleEntries(articlesDir);
     const homePath = new URL("../content/index.mdx", import.meta.url).pathname;
     const home = await buildContent(homePath);
-    const homeHtml = renderPage(home, writingIndex);
+    const homeHtml = renderPage(home, articleIndex);
     const skipLinkTag = homeHtml
         .match(/<a\b[^>]*>/g)
         ?.find((tag) => tag.includes('class="skip-link"'));

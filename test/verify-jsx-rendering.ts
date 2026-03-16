@@ -5,19 +5,19 @@ import {
     resolveMetaDescription,
 } from "../src/build/content/build-content.ts";
 import { renderPage } from "../src/build/render/render-react-page.tsx";
-import { listWritingEntries } from "../src/build/content/writing-index.ts";
+import { listArticleEntries } from "../src/build/content/article-index.ts";
 import {
     buildSeriesMap,
     resolveSeriesInfo,
 } from "../src/build/content/series-index.ts";
 
 async function main() {
-    const writingDir = new URL("../content/writing", import.meta.url).pathname;
-    const writingIndex = listWritingEntries(writingDir);
+    const articlesDir = new URL("../content/articles", import.meta.url).pathname;
+    const articleIndex = listArticleEntries(articlesDir);
 
     const homePath = new URL("../content/index.mdx", import.meta.url).pathname;
     const home = await buildContent(homePath);
-    const homeHtml = renderPage(home, writingIndex);
+    const homeHtml = renderPage(home, articleIndex);
 
     assert(homeHtml.includes("<title>Ulrich Green</title>"));
     assert(homeHtml.includes('src="/site.js"'));
@@ -29,8 +29,8 @@ async function main() {
     assert(homeHtml.includes('class="site-header full-bleed"'));
     assert(homeHtml.includes('class="site-nav container label"'));
     assert(homeHtml.includes('class="section header hero hero--has-portrait"'));
-    assert(homeHtml.includes('<ul class="section writing-list">'));
-    assert(homeHtml.includes('class="writing-list__item"'));
+    assert(homeHtml.includes('<ul class="section article-list">'));
+    assert(homeHtml.includes('class="article-list__item"'));
     assert(homeHtml.includes("On Constraints"));
     assert(homeHtml.includes('class="site-logo"'));
 
@@ -88,11 +88,11 @@ async function main() {
     );
 
     const articlePath = new URL(
-        "../content/writing/on-tools.mdx",
+        "../content/articles/on-tools.mdx",
         import.meta.url,
     ).pathname;
     const article = await buildContent(articlePath);
-    const articleHtml = renderPage(article, writingIndex);
+    const articleHtml = renderPage(article, articleIndex);
 
     assert.equal(
         article.meta.description,
@@ -119,7 +119,7 @@ async function main() {
 
     assert(
         articleHtml.includes(
-            'rel="canonical" href="https://ulrich.green/writing/on-tools.html"',
+            'rel="canonical" href="https://ulrich.green/articles/on-tools.html"',
         ),
         "Article page should include a canonical URL.",
     );
@@ -177,7 +177,7 @@ async function main() {
     const colophonPath = new URL("../content/colophon.mdx", import.meta.url)
         .pathname;
     const colophon = await buildContent(colophonPath);
-    const colophonHtml = renderPage(colophon, writingIndex);
+    const colophonHtml = renderPage(colophon, articleIndex);
 
     assert(
         /id="[a-z-]+"/.test(colophonHtml),
@@ -191,7 +191,7 @@ async function main() {
     const notFoundPath = new URL("../content/404.mdx", import.meta.url)
         .pathname;
     const notFound = await buildContent(notFoundPath);
-    const notFoundHtml = renderPage(notFound, writingIndex);
+    const notFoundHtml = renderPage(notFound, articleIndex);
 
     assert(
         notFoundHtml.includes("<title>Page Not Found</title>"),
@@ -230,7 +230,7 @@ async function main() {
     );
 
     // --- Series rendering tests ---
-    const seriesMap = buildSeriesMap(writingIndex);
+    const seriesMap = buildSeriesMap(articleIndex);
 
     assert(
         seriesMap.size > 0,
@@ -251,7 +251,7 @@ async function main() {
     );
 
     const markupPath = new URL(
-        "../content/writing/on-markup.mdx",
+        "../content/articles/on-markup.mdx",
         import.meta.url,
     ).pathname;
     const markup = await buildContent(markupPath);
@@ -260,7 +260,7 @@ async function main() {
         markup.meta.seriesOrder,
         seriesMap,
     );
-    const markupHtml = renderPage(markup, writingIndex, undefined, markupSeriesInfo);
+    const markupHtml = renderPage(markup, articleIndex, undefined, markupSeriesInfo);
 
     assert(
         markupHtml.includes('class="section semi-bleed card series-nav"'),
@@ -305,8 +305,8 @@ async function main() {
     );
 
     assert(
-        homeHtml.includes("writing-list__series-label"),
-        "Home page should render series labels in the writing list.",
+        homeHtml.includes("article-list__series-label"),
+        "Home page should render series labels in the article list.",
     );
 
     console.log(

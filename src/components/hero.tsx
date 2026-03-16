@@ -73,7 +73,7 @@ export function Hero({
                 <span>ulrich.green</span>
                 <span className="hero__meta-dot" aria-hidden="true">·</span>
                 <span>
-                    <a href="#writing">Writing</a>
+                    <a href="#articles">Articles</a>
                 </span>
             </p>
         </section>

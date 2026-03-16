@@ -4,15 +4,15 @@ import { buildOgImage } from "./og-image.ts";
 import { buildRobots } from "./robots.ts";
 import { buildSitemap } from "./sitemap.ts";
 import { contentDirectory } from "../shared/paths.ts";
-import type { BuiltContent, WritingIndexEntry } from "../../types/content.ts";
+import type { BuiltContent, ArticleIndexEntry } from "../../types/content.ts";
 
 export async function buildAncillary(
-    writingIndex: WritingIndexEntry[],
-    compiledWriting: BuiltContent[],
+    articleIndex: ArticleIndexEntry[],
+    compiledArticles: BuiltContent[],
 ): Promise<void> {
-    buildSitemap(contentDirectory, writingIndex);
+    buildSitemap(contentDirectory, articleIndex);
     buildRobots();
     buildHeaders();
     buildOgImage();
-    await buildFeed(writingIndex, compiledWriting);
+    await buildFeed(articleIndex, compiledArticles);
 }

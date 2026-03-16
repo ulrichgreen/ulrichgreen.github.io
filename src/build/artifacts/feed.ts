@@ -1,4 +1,4 @@
-import type { BuiltContent, WritingIndexEntry } from "../../types/content.ts";
+import type { BuiltContent, ArticleIndexEntry } from "../../types/content.ts";
 import { SITE_URL } from "../../config.ts";
 import { writeDistFile } from "../shared/dist-fs.ts";
 import { renderContentBody } from "../render/render-react-page.tsx";
@@ -23,18 +23,18 @@ function escapeCdata(text: string): string {
 }
 
 export async function buildFeed(
-    writingIndex: WritingIndexEntry[],
-    compiledWriting: BuiltContent[],
+    articleIndex: ArticleIndexEntry[],
+    compiledArticles: BuiltContent[],
 ): Promise<void> {
     const latestDate =
-        writingIndex.length > 0
+        articleIndex.length > 0
             ? toISOTimestamp(
-                  writingIndex[0].revised || writingIndex[0].published,
+                  articleIndex[0].revised || articleIndex[0].published,
               )
             : new Date().toISOString().replace(/\.\d{3}Z$/, "Z");
 
     const contentBySlug = new Map<string, BuiltContent>();
-    for (const content of compiledWriting) {
+    for (const content of compiledArticles) {
         const slug =
             content.sourcePath
                 .split("/")
@@ -45,7 +45,7 @@ export async function buildFeed(
 
     const entries: string[] = [];
 
-    for (const entry of writingIndex) {
+    for (const entry of articleIndex) {
         const content = contentBySlug.get(entry.slug);
         if (!content) {
             process.stderr.write(
@@ -54,7 +54,7 @@ export async function buildFeed(
             continue;
         }
 
-        const bodyHtml = renderContentBody(content, writingIndex);
+        const bodyHtml = renderContentBody(content, articleIndex);
 
         const published = toISOTimestamp(entry.published);
         const updated = toISOTimestamp(entry.revised || entry.published);

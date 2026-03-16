@@ -35,7 +35,7 @@ export default function ArticleLayout({
                     title={title}
                     description={description}
                     section={section}
-                    kickerType={seriesInfo ? `Part ${seriesInfo.currentOrder}` : "Essay"}
+                    kickerType={seriesInfo ? `Part ${seriesInfo.currentOrder}` : "Article"}
                     published={published}
                     revised={revised}
                     words={words}
@@ -47,7 +47,7 @@ export default function ArticleLayout({
                 <div className="section article-body">{children}</div>
                 {seriesInfo && <SeriesNav seriesInfo={seriesInfo} />}
                 <footer className="section article-footer label">
-                    <a href="/index.html">← All writing</a>
+                    <a href="/index.html">← All articles</a>
                 </footer>
             </article>
         </BaseLayout>

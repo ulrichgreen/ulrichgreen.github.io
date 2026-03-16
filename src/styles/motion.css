@@ -65,7 +65,7 @@
     }
 
     .page > h1:first-child,
-    .writing-list,
+    .article-list,
     .article-header .header__eyebrow,
     .article-header .title,
     .article-header .header__rule,
@@ -87,7 +87,7 @@
     }
 
     .article-header .header__meta,
-    .writing-list {
+    .article-list {
         animation-delay: 0.42s;
     }
 

@@ -53,7 +53,7 @@ export interface BuiltContent {
     sourcePath: string;
 }
 
-export interface WritingIndexEntry extends PageMeta {
+export interface ArticleIndexEntry extends PageMeta {
     title: string;
     published: string;
     slug: string;

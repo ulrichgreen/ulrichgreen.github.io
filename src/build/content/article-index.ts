@@ -1,9 +1,9 @@
 import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { parseFrontmatter } from "./frontmatter.ts";
-import type { WritingIndexEntry } from "../../types/content.ts";
+import type { ArticleIndexEntry } from "../../types/content.ts";
 
-export function listWritingEntries(directory: string): WritingIndexEntry[] {
+export function listArticleEntries(directory: string): ArticleIndexEntry[] {
     const allEntries = readdirSync(directory)
         .filter((file) => file.endsWith(".mdx"))
         .map((file) => {
@@ -17,10 +17,10 @@ export function listWritingEntries(directory: string): WritingIndexEntry[] {
                 title: String(meta.title || ""),
                 published: String(meta.published || ""),
                 slug,
-                href: `/writing/${slug}.html`,
+                href: `/articles/${slug}.html`,
                 series: meta.series,
                 seriesOrder: meta.seriesOrder,
-            } satisfies WritingIndexEntry;
+            } satisfies ArticleIndexEntry;
         });
 
     const filtered = allEntries.filter(
