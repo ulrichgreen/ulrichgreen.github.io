@@ -20,7 +20,7 @@ export function PageHeader() {
             <nav className="site-nav container label" aria-label="Primary">
                 <div className="site-nav__group site-nav__group--left">
                     <a href="/index.html">Home</a>
-                    <a href="/#writing">Articles</a>
+                    <a href="/#articles">Articles</a>
                 </div>
                 <a
                     href="/index.html"

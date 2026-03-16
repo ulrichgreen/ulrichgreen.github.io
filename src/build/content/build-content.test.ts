@@ -1,17 +1,17 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { resolveMetaDescription } from "./build-content.ts";
-import type { FrontmatterPayload } from "../../types/content.ts";
+import type { FrontmatterPayload, BasePageMeta } from "../../types/content.ts";
 
 function payload(
     body: string,
-    meta: Partial<FrontmatterPayload["meta"]> = {},
+    meta: Partial<BasePageMeta> = {},
 ): FrontmatterPayload {
     return {
         body,
         meta: {
             title: "Test Title",
-            layout: "base",
+            layout: "base" as const,
             ...meta,
         },
     };

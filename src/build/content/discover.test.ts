@@ -11,9 +11,9 @@ describe("resolveOutputPath", () => {
         assert.equal(resolveOutputPath(source), expected);
     });
 
-    it("maps a writing MDX file preserving the writing/ subdirectory", () => {
-        const source = join(contentDirectory, "writing", "on-constraints.mdx");
-        const expected = join(distDirectory, "writing", "on-constraints.html");
+    it("maps an article MDX file preserving the articles/ subdirectory", () => {
+        const source = join(contentDirectory, "articles", "on-constraints.mdx");
+        const expected = join(distDirectory, "articles", "on-constraints.html");
         assert.equal(resolveOutputPath(source), expected);
     });
 

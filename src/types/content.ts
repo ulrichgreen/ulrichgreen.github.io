@@ -2,20 +2,40 @@ import type { ComponentType, ReactNode } from "preact/compat";
 
 export type LayoutName = "article" | "base";
 
-export interface PageMeta {
+interface SharedMeta {
     title: string;
     description?: string;
-    layout: LayoutName;
     section?: string;
-    published?: string;
-    revised?: string;
-    words?: number | string;
-    readingTime?: string;
-    note?: string;
     summary?: string;
     pagePath?: string;
+    words?: number | string;
+    readingTime?: string;
+    published?: string;
+    revised?: string;
+}
+
+export interface BasePageMeta extends SharedMeta {
+    layout: "base";
+}
+
+export interface Revision {
+    date: string;
+    note: string;
+}
+
+export interface ArticlePageMeta extends SharedMeta {
+    layout: "article";
+    published: string;
+    note?: string;
+    revisions?: Revision[];
     series?: string;
     seriesOrder?: number;
+}
+
+export type PageMeta = BasePageMeta | ArticlePageMeta;
+
+export function isArticleMeta(meta: PageMeta): meta is ArticlePageMeta {
+    return meta.layout === "article";
 }
 
 export interface SeriesEntry {
@@ -53,13 +73,11 @@ export interface BuiltContent {
     sourcePath: string;
 }
 
-export interface WritingIndexEntry extends PageMeta {
+export interface ArticleIndexEntry extends ArticlePageMeta {
     title: string;
     published: string;
     slug: string;
     href: string;
-    series?: string;
-    seriesOrder?: number;
 }
 
 export interface BaseLayoutProps {
@@ -75,10 +93,10 @@ export interface BaseLayoutProps {
 }
 
 export interface ArticleLayoutProps extends BaseLayoutProps {
-    published?: string;
-    revised?: string;
+    published: string;
     words?: number | string;
     readingTime?: string;
     note?: string;
+    revisions?: Revision[];
     seriesInfo?: SeriesInfo;
 }

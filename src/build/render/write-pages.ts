@@ -3,7 +3,8 @@ import { dirname } from "node:path";
 import type { AssetManifest } from "../assets/asset-manifest.ts";
 import { resolveOutputPath } from "../content/discover.ts";
 import { renderPage } from "./render-react-page.tsx";
-import type { BuiltContent, WritingIndexEntry } from "../../types/content.ts";
+import type { BuiltContent, ArticleIndexEntry } from "../../types/content.ts";
+import { isArticleMeta } from "../../types/content.ts";
 import {
     buildSeriesMap,
     resolveSeriesInfo,
@@ -11,23 +12,25 @@ import {
 
 export function writePages(
     compiled: BuiltContent[],
-    writingIndex: WritingIndexEntry[],
+    articleIndex: ArticleIndexEntry[],
     assetManifest: AssetManifest,
 ): void {
-    const seriesMap = buildSeriesMap(writingIndex);
+    const seriesMap = buildSeriesMap(articleIndex);
 
     for (const page of compiled) {
         const outputPath = resolveOutputPath(page.sourcePath);
-        const seriesInfo = resolveSeriesInfo(
-            page.meta.series,
-            page.meta.seriesOrder,
-            seriesMap,
-        );
+        const seriesInfo = isArticleMeta(page.meta)
+            ? resolveSeriesInfo(
+                  page.meta.series,
+                  page.meta.seriesOrder,
+                  seriesMap,
+              )
+            : undefined;
 
         mkdirSync(dirname(outputPath), { recursive: true });
         writeFileSync(
             outputPath,
-            renderPage(page, writingIndex, assetManifest, seriesInfo),
+            renderPage(page, articleIndex, assetManifest, seriesInfo),
         );
     }
 }

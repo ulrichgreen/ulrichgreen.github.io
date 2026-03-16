@@ -3,17 +3,17 @@ import { join, relative } from "node:path";
 import {
     contentDirectory,
     distDirectory,
-    writingDirectory,
+    articlesDirectory,
 } from "../shared/paths.ts";
 
 export function discoverSourceFiles(): string[] {
     const topLevelPages = readdirSync(contentDirectory)
         .filter((file) => file.endsWith(".mdx"))
         .map((file) => join(contentDirectory, file));
-    const writingPages = readdirSync(writingDirectory)
+    const articlePages = readdirSync(articlesDirectory)
         .filter((file) => file.endsWith(".mdx"))
-        .map((file) => join(writingDirectory, file));
-    return [...topLevelPages, ...writingPages];
+        .map((file) => join(articlesDirectory, file));
+    return [...topLevelPages, ...articlePages];
 }
 
 export function resolveOutputPath(sourcePath: string): string {
@@ -30,5 +30,5 @@ export function cleanGeneratedPages(): void {
             rmSync(join(distDirectory, entry.name), { force: true });
         }
     }
-    rmSync(join(distDirectory, "writing"), { recursive: true, force: true });
+    rmSync(join(distDirectory, "articles"), { recursive: true, force: true });
 }

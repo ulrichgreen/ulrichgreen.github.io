@@ -1,11 +1,11 @@
-import type { WritingIndexEntry, SeriesInfo, SeriesEntry } from "../../types/content.ts";
+import type { ArticleIndexEntry, SeriesInfo, SeriesEntry } from "../../types/content.ts";
 
 export function buildSeriesMap(
-    writingIndex: WritingIndexEntry[],
+    articleIndex: ArticleIndexEntry[],
 ): Map<string, SeriesEntry[]> {
     const seriesMap = new Map<string, SeriesEntry[]>();
 
-    for (const entry of writingIndex) {
+    for (const entry of articleIndex) {
         if (!entry.series) continue;
 
         const seriesEntry: SeriesEntry = {

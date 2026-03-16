@@ -1,13 +1,18 @@
 import matter from "gray-matter";
 import { createInterface } from "node:readline";
 import { z } from "zod";
-import type { FrontmatterPayload } from "../../types/content.ts";
+import type { PageMeta, FrontmatterPayload } from "../../types/content.ts";
 
 const yamlDateString = z.preprocess(
     (value) =>
         value instanceof Date ? value.toISOString().slice(0, 10) : value,
     z.string().trim().min(1),
 );
+
+const revisionSchema = z.object({
+    date: yamlDateString,
+    note: z.string().trim().min(1),
+});
 
 const contentMetaSchema = z
     .object({
@@ -24,10 +29,11 @@ const contentMetaSchema = z
         summary: z.string().trim().min(1).optional(),
         series: z.string().trim().min(1).optional(),
         seriesOrder: z.number().int().positive().optional(),
+        revisions: z.array(revisionSchema).optional(),
     })
     .transform((meta) => ({
         ...meta,
-        layout: meta.layout ?? "base",
+        layout: (meta.layout ?? "base") as "article" | "base",
     }))
     .superRefine((meta, context) => {
         if (meta.layout === "article" && !meta.published) {
@@ -66,8 +72,36 @@ export function parseFrontmatter(
         throw formatFrontmatterError(filePath, meta.error);
     }
 
+    const validated = meta.data;
+    const typedMeta: PageMeta =
+        validated.layout === "article"
+            ? {
+                  title: validated.title,
+                  layout: "article" as const,
+                  description: validated.description,
+                  section: validated.section,
+                  summary: validated.summary,
+                  published: validated.published!,
+                  revised: validated.revised,
+                  words: validated.words,
+                  note: validated.note,
+                  revisions: validated.revisions,
+                  series: validated.series,
+                  seriesOrder: validated.seriesOrder,
+              }
+            : {
+                  title: validated.title,
+                  layout: "base" as const,
+                  description: validated.description,
+                  section: validated.section,
+                  summary: validated.summary,
+                  published: validated.published,
+                  revised: validated.revised,
+                  words: validated.words,
+              };
+
     return {
-        meta: meta.data,
+        meta: typedMeta,
         body: content,
     };
 }

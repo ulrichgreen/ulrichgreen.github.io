@@ -8,19 +8,23 @@ Nothing right now. Enjoy the quiet.
 
 ## Later
 
-Year-based archives for the writing — once there's enough to group.
-
-Article summaries on the home page — pull descriptions and dates into a richer landing.
-
-Revision notes for essays that change meaningfully. Show the thinking, not just the result.
-
-Add an image pipeline. Optimize, resize, convert to AVIF/WebP, generate `<picture>` elements. Worth it once image content grows.
-
-Tighten frontmatter types further. The build already validates frontmatter with `zod`; the next step is a stronger TypeScript model, likely a discriminated union on `layout`, so article-only fields stay explicit at compile time too.
-
 Inline critical CSS — inline above-the-fold styles in `<head>`, async-load the rest. Worth doing once the design settles.
 
 Add build caching — asset hashing is in place; the next step is skipping unchanged pages on incremental rebuilds.
+
+## Done
+
+Year-based archives for articles — articles are now grouped by year in the article list.
+
+Article summaries on the home page — descriptions are now shown below each article title in the listing.
+
+Revision notes for articles that change meaningfully — articles can declare a `revisions` array with date + note pairs, rendered as a revision history.
+
+Image pipeline — source raster images are processed at build time into optimized AVIF and WebP variants with resized versions for large images.
+
+Tightened frontmatter types — `PageMeta` is a discriminated union on `layout`, so article-only fields (note, series, seriesOrder, revisions) stay explicit at compile time.
+
+Aligned naming to "pages" and "articles" — the codebase consistently uses "articles" instead of the former mix of "writing", "essay", and "post".
 
 ## Keep An Eye On
 

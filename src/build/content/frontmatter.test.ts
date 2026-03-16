@@ -68,8 +68,11 @@ series: Building a Design System
 seriesOrder: 2
 ---
 Content`);
-            assert.equal(result.meta.series, "Building a Design System");
-            assert.equal(result.meta.seriesOrder, 2);
+            assert.equal(result.meta.layout, "article");
+            if (result.meta.layout === "article") {
+                assert.equal(result.meta.series, "Building a Design System");
+                assert.equal(result.meta.seriesOrder, 2);
+            }
         });
 
         it("allows series without seriesOrder", () => {
@@ -80,8 +83,32 @@ published: "2025-07-01"
 series: My Series
 ---
 Content`);
-            assert.equal(result.meta.series, "My Series");
-            assert.equal(result.meta.seriesOrder, undefined);
+            assert.equal(result.meta.layout, "article");
+            if (result.meta.layout === "article") {
+                assert.equal(result.meta.series, "My Series");
+                assert.equal(result.meta.seriesOrder, undefined);
+            }
+        });
+
+        it("parses revisions array", () => {
+            const result = parseFrontmatter(`---
+title: Revised Article
+layout: article
+published: "2025-01-15"
+revisions:
+  - date: "2025-03-02"
+    note: Rewrote the third section
+  - date: "2025-02-10"
+    note: Added closing argument
+---
+Content`);
+            assert.equal(result.meta.layout, "article");
+            if (result.meta.layout === "article") {
+                assert.ok(result.meta.revisions);
+                assert.equal(result.meta.revisions.length, 2);
+                assert.equal(result.meta.revisions[0].date, "2025-03-02");
+                assert.equal(result.meta.revisions[0].note, "Rewrote the third section");
+            }
         });
     });
 

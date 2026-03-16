@@ -18,8 +18,8 @@
 | `.article-footer` | `.label` | Same label pattern |
 | `.page-header` | `.label` | Same label pattern |
 | `.site-nav` | `.label` | Same label pattern |
-| `.writing-list time` | `.label` | Applied directly to `<time>` element |
-| `.writing-list__series-label` | `.label` | Series group heading |
+| `.article-list time` | `.label` | Applied directly to `<time>` element |
+| `.article-list__series-label` | `.label` | Series group heading |
 | `.series-nav__label` | `.label` | "Series" label text |
 | `.series-nav__progress` | `.label` | "Part X of Y" text |
 | `.series-nav__ordinal` | `.label` | Entry number |
@@ -34,7 +34,7 @@
 | `.series-nav__title` | — | Fluid italic, local style |
 | `.series-nav__link` | `.body-sm` | Small body text for link titles |
 | `article blockquote p` | — | Fluid quote size, local |
-| `.writing-list__link` | — | Fluid link size |
+| `.article-list__link` | — | Fluid link size |
 | `.page > h1:first-child` | — | Display-sm heading, kept local |
 | `.demo-widget__value` | `.mono` | Mono display value |
 | `.demo-widget__prompt` | — | Sans small text |

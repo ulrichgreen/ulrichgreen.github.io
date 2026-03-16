@@ -28,7 +28,7 @@ export function SiteHead({
     seriesName?: string;
 }) {
     const canonicalUrl = pagePath ? `${SITE_URL}${pagePath}` : undefined;
-    const ogType = pagePath?.startsWith("/writing/") ? "article" : "website";
+    const ogType = pagePath?.startsWith("/articles/") ? "article" : "website";
 
     return (
         <head>
@@ -77,7 +77,7 @@ export function SiteHead({
             />
             <link rel="stylesheet" href={cssHref || "/style.css"} />
             <link rel="alternate" type="application/atom+xml" title="Ulrich Green" href="/feed.xml" />
-            {pagePath?.startsWith("/writing/") && (
+            {pagePath?.startsWith("/articles/") && (
                 <script
                     type="application/ld+json"
                     dangerouslySetInnerHTML={{

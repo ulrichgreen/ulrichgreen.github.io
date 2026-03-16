@@ -1,22 +1,22 @@
 import { describe, it } from "node:test";
 import assert from "node:assert/strict";
 import { buildSeriesMap, resolveSeriesInfo } from "./series-index.ts";
-import type { WritingIndexEntry } from "../../types/content.ts";
+import type { ArticleIndexEntry } from "../../types/content.ts";
 
 function entry(
-    overrides: Partial<WritingIndexEntry> & { title: string; slug: string },
-): WritingIndexEntry {
+    overrides: Partial<ArticleIndexEntry> & { title: string; slug: string },
+): ArticleIndexEntry {
     return {
         layout: "article",
         published: "2025-01-01",
-        href: `/writing/${overrides.slug}.html`,
+        href: `/articles/${overrides.slug}.html`,
         ...overrides,
     };
 }
 
 describe("buildSeriesMap", () => {
     it("groups entries by series name, sorted by seriesOrder", () => {
-        const index: WritingIndexEntry[] = [
+        const index: ArticleIndexEntry[] = [
             entry({ title: "Part 2", slug: "part-2", series: "My Series", seriesOrder: 2 }),
             entry({ title: "Part 1", slug: "part-1", series: "My Series", seriesOrder: 1 }),
             entry({ title: "Standalone", slug: "standalone" }),
@@ -32,7 +32,7 @@ describe("buildSeriesMap", () => {
     });
 
     it("returns empty map when no entries have series", () => {
-        const index: WritingIndexEntry[] = [
+        const index: ArticleIndexEntry[] = [
             entry({ title: "A", slug: "a" }),
             entry({ title: "B", slug: "b" }),
         ];
@@ -41,7 +41,7 @@ describe("buildSeriesMap", () => {
     });
 
     it("handles multiple series", () => {
-        const index: WritingIndexEntry[] = [
+        const index: ArticleIndexEntry[] = [
             entry({ title: "A1", slug: "a1", series: "Series A", seriesOrder: 1 }),
             entry({ title: "B1", slug: "b1", series: "Series B", seriesOrder: 1 }),
             entry({ title: "A2", slug: "a2", series: "Series A", seriesOrder: 2 }),
@@ -65,7 +65,7 @@ describe("resolveSeriesInfo", () => {
     });
 
     it("returns series info with correct current order", () => {
-        const index: WritingIndexEntry[] = [
+        const index: ArticleIndexEntry[] = [
             entry({ title: "Part 1", slug: "p1", series: "S", seriesOrder: 1 }),
             entry({ title: "Part 2", slug: "p2", series: "S", seriesOrder: 2 }),
             entry({ title: "Part 3", slug: "p3", series: "S", seriesOrder: 3 }),
