@@ -29,9 +29,14 @@ async function main() {
     assert(homeHtml.includes('class="site-header full-bleed"'));
     assert(homeHtml.includes('class="site-nav container label"'));
     assert(homeHtml.includes('class="section header hero hero--has-portrait"'));
-    assert(homeHtml.includes('<ul class="section article-list">'));
+    assert(homeHtml.includes('class="section article-list"'));
     assert(homeHtml.includes('class="article-list__item"'));
+    assert(homeHtml.includes('class="article-list__year-heading label"'));
     assert(homeHtml.includes("On Constraints"));
+    assert(
+        homeHtml.includes('class="article-list__summary"'),
+        "Home page should show article summaries.",
+    );
     assert(homeHtml.includes('class="site-logo"'));
 
     assert(
