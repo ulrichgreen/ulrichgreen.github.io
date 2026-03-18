@@ -42,6 +42,7 @@ type RebuildKind = "content" | "styles" | "client" | "full";
 
 function classifyChange(changedPath: string): RebuildKind {
     if (changedPath.startsWith("content")) return "content";
+    if (changedPath.endsWith(".module.css")) return "full";
     if (
         changedPath.startsWith("src/styles") ||
         changedPath.startsWith("src/fonts")

@@ -47,33 +47,6 @@
 }
 
 @media (prefers-reduced-motion: no-preference) {
-
-    /* Hero entrance — staggered from top to bottom */
-    .hero__kicker {
-        animation: fade-up 0.7s var(--easing-default) 0.05s both;
-    }
-
-    .hero__name {
-        animation: fade-up 0.7s var(--easing-default) 0.18s both;
-    }
-
-    .hero__portrait {
-        animation: fade-in 1s var(--easing-default) 0.24s both;
-    }
-
-    .hero__rule {
-        animation: expand-x 0.9s var(--easing-default) 0.38s both;
-        transform-origin: left center;
-    }
-
-    .hero__tagline {
-        animation: fade-up 0.7s var(--easing-default) 0.5s both;
-    }
-
-    .hero__meta {
-        animation: fade-up 0.7s var(--easing-default) 0.6s both;
-    }
-
     .page > h1:first-child,
     .article-list,
     .article-header .header__eyebrow,

@@ -3,7 +3,12 @@ import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
-const tsxBin = resolve(root, "node_modules/.bin/tsx");
+const nodeBin = process.execPath;
+const cssModuleHook = resolve(root, "src/build/register-css-modules.ts");
+
+function nodeArgs(args: string[]): string[] {
+    return ["--import", "tsx", "--import", cssModuleHook, ...args];
+}
 
 // Integration verifiers (each is a standalone script with its own output)
 const integrationFiles = [
@@ -27,7 +32,7 @@ const unitTestFiles = [
 function runScript(file: string): Promise<{ ok: boolean; output: string }> {
     return new Promise((done) => {
         const chunks: Buffer[] = [];
-        const proc = spawn(tsxBin, [resolve(root, file)], {
+        const proc = spawn(nodeBin, nodeArgs([resolve(root, file)]), {
             stdio: ["ignore", "pipe", "pipe"],
         });
         proc.stdout.on("data", (d: Buffer) => chunks.push(d));
@@ -47,13 +52,13 @@ function runUnitTests(
     return new Promise((done) => {
         const chunks: Buffer[] = [];
         const proc = spawn(
-            tsxBin,
-            [
+            nodeBin,
+            nodeArgs([
                 "--test",
                 "--test-reporter",
                 "spec",
                 ...files.map((f) => resolve(root, f)),
-            ],
+            ]),
             { stdio: ["ignore", "pipe", "pipe"] },
         );
         proc.stdout.on("data", (d: Buffer) => chunks.push(d));

@@ -27,8 +27,12 @@ async function main() {
     );
     assert(homeHtml.includes('id="progress" aria-hidden="true"'));
     assert(homeHtml.includes('class="site-header full-bleed"'));
-    assert(homeHtml.includes('class="site-nav container label"'));
-    assert(homeHtml.includes('class="section header hero hero--has-portrait"'));
+    assert(homeHtml.includes('class="site-nav label"'));
+    assert(
+        /<section[^>]*aria-labelledby="hero-name"[^>]*class="section header [^"]+"/.test(homeHtml),
+        "Home page should render the hero section with local CSS-module classes.",
+    );
+    assert(homeHtml.includes('id="hero-name"'));
     assert(homeHtml.includes('class="section article-list"'));
     assert(homeHtml.includes('class="article-list__item"'));
     assert(homeHtml.includes('class="article-list__year-heading label"'));
