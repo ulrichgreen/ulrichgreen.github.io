@@ -4,9 +4,27 @@ export function buildSeriesMap(
     articleIndex: ArticleIndexEntry[],
 ): Map<string, SeriesEntry[]> {
     const seriesMap = new Map<string, SeriesEntry[]>();
+    const ordersBySeries = new Map<string, Map<number, ArticleIndexEntry>>();
 
     for (const entry of articleIndex) {
         if (!entry.series) continue;
+
+        if (entry.seriesOrder !== undefined) {
+            const seriesOrders =
+                ordersBySeries.get(entry.series) ?? new Map<number, ArticleIndexEntry>();
+            const conflictingEntry = seriesOrders.get(entry.seriesOrder);
+            if (conflictingEntry) {
+                throw new Error(
+                    [
+                        `Series "${entry.series}" has conflicting seriesOrder ${entry.seriesOrder}.`,
+                        conflictingEntry.sourcePath,
+                        entry.sourcePath,
+                    ].join(" "),
+                );
+            }
+            seriesOrders.set(entry.seriesOrder, entry);
+            ordersBySeries.set(entry.series, seriesOrders);
+        }
 
         const seriesEntry: SeriesEntry = {
             title: entry.title,

@@ -110,6 +110,20 @@ Content`);
                 assert.equal(result.meta.revisions[0].note, "Rewrote the third section");
             }
         });
+
+        it("parses draft articles", () => {
+            const result = parseFrontmatter(`---
+title: Draft Article
+layout: article
+published: "2025-01-15"
+draft: true
+---
+Content`);
+            assert.equal(result.meta.layout, "article");
+            if (result.meta.layout === "article") {
+                assert.equal(result.meta.draft, true);
+            }
+        });
     });
 
     describe("validation errors", () => {

@@ -20,6 +20,8 @@ export function listArticleEntries(directory: string): ArticleIndexEntry[] {
                 published: String(meta.published || ""),
                 slug,
                 href: `/articles/${slug}.html`,
+                sourcePath,
+                draft: isArticleMeta(meta) ? meta.draft : undefined,
                 series: isArticleMeta(meta) ? meta.series : undefined,
                 seriesOrder: isArticleMeta(meta) ? meta.seriesOrder : undefined,
             } satisfies ArticleIndexEntry;
@@ -27,20 +29,21 @@ export function listArticleEntries(directory: string): ArticleIndexEntry[] {
 
     const filtered = allEntries.filter(
         (entry) =>
+            entry.draft !== true &&
             Boolean(entry.title) &&
             entry.published &&
             !Number.isNaN(new Date(entry.published).getTime()),
     );
 
-    const skipped = allEntries.length - filtered.length;
-    if (skipped > 0) {
-        const missing = allEntries.filter(
-            (entry) =>
-                !entry.title ||
+    const invalid = allEntries.filter(
+        (entry) =>
+            entry.draft !== true &&
+            (!entry.title ||
                 !entry.published ||
-                Number.isNaN(new Date(entry.published).getTime()),
-        );
-        for (const entry of missing) {
+                Number.isNaN(new Date(entry.published).getTime())),
+    );
+    if (invalid.length > 0) {
+        for (const entry of invalid) {
             process.stderr.write(
                 `  skip  "${entry.slug}" — missing title or published date\n`,
             );

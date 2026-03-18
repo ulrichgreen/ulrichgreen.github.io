@@ -39,7 +39,11 @@ function formatCodeLanguage(value?: string): string {
 
 export function Code({ children, language, title }: CodeProps) {
     return (
-        <figure className="code-block" data-language={language}>
+        <figure
+            className="code-block"
+            data-language={language}
+            data-rehype-pretty-code-figure=""
+        >
             <div className="code-block__toolbar">
                 {title && <span className="code-block__title">{title}</span>}
                 <span className="code-block__language">

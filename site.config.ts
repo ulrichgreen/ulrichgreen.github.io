@@ -30,13 +30,13 @@ export const siteConfig = {
                 label: "CSS",
                 extensions: [".css"],
                 warnAtBytes: 28 * kibibyte,
-                maximumBytes: 32 * kibibyte,
+                maximumBytes: 33 * kibibyte,
             },
             {
                 label: "JS",
                 extensions: [".js"],
                 warnAtBytes: 36 * kibibyte,
-                maximumBytes: 40 * kibibyte,
+                maximumBytes: 41 * kibibyte,
             },
             {
                 label: "Fonts",

@@ -10,6 +10,7 @@ function entry(
         layout: "article",
         published: "2025-01-01",
         href: `/articles/${overrides.slug}.html`,
+        sourcePath: `/content/articles/${overrides.slug}.mdx`,
         ...overrides,
     };
 }
@@ -50,6 +51,30 @@ describe("buildSeriesMap", () => {
         assert.equal(map.size, 2);
         assert.equal(map.get("Series A")?.length, 2);
         assert.equal(map.get("Series B")?.length, 1);
+    });
+
+    it("throws when two articles in a series share the same order", () => {
+        const index: ArticleIndexEntry[] = [
+            entry({
+                title: "Part 1",
+                slug: "part-1",
+                series: "My Series",
+                seriesOrder: 1,
+                sourcePath: "/content/articles/part-1.mdx",
+            }),
+            entry({
+                title: "Another Part 1",
+                slug: "another-part-1",
+                series: "My Series",
+                seriesOrder: 1,
+                sourcePath: "/content/articles/another-part-1.mdx",
+            }),
+        ];
+
+        assert.throws(
+            () => buildSeriesMap(index),
+            /Series "My Series" has conflicting seriesOrder 1\. \/content\/articles\/part-1\.mdx \/content\/articles\/another-part-1\.mdx/,
+        );
     });
 });
 

@@ -26,6 +26,7 @@ export interface Revision {
 export interface ArticlePageMeta extends SharedMeta {
     layout: "article";
     published: string;
+    draft?: boolean;
     note?: string;
     revisions?: Revision[];
     series?: string;
@@ -67,9 +68,16 @@ export interface MdxContentProps {
 
 export type ContentBodyComponent = ComponentType<MdxContentProps>;
 
+export interface ContentHeading {
+    id: string;
+    text: string;
+    level: 2 | 3;
+}
+
 export interface BuiltContent {
     meta: PageMeta;
     Content: ContentBodyComponent;
+    headings: ContentHeading[];
     sourcePath: string;
 }
 
@@ -78,6 +86,7 @@ export interface ArticleIndexEntry extends ArticlePageMeta {
     published: string;
     slug: string;
     href: string;
+    sourcePath: string;
 }
 
 export interface BaseLayoutProps {

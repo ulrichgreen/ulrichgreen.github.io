@@ -23,6 +23,7 @@ function derivePagePath(sourcePath: string): string {
 function createRenderContext(
     articleIndex: ArticleIndexEntry[],
     assetManifest: AssetManifest,
+    content: BuiltContent,
 ): { context: RenderContextValue; hasIslands: () => boolean } {
     let islandCount = 0;
     const registerIsland = ({ name }: RegisterIslandInput): string => {
@@ -31,7 +32,13 @@ function createRenderContext(
     };
     const hasIslands = () => islandCount > 0;
     return {
-        context: { articleIndex, registerIsland, assetManifest, hasIslands },
+        context: {
+            articleIndex,
+            headings: content.headings,
+            registerIsland,
+            assetManifest,
+            hasIslands,
+        },
         hasIslands,
     };
 }
@@ -41,7 +48,7 @@ export function renderContentBody(
     articleIndex: ArticleIndexEntry[],
     assetManifest: AssetManifest = defaultAssetManifest,
 ): string {
-    const { context } = createRenderContext(articleIndex, assetManifest);
+    const { context } = createRenderContext(articleIndex, assetManifest, content);
     const body = createElement(content.Content, {
         components: getContentComponents(),
     });
@@ -56,7 +63,7 @@ export function renderPage(
     assetManifest: AssetManifest = defaultAssetManifest,
     seriesInfo?: SeriesInfo,
 ): string {
-    const { context } = createRenderContext(articleIndex, assetManifest);
+    const { context } = createRenderContext(articleIndex, assetManifest, content);
 
     const meta = {
         ...content.meta,

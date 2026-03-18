@@ -7,6 +7,8 @@ layout: article
 
 A tool shapes the work it produces. This is obvious in physical craft. A broad chisel makes different marks than a narrow one. It is easier to forget in software, where the tools are invisible and the shapes they impress are not.
 
+<TableOfContents />
+
 ## What the Tool Already Believes
 
 The framework you choose encodes assumptions about what problems are worth solving easily and which ones you are on your own for. The database you choose encodes assumptions about the shape of your data. The language you choose encodes assumptions about what kinds of errors are worth catching at compile time. You are not choosing neutral infrastructure. You are choosing a set of prior opinions about your domain, and you are agreeing to live inside them.
@@ -18,6 +20,12 @@ The framework you choose encodes assumptions about what problems are worth solvi
 This is not an argument against using tools. Tools are good. The right tool makes a hard thing easy, and time spent fighting the wrong tool is time not spent on the actual problem. The argument is for deliberateness: choosing tools because you understand what they assume and agree with most of it, rather than because they are popular or familiar or because someone in a conference talk made them look easy.
 
 > A tool does not just extend your reach. It edits your judgment by making some moves feel native and others feel expensive.
+
+<Callout type="tip">
+    Reach for tooling that leaves the underlying document or system visible. The
+    leverage is more durable when you can still explain the output without
+    appealing to the tool's magic.
+</Callout>
 
 <DemoWidget
     prompt="Count the cost before you add capability."

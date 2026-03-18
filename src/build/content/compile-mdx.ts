@@ -4,7 +4,7 @@ import rehypeAutolinkHeadings from "rehype-autolink-headings";
 import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
-import type { ContentBodyComponent } from "../../types/content.ts";
+import type { ContentBodyComponent, ContentHeading } from "../../types/content.ts";
 
 const MDX_ESM_PATTERN = /^\s*(import|export)\s/m;
 
@@ -162,16 +162,37 @@ function createText(value: string): HastNode {
     return { type: "text", value };
 }
 
+function collapseWhitespace(value: string): string {
+    return value.replace(/\s+/g, " ").trim();
+}
+
 function hasProperty(node: HastNode, key: string): boolean {
     return Boolean(node.properties && key in node.properties);
 }
 
 function visitTree(node: HastNode, visitor: (node: HastNode) => void): void {
+    if (!node) {
+        return;
+    }
+
     visitor(node);
 
     for (const child of node.children || []) {
+        if (!child) continue;
         visitTree(child, visitor);
     }
+}
+
+function extractNodeText(node: HastNode): string {
+    if (!node) {
+        return "";
+    }
+
+    if (node.type === "text") {
+        return node.value ?? "";
+    }
+
+    return (node.children || []).filter(Boolean).map(extractNodeText).join("");
 }
 
 function rehypeCodeBlockChrome() {
@@ -251,6 +272,29 @@ function rehypeCodeBlockChrome() {
     };
 }
 
+function rehypeCollectHeadings(headings: ContentHeading[]) {
+    return (tree: HastNode) => {
+        visitTree(tree, (node) => {
+            if (
+                node.type !== "element" ||
+                (node.tagName !== "h2" && node.tagName !== "h3")
+            ) {
+                return;
+            }
+
+            const id = getStringProperty(node.properties?.id);
+            const text = collapseWhitespace(extractNodeText(node));
+            if (!id || !text) return;
+
+            headings.push({
+                id,
+                text,
+                level: node.tagName === "h2" ? 2 : 3,
+            });
+        });
+    };
+}
+
 function assertSupportedMdx(body: string, filePath: string) {
     if (MDX_ESM_PATTERN.test(body)) {
         throw new Error(
@@ -265,11 +309,12 @@ const shikiImport = import("shiki");
 export async function compileMdx(
     body: string,
     filePath: string,
-): Promise<ContentBodyComponent> {
+): Promise<{ Content: ContentBodyComponent; headings: ContentHeading[] }> {
     assertSupportedMdx(body, filePath);
 
     const { evaluate } = await mdxImport;
     const { createHighlighter } = await shikiImport;
+    const headings: ContentHeading[] = [];
 
     const module = (await evaluate(
         { value: body, path: filePath },
@@ -280,6 +325,7 @@ export async function compileMdx(
             remarkPlugins: [remarkGfm],
             rehypePlugins: [
                 rehypeSlug,
+                [rehypeCollectHeadings, headings],
                 [
                     rehypePrettyCode,
                     {
@@ -303,5 +349,5 @@ export async function compileMdx(
         default: ContentBodyComponent;
     };
 
-    return module.default;
+    return { Content: module.default, headings };
 }

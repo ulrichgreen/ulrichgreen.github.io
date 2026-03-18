@@ -12,7 +12,9 @@ This site is still a collection of static files. The difference is that the auth
 
 The docs folder stays small on purpose. `manifesto.md` says what the site is trying to do. `architecture.md` covers the build, the repo layout, and how content moves through the system. `tooling.md` records the current tool choices and why they fit the architecture. `roadmap.md` keeps planned work in one place. `future-ideas.md` holds ideas worth remembering but not worth building yet.
 
-That split keeps the documents short enough to stay useful.
+That split keeps the documents short enough to stay useful. `writing-guide.md`
+is the practical companion: the authoring reference for content components,
+images, series metadata, revisions, and footnotes.
 
 ## Build
 
@@ -23,6 +25,14 @@ There is still a watch mode. `pnpm dev` runs a tiny dev server with rebuilds and
 ## Design
 
 The visual design is still raw CSS. The source is still split into partials under `src/styles/`, and it still compiles to one stylesheet. The 8px baseline grid is still the backbone. Custom properties still carry the spacing scale, type scale, and palette. The site still leans on typography before graphics.
+
+<Figure
+    src="/images/IMG_1514.png"
+    alt="Portrait used in the home-page hero."
+    width={320}
+    height={400}
+    caption="Raster source images live in `src/images/`. The build copies the original and emits matching WebP and AVIF variants alongside it."
+/>
 
 There is still a small browser layer for progressive enhancement: reading progress, heading reveals, and footnotes into the margin. Interactive islands use Preact where state is warranted, but document-level behavior stays as plain JavaScript.
 

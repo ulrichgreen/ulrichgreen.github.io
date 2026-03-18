@@ -134,9 +134,12 @@ export async function buildContent(filePath: string): Promise<BuiltContent> {
                   readingTime,
               };
 
+    const { Content, headings } = await compileMdx(parsed.body, filePath);
+
     return {
         meta,
-        Content: await compileMdx(parsed.body, filePath),
+        Content,
+        headings,
         sourcePath: filePath,
     };
 }

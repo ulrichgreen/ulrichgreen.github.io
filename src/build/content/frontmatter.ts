@@ -22,6 +22,7 @@ const contentMetaSchema = z
         section: z.string().trim().min(1).optional(),
         published: yamlDateString.optional(),
         revised: yamlDateString.optional(),
+        draft: z.boolean().optional(),
         words: z
             .union([z.number().positive(), z.string().trim().min(1)])
             .optional(),
@@ -83,6 +84,7 @@ export function parseFrontmatter(
                   summary: validated.summary,
                   published: validated.published!,
                   revised: validated.revised,
+                  draft: validated.draft,
                   words: validated.words,
                   note: validated.note,
                   revisions: validated.revisions,

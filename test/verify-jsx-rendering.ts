@@ -120,7 +120,22 @@ async function main() {
         "Article page with islands should include islands.js.",
     );
     assert(articleHtml.includes('data-island="DemoWidget"'));
+    assert(articleHtml.includes('data-island="TableOfContents"'));
     assert(articleHtml.includes("Count the cost before you add capability."));
+    assert(articleHtml.includes('class="callout callout--tip card semi-bleed"'));
+    assert(articleHtml.includes("Reach for tooling that leaves the underlying document"));
+    assert(
+        article.headings.some((heading) => heading.text === "What the Tool Already Believes"),
+        "Article should expose extracted headings for the table of contents.",
+    );
+    assert(
+        articleHtml.includes('class="table-of-contents card semi-bleed"'),
+        "Article should render the table of contents island shell.",
+    );
+    assert(
+        articleHtml.includes('href="#what-the-tool-already-believes"'),
+        "Table of contents should link to extracted heading IDs.",
+    );
 
     assert(
         articleHtml.includes(
@@ -191,6 +206,18 @@ async function main() {
     assert(
         colophonHtml.includes('aria-hidden="true"'),
         "Headings should have autolink anchors from rehype-autolink-headings.",
+    );
+    assert(
+        colophonHtml.includes('class="figure semi-bleed"'),
+        "Colophon should render the figure component.",
+    );
+    assert(
+        colophonHtml.includes('type="image/avif" srcset="/images/IMG_1514.avif"'),
+        "Figure should derive AVIF image variants from raster sources.",
+    );
+    assert(
+        colophonHtml.includes('class="figure__caption"'),
+        "Figure should render a caption.",
     );
 
     const notFoundPath = new URL("../content/404.mdx", import.meta.url)

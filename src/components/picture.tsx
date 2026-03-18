@@ -31,10 +31,10 @@ interface PictureProps {
     /** AVIF variant — smallest format, latest browser support. */
     srcAvif?: string;
     alt: string;
-    /** Intrinsic width in pixels — prevents CLS. */
-    width: number;
-    /** Intrinsic height in pixels — prevents CLS. */
-    height: number;
+    /** Intrinsic width in pixels — prevents CLS when provided. */
+    width?: number;
+    /** Intrinsic height in pixels — prevents CLS when provided. */
+    height?: number;
     /**
      * "eager" for above-the-fold / LCP images (default).
      * "lazy" for below-the-fold images (deferred decoding).
