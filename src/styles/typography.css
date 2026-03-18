@@ -75,31 +75,4 @@
         font-family: var(--type-family-mono);
     }
 
-    /* ─── Prose wrapper ──────────────────────────────────── */
-
-    .prose :is(h1, h2, h3, h4) {
-        max-width: var(--layout-content-width);
-    }
-
-    .prose :is(p, ul, ol, li) {
-        font-size: var(--type-size-md);
-        line-height: var(--type-leading-body);
-        max-width: var(--layout-content-width);
-    }
-
-    .prose :is(blockquote) {
-        font-style: italic;
-    }
-
-    .prose :is(pre) {
-        font-family: var(--type-family-mono);
-        font-size: var(--type-size-sm);
-        line-height: var(--type-leading-tight);
-    }
-
-    .prose :is(figcaption) {
-        font-size: var(--type-size-xs);
-        line-height: var(--type-leading-tight);
-        color: var(--color-text-secondary);
-    }
 }

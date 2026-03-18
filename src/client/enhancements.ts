@@ -26,9 +26,8 @@ function bootCodeBlocks() {
         let toolbar = figure.querySelector<HTMLElement>(".code-block__toolbar");
         if (!toolbar) continue;
 
-        let copyButton = toolbar.querySelector<HTMLButtonElement>(
-            ".code-block__copy",
-        );
+        let copyButton =
+            toolbar.querySelector<HTMLButtonElement>(".code-block__copy");
         if (!copyButton) {
             copyButton = document.createElement("button");
             copyButton.type = "button";
@@ -154,6 +153,10 @@ export function bootEnhancements() {
     if (document.body.dataset.enhancementsBooted === "true") return;
     document.body.dataset.enhancementsBooted = "true";
 
+    for (const reference of document.querySelectorAll<HTMLElement>(".fn-ref")) {
+        reference.classList.add("caption");
+    }
+
     bootCodeBlocks();
     bootReadingProgress();
     bootHeadingReveal();
@@ -181,7 +184,7 @@ export function bootEnhancements() {
             );
             if (!note) {
                 note = document.createElement("aside");
-                note.className = "margin-note";
+                note.className = "margin-note caption";
                 note.dataset.for = targetId.replace(/^#/, "");
                 note.dataset.ref = ref.textContent?.trim() || "";
                 note.textContent = footnote.textContent || "";
@@ -207,7 +210,7 @@ export function bootEnhancements() {
         );
         if (!inline) {
             inline = document.createElement("div");
-            inline.className = "fn-inline";
+            inline.className = "fn-inline caption";
             inline.id = `inline-${targetId.replace(/^#/, "")}`;
             inline.textContent = footnote.textContent || "";
             ref.insertAdjacentElement("afterend", inline);

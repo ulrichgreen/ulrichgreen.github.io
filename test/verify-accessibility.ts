@@ -97,7 +97,7 @@ async function main() {
     ).pathname;
     const componentsCss = readFileSync(componentsPath, "utf8");
     const siteHeaderPath = new URL(
-        "../src/styles/site-header.css",
+        "../src/components/site-header/site-header.module.css",
         import.meta.url,
     ).pathname;
     const siteHeaderCss = readFileSync(siteHeaderPath, "utf8");
@@ -110,19 +110,21 @@ async function main() {
         "mobile site-header",
     );
 
-    const mobileNavMatch = mobileBlock.match(
-        /\.site-nav\s*\{([\s\S]*?)\n\s*\}/,
-    );
+    const mobileNavMatch = mobileBlock.match(/\.nav\s*\{([\s\S]*?)\n\s*\}/);
     assert(mobileNavMatch?.[1], "Could not find small-screen nav styles.");
     assert(
         !/display:\s*none;/.test(mobileNavMatch[1]),
         "Primary navigation should stay visible on small screens.",
     );
 
-    const sharedTitleMatch = componentsCss.match(/\.title\s*\{([\s\S]*?)\n\s*\}/);
+    const sharedTitleMatch = componentsCss.match(
+        /\.title\s*\{([\s\S]*?)\n\s*\}/,
+    );
     assert(sharedTitleMatch?.[1], "Could not find shared title styles.");
     assert(
-        /max-width:\s*var\(--title-measure,\s*20ch\);/.test(sharedTitleMatch[1]),
+        /max-width:\s*var\(--title-measure,\s*20ch\);/.test(
+            sharedTitleMatch[1],
+        ),
         "Article titles should allow a wider measure.",
     );
 
@@ -147,7 +149,7 @@ async function main() {
     );
 
     const articleBodyMatch = componentsCss.match(
-        /\.page--article \.article-body\s*\{([\s\S]*?)\n\s*\}/,
+        /\.article-body\s*\{([\s\S]*?)\n\s*\}/,
     );
     assert(articleBodyMatch?.[1], "Could not find article body styles.");
     assert(
@@ -250,7 +252,8 @@ async function main() {
         "A visible-on-focus skip link style should exist.",
     );
 
-    const articlesDir = new URL("../content/articles", import.meta.url).pathname;
+    const articlesDir = new URL("../content/articles", import.meta.url)
+        .pathname;
     const articleIndex = listArticleEntries(articlesDir);
     const homePath = new URL("../content/index.mdx", import.meta.url).pathname;
     const home = await buildContent(homePath);

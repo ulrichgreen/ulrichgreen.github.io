@@ -6,7 +6,8 @@
 @import "./typography.css";
 @import "./layout.css";
 @import "./components.css";
-@import "./site-header.css";
+@import "../components/demo-widget/demo-widget.css";
+@import "../components/table-of-contents/table-of-contents.css";
 @import "./motion.css";
 @import "./print.css";
 @import "./code.css";

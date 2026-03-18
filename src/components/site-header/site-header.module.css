@@ -1,7 +1,5 @@
 @layer components {
-    /* ─── Site nav ───────────────────────────────────────────── */
-
-    .site-nav {
+    .nav {
         display: flex;
         align-items: center;
         justify-content: center;
@@ -10,35 +8,31 @@
         border-block-end: 1px solid var(--color-border);
     }
 
-    .site-nav__group {
+    .navGroup {
         display: flex;
         gap: var(--space-3);
         align-items: center;
         flex: 1;
     }
 
-    .site-nav__group--right {
+    .navGroupRight {
         justify-content: flex-end;
     }
 
-    .site-nav a {
+    .nav a {
         color: var(--color-text-secondary);
         text-decoration: none;
         transition: color 0.2s var(--easing-default);
     }
 
-    .site-nav a:hover,
-    .site-nav a:focus-visible {
+    .nav a:hover,
+    .nav a:focus-visible {
         color: var(--color-text-primary);
     }
 
-    /* Logo */
-
-    .site-logo {
+    .logo {
         display: inline-flex;
         align-items: baseline;
-        font-family: var(--type-family-mono);
-        font-size: 0.9rem;
         letter-spacing: 0.05em;
         text-transform: lowercase;
         color: var(--color-text-primary);
@@ -47,31 +41,31 @@
         flex-shrink: 0;
     }
 
-    .site-logo:hover,
-    .site-logo:focus-visible {
+    .logo:hover,
+    .logo:focus-visible {
         outline: none;
     }
 
-    .site-logo__brace {
+    .logoBrace {
         color: var(--color-text-secondary);
         transition: color 0.25s var(--easing-default);
     }
 
-    .site-logo:hover .site-logo__brace,
-    .site-logo:focus-visible .site-logo__brace {
+    .logo:hover .logoBrace,
+    .logo:focus-visible .logoBrace {
         color: var(--color-accent);
     }
 
-    .site-logo__name {
+    .logoName {
         display: inline-flex;
         align-items: baseline;
     }
 
-    .site-logo__core {
+    .logoCore {
         display: inline-block;
     }
 
-    .site-logo__char {
+    .logoChar {
         display: inline-block;
         overflow: hidden;
         max-width: 0;
@@ -81,25 +75,25 @@
             opacity 0.1s var(--easing-default) calc(var(--logo-i, 1) * 0.045s);
     }
 
-    .site-logo:hover .site-logo__char,
-    .site-logo:focus-visible .site-logo__char {
+    .logo:hover .logoChar,
+    .logo:focus-visible .logoChar {
         max-width: 1.2ch;
         opacity: 1;
     }
 
     @media (prefers-reduced-motion: reduce) {
-        .site-logo__char {
+        .logoChar {
             transition: none;
         }
     }
 
     @media (max-width: 820px) {
-        .site-nav {
+        .nav {
             gap: var(--space-2);
             padding-block: var(--space-2);
         }
 
-        .site-nav__group {
+        .navGroup {
             gap: var(--space-2);
         }
     }

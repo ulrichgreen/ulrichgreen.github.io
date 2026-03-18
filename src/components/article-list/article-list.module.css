@@ -1,0 +1,56 @@
+@layer components {
+    .root {
+        margin-block-start: clamp(2rem, 6vw, 4rem);
+    }
+
+    .yearGroup {
+        margin-block-end: var(--space-4);
+    }
+
+    .yearHeading {
+        padding-block: 0.5rem;
+        border-block-end: 1px solid var(--color-border);
+    }
+
+    .entries {
+        padding: 0;
+        list-style: none;
+    }
+
+    .item {
+        display: grid;
+        grid-template-columns: minmax(0, 1fr) auto;
+        gap: var(--space-1) var(--space-2);
+        align-items: baseline;
+        padding-block: 1rem;
+        border-block-end: 1px solid var(--color-border);
+    }
+
+    .summary {
+        grid-column: 1 / -1;
+        margin: 0;
+        color: var(--color-text-secondary);
+    }
+
+    .link {
+        color: var(--color-text-primary);
+        text-decoration: none;
+    }
+
+    .seriesLabel {
+        grid-column: 1 / -1;
+        margin-block-start: var(--space-3);
+        padding-block-end: 0.5rem;
+        border-block-end: 1px solid var(--color-border);
+    }
+
+    .seriesLabel:first-child {
+        margin-block-start: 0;
+    }
+
+    @media (max-width: 820px) {
+        .item {
+            grid-template-columns: 1fr;
+        }
+    }
+}

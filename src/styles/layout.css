@@ -64,8 +64,6 @@
     footer.site-footer {
         border-block-start: 1px solid var(--color-border);
         color: var(--color-text-secondary);
-        font-size: var(--type-size-sm);
-        font-family: var(--type-family-sans);
         display: flex;
         justify-content: space-between;
         align-items: center;

@@ -28,7 +28,10 @@ async function main() {
     );
     assert(homeHtml.includes('id="progress" aria-hidden="true"'));
     assert(homeHtml.includes('class="site-header full-bleed"'));
-    assert(homeHtml.includes('class="site-nav label"'));
+    assert(
+        homeHtml.includes('aria-label="Primary"'),
+        "Site nav should be present with aria-label.",
+    );
     assert(
         /<section[^>]*aria-labelledby="hero-name"[^>]*class="section header [^"]+"/.test(
             homeHtml,
@@ -36,15 +39,29 @@ async function main() {
         "Home page should render the hero section with local CSS-module classes.",
     );
     assert(homeHtml.includes('id="hero-name"'));
-    assert(homeHtml.includes('class="section article-list"'));
-    assert(homeHtml.includes('class="article-list__item"'));
-    assert(homeHtml.includes('class="article-list__year-heading label"'));
+    assert(
+        /class="section [^"]+"/.test(homeHtml),
+        "Article list root should have section class.",
+    );
+    assert(
+        homeHtml.includes("href=") && homeHtml.includes("On Constraints"),
+        "Article list should render article links.",
+    );
+    assert(
+        /class="[^"]*\blabel\b[^"]*"/.test(homeHtml),
+        "Article list should use label class for year headings.",
+    );
     assert(homeHtml.includes("On Constraints"));
     assert(
-        homeHtml.includes('class="article-list__summary"'),
+        homeHtml.includes(
+            "Constraints do not merely limit design and software work.",
+        ),
         "Home page should show article summaries.",
     );
-    assert(homeHtml.includes('class="site-logo"'));
+    assert(
+        homeHtml.includes('aria-label="ulrich.green \u2014 home"'),
+        "Site logo should be present.",
+    );
 
     assert(
         homeHtml.includes(
@@ -120,14 +137,13 @@ async function main() {
         "Article title should have a named view transition.",
     );
     assert(articleHtml.includes('class="page page--article"'));
-    assert(articleHtml.includes('class="section header article-header"'));
     assert(
-        articleHtml.includes(
-            'class="article-header__kicker header__eyebrow label"',
-        ),
+        /class="section header [^"]+"/.test(articleHtml),
+        "Article should render the header section.",
     );
-    assert(articleHtml.includes('class="article-header__rule header__rule"'));
-    assert(articleHtml.includes('class="article-header__abstract lede"'));
+    assert(articleHtml.includes('class="header__eyebrow label"'));
+    assert(articleHtml.includes('class="header__rule"'));
+    assert(articleHtml.includes('class="lede"'));
     assert(articleHtml.includes('class="section article-body"'));
     assert(articleHtml.includes("March 1, 2025"));
     assert(
@@ -138,7 +154,8 @@ async function main() {
     assert(articleHtml.includes('data-island="TableOfContents"'));
     assert(articleHtml.includes("Count the cost before you add capability."));
     assert(
-        articleHtml.includes('class="callout callout--tip card semi-bleed"'),
+        articleHtml.includes('aria-label="Tip callout"'),
+        "Callout tip should render with accessible label.",
     );
     assert(
         articleHtml.includes(
@@ -231,7 +248,7 @@ async function main() {
         "Headings should have autolink anchors from rehype-autolink-headings.",
     );
     assert(
-        colophonHtml.includes('class="figure semi-bleed"'),
+        /<figure[^>]*class="[^"]*semi-bleed/.test(colophonHtml),
         "Colophon should render the figure component.",
     );
     assert(
@@ -241,7 +258,7 @@ async function main() {
         "Figure should derive AVIF image variants from raster sources.",
     );
     assert(
-        colophonHtml.includes('class="figure__caption"'),
+        colophonHtml.includes("<figcaption"),
         "Figure should render a caption.",
     );
 
@@ -331,12 +348,12 @@ async function main() {
     );
 
     assert(
-        markupHtml.includes('class="section semi-bleed card series-nav"'),
+        /class="section semi-bleed card [^"]+"/.test(markupHtml),
         "Series article should render the series-nav component.",
     );
     assert(
-        markupHtml.includes('class="series-nav__title title"'),
-        "Series nav should use the shared title class.",
+        markupHtml.includes("The Web Trilogy"),
+        "Series nav should display the series title.",
     );
     assert(
         markupHtml.includes('aria-label="The Web Trilogy series navigation"'),
@@ -355,11 +372,12 @@ async function main() {
         "Current series entry should have aria-current=page.",
     );
     assert(
-        markupHtml.includes('class="series-nav__next label"'),
+        markupHtml.includes("On CSS Architecture") &&
+            /href="[^"]+on-css-architecture/.test(markupHtml),
         "First series article should have a next link.",
     );
     assert(
-        !markupHtml.includes('class="series-nav__prev label"'),
+        !/<a[^>]*href="[^"]*on-markup[^"]*"[^>]*>[\s\S]*?←/.test(markupHtml),
         "First series article should not have a prev link.",
     );
     assert(
@@ -368,12 +386,14 @@ async function main() {
     );
 
     assert(
-        !articleHtml.includes('class="series-nav"'),
+        !articleHtml.includes(
+            'aria-label="The Web Trilogy series navigation"',
+        ) && !articleHtml.includes('role="progressbar"'),
         "Non-series article should not render series-nav.",
     );
 
     assert(
-        homeHtml.includes("article-list__series-label"),
+        homeHtml.includes("Series · The Web Trilogy"),
         "Home page should render series labels in the article list.",
     );
 
@@ -398,7 +418,8 @@ async function main() {
     );
 
     assert(
-        constraintsHtml.includes('class="section revision-history"'),
+        constraintsHtml.includes('class="section ') &&
+            constraintsHtml.includes('aria-label="Revision history"'),
         "Article with revisions should render revision history.",
     );
     assert(
@@ -410,7 +431,7 @@ async function main() {
         "Revision history should include revision notes.",
     );
     assert(
-        !articleHtml.includes('class="revision-history"'),
+        !articleHtml.includes('aria-label="Revision history"'),
         "Article without revisions should not render revision history.",
     );
 

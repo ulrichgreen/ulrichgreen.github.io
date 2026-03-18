@@ -1,0 +1,36 @@
+@layer components {
+    .table-of-contents {
+        margin-block: var(--space-4);
+    }
+
+    .table-of-contents__toggle {
+        display: flex;
+        justify-content: space-between;
+        width: 100%;
+        padding: 0;
+        border: 0;
+        background: transparent;
+        color: var(--color-text-primary);
+        cursor: pointer;
+    }
+
+    .table-of-contents__nav {
+        margin-block-start: var(--space-3);
+        padding-block-start: var(--space-3);
+        border-block-start: 1px solid var(--color-border);
+    }
+
+    .table-of-contents__list {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+    }
+
+    .table-of-contents__item + .table-of-contents__item {
+        margin-block-start: var(--space-1);
+    }
+
+    .table-of-contents__item--level-3 {
+        padding-inline-start: var(--space-3);
+    }
+}

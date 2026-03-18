@@ -79,7 +79,9 @@ export function Hero({
                 role="presentation"
             />
 
-            <p className={`${styles.tagline} lede`}>{tagline}</p>
+            <p className={`${styles.tagline} lede`}>
+                <span className="body-lg">{tagline}</span>
+            </p>
 
             <p
                 className={`${styles.meta} header__meta label`}

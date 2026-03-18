@@ -1,0 +1,52 @@
+@layer components {
+    .root {
+        --title-gap: 2.5rem;
+        padding-block-end: clamp(2rem, 5vw, 4rem);
+        border-block-end: 1px solid var(--color-border);
+    }
+
+    .root :global(.header__rule) {
+        margin-block-end: 2rem;
+    }
+
+    .root :global(.header__meta) {
+        gap: 2rem;
+        align-items: flex-start;
+    }
+
+    .root :global(.lede) {
+        margin-inline-start: auto;
+    }
+
+    .byline {
+        display: grid;
+        gap: 0.35rem;
+        margin: 0;
+    }
+
+    .byline strong {
+        display: block;
+        color: var(--color-text-primary);
+    }
+
+    .note {
+        margin-block-start: 1rem;
+    }
+
+    @media (max-width: 820px) {
+        .root {
+            padding-block-end: var(--space-6);
+            --title-gap: var(--space-4);
+        }
+
+        .root :global(.header__meta) {
+            display: grid;
+            gap: var(--space-2);
+        }
+
+        .root :global(.lede) {
+            margin-inline-start: 0;
+            max-width: 30ch;
+        }
+    }
+}

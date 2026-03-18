@@ -1,5 +1,6 @@
 import { useRenderContext } from "../context/render-context.tsx";
-import { PageHeader } from "../components/page-header.tsx";
+import { SiteHeader } from "../components/site-header/site-header.tsx";
+import { SiteFooter } from "../components/site-footer/site-footer.tsx";
 import { SiteHead } from "../components/site-head.tsx";
 import type { BaseLayoutProps } from "../types/content.ts";
 
@@ -40,11 +41,12 @@ export default function BaseLayout({
             <body>
                 <div id="progress" aria-hidden="true"></div>
                 <a className="skip-link" href="#main-content">
-                    Skip to content
+                    <span className="body-sm">Skip to content</span>
                 </a>
-                <PageHeader />
+                <SiteHeader />
                 <main id="main-content" className={mainClassName}>
                     {children}
+                    <SiteFooter />
                 </main>
                 <script src={`/${assetManifest["site.js"]}`} defer></script>
                 <IslandsScript />
