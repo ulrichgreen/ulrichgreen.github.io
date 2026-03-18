@@ -70,7 +70,9 @@ function main() {
     if (command === "article") {
         const title = args[1];
         if (!title) {
-            console.error("Usage: pnpm create-article <title> [--series <name> --series-order <n>]");
+            console.error(
+                "Usage: pnpm create-article <title> [--series <name> --series-order <n>]",
+            );
             process.exit(1);
         }
 
@@ -97,8 +99,10 @@ function main() {
         createPage(title);
     } else {
         console.error("Usage:");
-        console.error('  pnpm create-article <title> [--series <name> --series-order <n>]');
-        console.error('  pnpm create-page <title>');
+        console.error(
+            "  pnpm create-article <title> [--series <name> --series-order <n>]",
+        );
+        console.error("  pnpm create-page <title>");
         process.exit(1);
     }
 }

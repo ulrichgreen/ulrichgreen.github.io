@@ -28,15 +28,13 @@
         --code-surface: color-mix(in srgb, var(--color-surface-raised) 42%, var(--color-surface-base));
         --code-rule: color-mix(in srgb, var(--color-border) 88%, transparent);
         --code-rule-fade:
-            linear-gradient(
-                90deg,
+            linear-gradient(90deg,
                 transparent 0%,
                 transparent 7%,
                 var(--code-rule) 20%,
                 var(--code-rule) 80%,
                 transparent 93%,
-                transparent 100%
-            );
+                transparent 100%);
         --ct: #3d3528;
         --cc: #867965;
         --ck: #9f4e39;
@@ -58,6 +56,14 @@
         margin-block: clamp(var(--space-3), 5vw, var(--space-4));
         margin-inline: calc(var(--code-bleed) * -1);
         position: relative;
+        background:
+            linear-gradient(90deg,
+                transparent 0%,
+                transparent 7%,
+                var(--code-surface) 20%,
+                var(--code-surface) 80%,
+                transparent 93%,
+                transparent 100%);
     }
 
     [data-rehype-pretty-code-figure]::before,
