@@ -11,14 +11,8 @@
         margin-block-end: clamp(2rem, 6vw, 3.5rem);
     }
 
-    .name {
-        flex: 1;
-    }
-
-    .name em {
-        display: block;
-        font-style: italic;
-        color: var(--color-text-secondary);
+    .name { flex: 1;
+        & em { display: block; font-style: italic; color: var(--color-text-secondary); }
     }
 
     .portrait {
@@ -28,30 +22,28 @@
         overflow: hidden;
         background-color: var(--color-surface-raised);
         position: relative;
+
+        &::after {
+            content: "";
+            position: absolute;
+            inset: 0;
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
+            opacity: 0.04;
+            mix-blend-mode: multiply;
+            pointer-events: none;
+        }
+
+        & picture,
+        & img {
+            display: block;
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            filter: saturate(0.72) contrast(1.06);
+        }
     }
 
-    .portrait::after {
-        content: "";
-        position: absolute;
-        inset: 0;
-        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='200' height='200' filter='url(%23n)' opacity='0.4'/%3E%3C/svg%3E");
-        opacity: 0.04;
-        mix-blend-mode: multiply;
-        pointer-events: none;
-    }
-
-    .portrait picture,
-    .portrait img {
-        display: block;
-        width: 100%;
-        height: 100%;
-        object-fit: cover;
-        filter: saturate(0.72) contrast(1.06);
-    }
-
-    .hero:not(.hasPortrait) .portrait {
-        display: none;
-    }
+    .hero:not(.hasPortrait) .portrait { display: none; }
 
     .rule {
         margin-block-end: clamp(1.5rem, 4vw, 2.5rem);
@@ -63,46 +55,23 @@
         gap: 0.75rem 1rem;
         margin-block-start: clamp(1.25rem, 3vw, 2rem);
         margin-block-end: 0;
+
+        & a {
+            color: inherit;
+            text-decoration: none;
+
+            &:hover, &:focus-visible { color: var(--color-text-primary); }
+        }
     }
 
-    .meta a {
-        color: inherit;
-        text-decoration: none;
-    }
-
-    .meta a:hover,
-    .meta a:focus-visible {
-        color: var(--color-text-primary);
-    }
-
-    .metaDot {
-        opacity: 0.4;
-        user-select: none;
-    }
+    .metaDot { opacity: 0.4; user-select: none; }
 }
 
 @media (prefers-reduced-motion: no-preference) {
-    .kicker {
-        animation: fade-up 0.7s var(--easing-default) 0.05s both;
-    }
-
-    .name {
-        animation: fade-up 0.7s var(--easing-default) 0.18s both;
-    }
-
-    .portrait {
-        animation: fade-in 1s var(--easing-default) 0.24s both;
-    }
-
-    .rule {
-        animation: expand-x 0.9s var(--easing-default) 0.38s both;
-    }
-
-    .tagline {
-        animation: fade-up 0.7s var(--easing-default) 0.5s both;
-    }
-
-    .meta {
-        animation: fade-up 0.7s var(--easing-default) 0.6s both;
-    }
+    .kicker  { animation: fade-up 0.7s var(--easing-default) 0.05s both; }
+    .name    { animation: fade-up 0.7s var(--easing-default) 0.18s both; }
+    .portrait { animation: fade-in 1s var(--easing-default) 0.24s both; }
+    .rule    { animation: expand-x 0.9s var(--easing-default) 0.38s both; }
+    .tagline { animation: fade-up 0.7s var(--easing-default) 0.5s both; }
+    .meta    { animation: fade-up 0.7s var(--easing-default) 0.6s both; }
 }

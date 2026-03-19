@@ -1,7 +1,5 @@
 @layer components {
-    .root {
-        --title-measure: none;
-    }
+    .root { --title-measure: none; }
 
     .header {
         display: flex;
@@ -11,26 +9,19 @@
         margin-block-end: 1.25rem;
     }
 
-    .seriesTitle {
-        max-width: none;
-        margin: 0;
-        color: var(--color-text-primary);
-    }
-
-    .progress {
-        margin-inline-start: auto;
-    }
+    .seriesTitle { max-width: none; margin: 0; color: var(--color-text-primary); }
+    .progress { margin-inline-start: auto; }
 
     .track {
         height: 2px;
         background: var(--color-border);
         margin-block-end: 1.5rem;
-    }
 
-    .fill {
-        height: 100%;
-        background: linear-gradient(90deg, var(--color-text-primary) 0%, var(--color-text-secondary) 100%);
-        transition: width 0.3s var(--easing-default);
+        & .fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--color-text-primary) 0%, var(--color-text-secondary) 100%);
+            transition: width 0.3s var(--easing-default);
+        }
     }
 
     .list {
@@ -50,32 +41,19 @@
         padding-block: 0.35rem;
     }
 
-    .itemCurrent {
-        color: var(--color-text-primary);
-    }
-
-    .ordinal {
-        flex-shrink: 0;
-    }
-
-    .itemCurrent .ordinal {
-        color: var(--color-text-primary);
-    }
+    .itemCurrent { color: var(--color-text-primary); }
+    .ordinal { flex-shrink: 0; }
+    .itemCurrent .ordinal { color: var(--color-text-primary); }
 
     .link {
         color: var(--color-text-secondary);
         text-decoration: none;
         transition: color 0.2s var(--easing-default);
+
+        &:hover, &:focus-visible { color: var(--color-text-primary); }
     }
 
-    .link:hover,
-    .link:focus-visible {
-        color: var(--color-text-primary);
-    }
-
-    .linkCurrent {
-        color: var(--color-text-primary);
-    }
+    .linkCurrent { color: var(--color-text-primary); }
 
     .arrows {
         display: grid;
@@ -90,35 +68,16 @@
     .next {
         text-decoration: none;
         transition: color 0.2s var(--easing-default);
+
+        &:hover, &:focus-visible { color: var(--color-text-primary); }
     }
 
-    .prev:hover,
-    .prev:focus-visible,
-    .next:hover,
-    .next:focus-visible {
-        color: var(--color-text-primary);
-    }
-
-    .next {
-        text-align: right;
-    }
+    .next { text-align: right; }
 
     @media (max-width: 820px) {
-        .root {
-            padding-block: var(--space-4);
-        }
-
-        .arrows {
-            grid-template-columns: 1fr;
-            gap: var(--space-2);
-        }
-
-        .next {
-            text-align: left;
-        }
-
-        .list {
-            gap: var(--space-1);
-        }
+        .root { padding-block: var(--space-4); }
+        .arrows { grid-template-columns: 1fr; gap: var(--space-2); }
+        .next { text-align: left; }
+        .list { gap: var(--space-1); }
     }
 }

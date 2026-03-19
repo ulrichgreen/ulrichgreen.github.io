@@ -7,9 +7,7 @@
         max-width: min(32rem, 100%);
     }
 
-    .demo-widget__prompt {
-        color: var(--color-text-secondary);
-    }
+    .demo-widget__prompt { color: var(--color-text-secondary); }
 
     .demo-widget__controls {
         display: flex;
@@ -27,8 +25,5 @@
         cursor: pointer;
     }
 
-    .demo-widget__value {
-        min-width: 3ch;
-        text-align: center;
-    }
+    .demo-widget__value { min-width: 3ch; text-align: center; }
 }
