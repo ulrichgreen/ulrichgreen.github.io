@@ -9,7 +9,8 @@
         --color-text-primary:   #11120d;
         --color-text-secondary: #565449;
         --color-border:         #d8cfbc;
-        --color-accent:         #4f4028;
+        --color-accent:         #b7522e;
+        --color-accent-subtle:  color-mix(in srgb, #b7522e 12%, var(--color-surface-base));
 
         /* ─── Type sizes ─────────────────────────────────── */
         --type-size-xs:         12px;
@@ -68,7 +69,8 @@
             --color-text-primary:   #f3ede2;
             --color-text-secondary: #cbc2b3;
             --color-border:         #4b4438;
-            --color-accent:         #f0d7ad;
+            --color-accent:         #e07a50;
+            --color-accent-subtle:  color-mix(in srgb, #e07a50 12%, var(--color-surface-base));
         }
     }
 }

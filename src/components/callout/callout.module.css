@@ -1,5 +1,5 @@
 @layer components {
-    .root { margin-block: var(--space-4); border-inline-start: 3px solid var(--color-border); }
+    .root { margin-block: var(--space-4); border-inline-start: 3px solid var(--color-accent); }
     .label { margin-block-end: var(--space-2); }
     :is(.tip, .warning) .label { color: var(--color-accent); }
 }

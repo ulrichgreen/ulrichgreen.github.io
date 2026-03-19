@@ -23,7 +23,7 @@
     inset-inline-start: 0;
     width: 0%;
     height: 2px;
-    background: var(--color-text-secondary);
+    background: var(--color-accent);
     z-index: 200;
     transition: width 0.1s linear;
 }

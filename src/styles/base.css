@@ -206,7 +206,7 @@
     }
 
     ::selection {
-        background-color: var(--color-border);
+        background-color: var(--color-accent-subtle);
         color: var(--color-text-primary);
     }
 

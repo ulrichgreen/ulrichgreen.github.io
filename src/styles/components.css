@@ -39,7 +39,7 @@
         height: 1px;
         background: linear-gradient(90deg,
                 var(--color-text-primary) 0%,
-                var(--color-border) 100%);
+                var(--color-accent) 100%);
     }
 
     .header__meta {
@@ -104,7 +104,7 @@
             counter-increment: article-section;
             content: "§ " counter(article-section, decimal-leading-zero);
             flex-shrink: 0;
-            color: var(--color-text-secondary);
+            color: var(--color-accent);
             font-family: var(--type-family-mono);
             font-size: var(--type-size-2xs);
             font-style: normal;
@@ -122,6 +122,7 @@
             initial-letter: 3;
             font-size: var(--dropcap-size);
             line-height: var(--dropcap-leading);
+            color: var(--color-accent);
         }
     }
 
