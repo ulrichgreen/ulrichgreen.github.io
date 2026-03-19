@@ -35,14 +35,15 @@
         white-space: nowrap;
         flex-shrink: 0;
 
-        &:hover, &:focus-visible { outline: none; }
+        &:hover { outline: none; }
+        &:focus-visible { outline: 2px solid var(--color-accent); outline-offset: 3px; border-radius: 2px; }
         &:hover .logoBrace, &:focus-visible .logoBrace { color: var(--color-accent); }
         &:hover .logoChar, &:focus-visible .logoChar { max-width: 1.2ch; opacity: 1; }
     }
 
     .logoBrace {
         color: var(--color-text-secondary);
-        transition: color 0.25s var(--easing-default);
+        transition: color 0.2s var(--easing-default);
     }
 
     .logoName { display: inline-flex; align-items: baseline; }

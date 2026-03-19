@@ -19,7 +19,13 @@
     }
 
     .summary { grid-column: 1 / -1; margin: 0; color: var(--color-text-secondary); }
-    .link { color: var(--color-text-primary); text-decoration: none; }
+    .link {
+        color: var(--color-text-primary);
+        text-decoration: none;
+        transition: color 0.2s var(--easing-default);
+
+        &:hover, &:focus-visible { color: var(--color-accent); }
+    }
 
     .seriesLabel {
         grid-column: 1 / -1;

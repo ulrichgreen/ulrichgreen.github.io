@@ -130,7 +130,7 @@ async function main() {
         "Tools are not neutral. They carry assumptions about your work, and those assumptions shape the systems you build.",
     );
     assert(
-        articleHtml.includes('class="title heading-display"') &&
+        articleHtml.includes('class="title heading-xl"') &&
             /style="view-transition-name:article-title-on-tools/.test(
                 articleHtml,
             ),
