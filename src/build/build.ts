@@ -15,9 +15,12 @@ import {
     discoverSourceFiles,
 } from "./content/discover.ts";
 import { enforcePerformanceBudgets } from "./performance-budgets.ts";
-import { articlesDirectory } from "./shared/paths.ts";
 import { writePages } from "./render/write-pages.ts";
-import { listArticleEntries } from "./content/article-index.ts";
+import {
+    listArticleEntries,
+    listArticleEntriesFromBuiltContent,
+} from "./content/article-index.ts";
+import { articlesDirectory } from "./shared/paths.ts";
 
 export async function buildAll(options: { dev?: boolean } = {}): Promise<void> {
     const start = performance.now();
@@ -26,9 +29,12 @@ export async function buildAll(options: { dev?: boolean } = {}): Promise<void> {
     await Promise.all([buildCss(), buildClient(), buildImages()]);
     const manifest = options.dev ? devAssetManifest : generateAssetManifest();
 
-    const articleIndex = listArticleEntries(articlesDirectory);
     const sourceFiles = discoverSourceFiles();
     const { compiled, failed } = await compilePages(sourceFiles);
+    const articleIndex =
+        failed.length === 0
+            ? listArticleEntriesFromBuiltContent(compiled)
+            : listArticleEntries(articlesDirectory);
 
     cleanGeneratedPages();
     writePages(compiled, articleIndex, manifest);
@@ -52,7 +58,9 @@ export async function buildAll(options: { dev?: boolean } = {}): Promise<void> {
 }
 
 if (process.argv[1] === fileURLToPath(import.meta.url)) {
-    buildAll().catch((error) => {
+    const dev = process.argv.includes("--dev");
+
+    buildAll({ dev }).catch((error) => {
         process.stderr.write(`${String(error)}\n`);
         process.exit(1);
     });

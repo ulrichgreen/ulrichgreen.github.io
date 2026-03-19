@@ -1,21 +1,13 @@
 import chokidar from "chokidar";
+import { spawn } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import http from "node:http";
 import { extname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { WebSocketServer } from "ws";
-import { buildAll } from "./build.ts";
 import { buildClient } from "./assets/client.ts";
 import { buildCss } from "./assets/css.ts";
-import { devAssetManifest } from "./assets/asset-manifest.ts";
-import { compilePages } from "./content/compile-pages.ts";
-import {
-    cleanGeneratedPages,
-    discoverSourceFiles,
-} from "./content/discover.ts";
-import { listArticleEntries } from "./content/article-index.ts";
-import { writePages } from "./render/write-pages.ts";
-import { distDirectory, articlesDirectory } from "./shared/paths.ts";
+import { distDirectory } from "./shared/paths.ts";
 
 const PORT = 3009;
 const DIST = distDirectory;
@@ -35,10 +27,47 @@ const MIME: Record<string, string> = {
     ".woff": "font/woff",
     ".txt": "text/plain",
 };
-const LIVE_RELOAD_SCRIPT =
-    "<script>new WebSocket(`ws://${location.host}`).onmessage=()=>location.reload()</script>";
+const LIVE_RELOAD_SCRIPT = `<script>
+(() => {
+    if (window.__siteLiveReloadSocket) {
+        return;
+    }
 
-type RebuildKind = "content" | "styles" | "client" | "full";
+    const socket = new WebSocket(\`ws://\${location.host}\`);
+    socket.addEventListener("message", () => {
+        location.reload();
+    });
+    window.__siteLiveReloadSocket = socket;
+})();
+</script>`;
+
+const ARTICLE_RENDER_PATH_PREFIXES = [
+    "src/templates/article.tsx",
+    "src/components/article-header/",
+    "src/components/page-header/",
+    "src/components/revision-history/",
+    "src/components/series-nav/",
+];
+
+const RENDER_PATH_PREFIXES = [
+    "src/templates/",
+    "src/components/",
+    "src/content-components.tsx",
+    "src/build/render/",
+    "src/context/",
+    "src/islands/",
+    "src/types/",
+];
+
+type FreshBuildMode = "full" | "content" | "render" | "render-articles";
+
+type RebuildKind =
+    | "content"
+    | "styles"
+    | "client"
+    | "render"
+    | "render-articles"
+    | "full";
 
 function classifyChange(changedPath: string): RebuildKind {
     if (changedPath.startsWith("content")) return "content";
@@ -49,21 +78,70 @@ function classifyChange(changedPath: string): RebuildKind {
     )
         return "styles";
     if (changedPath.startsWith("src/client")) return "client";
+
+    if (
+        ARTICLE_RENDER_PATH_PREFIXES.some((prefix) =>
+            changedPath.startsWith(prefix),
+        )
+    ) {
+        return "render-articles";
+    }
+
+    if (
+        RENDER_PATH_PREFIXES.some((prefix) => changedPath.startsWith(prefix))
+    ) {
+        return "render";
+    }
+
     return "full";
 }
 
-async function rebuildContent(): Promise<void> {
-    const start = performance.now();
-    const articleIndex = listArticleEntries(articlesDirectory);
-    const sourceFiles = discoverSourceFiles();
-    const { compiled, failed } = await compilePages(sourceFiles);
-    cleanGeneratedPages();
-    writePages(compiled, articleIndex, devAssetManifest);
-    for (const { file, error } of failed) {
-        process.stderr.write(`  error  ${file}\n  ${String(error)}\n`);
-    }
-    const elapsed = ((performance.now() - start) / 1000).toFixed(2);
-    process.stdout.write(`built ${compiled.length} pages in ${elapsed}s\n`);
+function runFreshBuild(mode: FreshBuildMode): Promise<void> {
+    return new Promise((resolve, reject) => {
+        const scriptPath =
+            mode === "full"
+                ? "./src/build/build.ts"
+                : mode === "content"
+                  ? "./src/build/dev-content.ts"
+                  : "./src/build/dev-render.ts";
+        const scriptArgs =
+            mode === "full"
+                ? ["--dev"]
+                : mode === "render-articles"
+                  ? ["articles"]
+                  : [];
+        const child = spawn(
+            process.execPath,
+            [
+                "--import",
+                "tsx",
+                "--import",
+                "./src/build/register-css-modules.ts",
+                scriptPath,
+                ...scriptArgs,
+            ],
+            {
+                cwd: process.cwd(),
+                stdio: "inherit",
+                env: process.env,
+            },
+        );
+
+        child.on("error", reject);
+        child.on("exit", (code, signal) => {
+            if (code === 0) {
+                resolve();
+                return;
+            }
+
+            if (signal) {
+                reject(new Error(`Build terminated by signal ${signal}`));
+                return;
+            }
+
+            reject(new Error(`Build exited with code ${String(code)}`));
+        });
+    });
 }
 
 export function startDevServer(): void {
@@ -140,16 +218,23 @@ export function startDevServer(): void {
 
             try {
                 if (changedPaths.length === 0) {
-                    await buildAll({ dev: true });
+                    await runFreshBuild("full");
                 } else {
                     const kinds = new Set(changedPaths.map(classifyChange));
                     if (kinds.has("full")) {
-                        await buildAll({ dev: true });
+                        await runFreshBuild("full");
                     } else {
                         const tasks: Promise<unknown>[] = [];
                         if (kinds.has("styles")) tasks.push(buildCss());
                         if (kinds.has("client")) tasks.push(buildClient());
-                        if (kinds.has("content")) tasks.push(rebuildContent());
+                        if (kinds.has("content")) {
+                            tasks.push(runFreshBuild("content"));
+                        }
+                        if (kinds.has("render")) {
+                            tasks.push(runFreshBuild("render"));
+                        } else if (kinds.has("render-articles")) {
+                            tasks.push(runFreshBuild("render-articles"));
+                        }
                         await Promise.all(tasks);
                     }
                 }

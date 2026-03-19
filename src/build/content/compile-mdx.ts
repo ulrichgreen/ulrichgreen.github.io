@@ -305,6 +305,12 @@ function assertSupportedMdx(body: string, filePath: string) {
 
 const mdxImport = import("@mdx-js/mdx");
 const shikiImport = import("shiki");
+const siteHighlighterPromise = shikiImport.then(({ createHighlighter }) =>
+    createHighlighter({
+        themes: [CODE_THEME],
+        langs: ["plaintext"],
+    } as never),
+);
 
 export async function compileMdx(
     body: string,
@@ -313,7 +319,6 @@ export async function compileMdx(
     assertSupportedMdx(body, filePath);
 
     const { evaluate } = await mdxImport;
-    const { createHighlighter } = await shikiImport;
     const headings: ContentHeading[] = [];
 
     const module = (await evaluate(
@@ -331,14 +336,20 @@ export async function compileMdx(
                     {
                         theme: "site-code",
                         keepBackground: false,
-                        getHighlighter: (
-                            options: { langs?: unknown[] } & Record<string, unknown>,
-                        ) =>
-                            createHighlighter({
-                                ...options,
-                                langs: options.langs || [],
-                                themes: [CODE_THEME],
-                            } as never),
+                        getHighlighter: async (
+                            options: { langs?: unknown[] },
+                        ) => {
+                            const highlighter = await siteHighlighterPromise;
+                            const langs = options.langs?.filter(
+                                (lang): lang is string => typeof lang === "string",
+                            );
+
+                            if (langs && langs.length > 0) {
+                                await highlighter.loadLanguage(...(langs as never[]));
+                            }
+
+                            return highlighter;
+                        },
                     },
                 ],
                 rehypeCodeBlockChrome,

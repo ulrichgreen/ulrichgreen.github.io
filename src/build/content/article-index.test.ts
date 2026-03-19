@@ -3,7 +3,11 @@ import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import { tmpdir } from "node:os";
 import { describe, it } from "node:test";
-import { listArticleEntries } from "./article-index.ts";
+import { h } from "preact";
+import {
+    listArticleEntries,
+    listArticleEntriesFromBuiltContent,
+} from "./article-index.ts";
 
 function writeArticle(
     directory: string,
@@ -46,5 +50,39 @@ draft: true
         } finally {
             rmSync(directory, { recursive: true, force: true });
         }
+    });
+});
+
+describe("listArticleEntriesFromBuiltContent", () => {
+    it("derives article metadata from compiled pages", () => {
+        const entries = listArticleEntriesFromBuiltContent([
+            {
+                meta: {
+                    title: "Published",
+                    layout: "article",
+                    published: "2025-01-02",
+                    readingTime: "1 min read",
+                    words: 123,
+                },
+                Content: () => h("div", null, "Body"),
+                headings: [],
+                sourcePath: "/tmp/content/articles/published.mdx",
+            },
+            {
+                meta: {
+                    title: "About",
+                    layout: "base",
+                },
+                Content: () => h("div", null, "Body"),
+                headings: [],
+                sourcePath: "/tmp/content/about.mdx",
+            },
+        ]);
+
+        assert.equal(entries.length, 1);
+        assert.equal(entries[0].title, "Published");
+        assert.equal(entries[0].slug, "published");
+        assert.equal(entries[0].href, "/articles/published.html");
+        assert.equal(entries[0].readingTime, "1 min read");
     });
 });
