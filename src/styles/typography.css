@@ -2,7 +2,6 @@
     /* ─── Scale classes ──────────────────────────────────── */
 
     .heading-display {
-        font-family: var(--type-family-serif);
         font-size: var(--type-size-display);
         line-height: var(--type-leading-display);
         font-weight: 400;
@@ -10,7 +9,6 @@
     }
 
     .heading-xl {
-        font-family: var(--type-family-serif);
         font-size: var(--type-size-xl);
         line-height: var(--type-leading-loose);
         font-weight: 400;
@@ -18,7 +16,6 @@
     }
 
     .heading-lg {
-        font-family: var(--type-family-serif);
         font-size: var(--type-size-lg);
         line-height: var(--type-leading-loose);
         font-weight: 400;
@@ -26,14 +23,12 @@
     }
 
     .heading-md {
-        font-family: var(--type-family-serif);
         font-size: var(--type-size-md);
         line-height: var(--type-leading-normal);
         font-weight: 600;
     }
 
     .heading-sm {
-        font-family: var(--type-family-serif);
         font-size: var(--type-size-sm);
         line-height: var(--type-leading-tight);
         font-weight: 600;
