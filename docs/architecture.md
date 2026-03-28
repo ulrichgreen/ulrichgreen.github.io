@@ -129,7 +129,7 @@ The browser code is intentionally split by responsibility.
 
 ### Document-level enhancements
 
-`site.js` enhances already-rendered pages. It is responsible for page-wide behaviors such as:
+`src/client/site.ts` enhances already-rendered pages. It is responsible for page-wide behaviors such as:
 
 - reading progress
 - heading reveal effects
@@ -139,7 +139,7 @@ These behaviors decorate existing markup. They do not create the page or own the
 
 ### Islands
 
-`islands.js` hydrates only explicit island roots.
+`src/client/islands.ts` hydrates only explicit island roots.
 
 Each island is:
 
@@ -159,7 +159,7 @@ The important content fields are:
 
 - identity and description fields such as `title`, `description`, and `summary`
 - layout and grouping fields such as `layout`, `section`, and optional series metadata
-- article metadata such as `published`, `revised`, and `note`
+- article metadata such as `published`, `revised` (the latest update date used by page metadata and generated artifacts), `note`, and optional `revisions` history entries for a fuller change log
 
 Not every field is required for every page type. In particular, article-style content is expected to include publication metadata.
 
@@ -176,7 +176,7 @@ That boundary is enforced in two ways:
 - MDX does not get free-form module imports
 - content only sees the components exported through `src/content-components.tsx`
 
-Today that approved surface includes `ArticleList`, `Code`, `Hero`, and `DemoWidget`, with `src/content-components.tsx` as the source of truth. The exact list may change, but the architectural rule should stay the same: content authors use a curated surface, not the whole codebase.
+Today that approved surface is whatever `src/content-components.tsx` registers — currently `ArticleList`, `Callout`, `Code`, `DemoWidget`, `Figure`, `Hero`, and `TableOfContents`. The exact list may change, but the architectural rule should stay the same: content authors use a curated surface, not the whole codebase.
 
 ## Project Structure
 
@@ -198,19 +198,7 @@ The repository is organized by responsibility.
 
 ## Tooling Posture
 
-The implementation uses a small set of libraries and build tools, but the architecture is not tied to any specific tool choice.
-
-The durable decisions are:
-
-- static output over runtime page generation
-- a typed build pipeline over ad hoc scripts
-- constrained MDX over arbitrary content imports
-- progressive enhancement and islands over full-page hydration
-- explicit performance budgets over unchecked asset growth
-
-Specific dependencies can change over time as long as they continue to support those constraints.
-
-For the current tool choices and the reasoning behind them, see `tooling.md`.
+The architecture is not tied to any specific tool. The durable choices are static output, typed build code, constrained MDX, selective hydration, and explicit performance budgets. For the current dependencies and why they fit, see `tooling.md`.
 
 ## Verification
 

@@ -110,8 +110,8 @@ The pattern is not "everything local". The pattern is "local by default, shared 
 
 Its current shape demonstrates the intended split:
 
-- the component entry lives in [src/components/hero/hero.tsx](/Users/uhg/Personal/personal-site/src/components/hero/hero.tsx)
-- the component-local styles live in [src/components/hero/hero.module.css](/Users/uhg/Personal/personal-site/src/components/hero/hero.module.css)
+- the component entry lives in `src/components/hero/hero.tsx`
+- the component-local styles live in `src/components/hero/hero.module.css`
 - shared editorial header primitives still live in the global stylesheets
 
 That means the Hero markup composes both local and shared classes.

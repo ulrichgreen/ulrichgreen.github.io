@@ -24,21 +24,3 @@ This folder holds the project's planning and reference documents. Each file has 
 **One home for each idea.** An item lives in `roadmap.md` when it's planned, `future-ideas.md` when it's deferred, or the specific design doc when it's being fleshed out. Don't let the same idea drift across multiple files.
 
 **The roadmap is for planned work only.** No philosophy, no "not the goal" lists. Roadmap items should be concrete enough that someone could start working on them.
-
-## What This Site Is Not
-
-Turning this into an app. It's a document.
-
-Adding features faster than the writing can absorb them.
-
-Building infrastructure for ideas that still fit better as a line in the roadmap.
-
-A CMS. The authoring model is a text editor and `git push`.
-
-Client-side search. The site is small. Use Ctrl+F.
-
-A comment system. Email exists.
-
-A CSS framework. The design system is the CSS.
-
-Server-side rendering at request time. The site is static because static is better for this.
