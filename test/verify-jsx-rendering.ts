@@ -33,12 +33,17 @@ async function main() {
         "Site nav should be present with aria-label.",
     );
     assert(
-        /<section[^>]*aria-labelledby="hero-name"[^>]*class="section header [^"]+"/.test(
+        /<section[^>]*aria-label="About"[^>]*class="section [^"]+"/.test(
             homeHtml,
         ),
-        "Home page should render the hero section with local CSS-module classes.",
+        "Home page should render the manifesto section.",
     );
-    assert(homeHtml.includes('id="hero-name"'));
+    assert(
+        homeHtml.includes("It\u2019s just text files.") ||
+            homeHtml.includes("It&#x27;s just text files.") ||
+            homeHtml.includes("It's just text files."),
+        "Manifesto opener should be present.",
+    );
     assert(
         /class="section [^"]+"/.test(homeHtml),
         "Article list root should have section class.",

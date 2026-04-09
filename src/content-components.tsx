@@ -4,6 +4,7 @@ import { Code } from "./components/code/code.tsx";
 import { DemoWidget } from "./components/demo-widget/demo-widget.tsx";
 import { Figure } from "./components/figure/figure.tsx";
 import { Hero } from "./components/hero/hero.tsx";
+import { Manifesto } from "./components/manifesto/manifesto.tsx";
 import { TableOfContents } from "./components/table-of-contents/table-of-contents.tsx";
 import type { ContentComponentMap } from "./types/content.ts";
 
@@ -13,6 +14,7 @@ const contentComponents = {
     Code,
     Figure,
     Hero,
+    Manifesto,
     TableOfContents,
     DemoWidget,
 } satisfies ContentComponentMap;
