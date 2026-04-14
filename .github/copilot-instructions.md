@@ -28,5 +28,6 @@
 
 - Start by consulting `AGENTS.md` and the relevant skill under `.github/skills/` for structured workflows.
 - Use the reusable prompts under `.github/prompts/` for spec, plan, build, test, review, simplify, and ship flows.
+- Repository-scoped custom Copilot agents live in `.github/agents/*.agent.md`; use `code-reviewer`, `test-engineer`, or `security-auditor` when a task needs one of those specialist perspectives.
 - The imported `agent-skills` references are mirrored in `.github/copilot-references/` and vendored into the skill directories that cite them so the skills stay self-contained.
 - The source repository's Claude session hook is adapted here as repository instructions plus `AGENTS.md`; do not expect repo-local Copilot hooks to run automatically.

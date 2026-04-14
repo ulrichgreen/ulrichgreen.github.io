@@ -34,9 +34,9 @@ When a task arrives, map it to the closest skill:
 - Only components exported through `src/content-components.tsx` are available to MDX content.
 - Only explicit islands under `src/islands/` should hydrate on the client.
 
-## Specialist review modes
+## Specialist review agents
 
-When a task explicitly asks for one of these review styles, adopt the corresponding perspective:
+When a task explicitly asks for one of these review styles, adopt the corresponding perspective. Matching GitHub Copilot custom agent profiles live in `.github/agents/*.agent.md` so these specialists can also be selected directly in Copilot:
 
 ### code-reviewer
 Review across correctness, readability, architecture, security, and performance. Categorize findings as Critical, Important, or Suggestion. Always include at least one positive observation.
