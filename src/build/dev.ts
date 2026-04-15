@@ -145,6 +145,10 @@ function runFreshBuild(mode: FreshBuildMode): Promise<void> {
 }
 
 export function startDevServer(): void {
+    function isInsideDist(candidate: string): boolean {
+        return candidate.startsWith(DIST + sep) || candidate === DIST;
+    }
+
     const server = http.createServer((req, res) => {
         if (!req.url) {
             res.writeHead(400);
@@ -153,13 +157,18 @@ export function startDevServer(): void {
         }
 
         let filePath = resolve(DIST, req.url === "/" ? "index.html" : `.${req.url}`);
-        if (!filePath.startsWith(DIST + sep) && filePath !== DIST) {
+        if (!isInsideDist(filePath)) {
             res.writeHead(400);
             res.end();
             return;
         }
-        if (!existsSync(filePath)) filePath = resolve(DIST, `.${req.url}`, "index.html");
-        if (!existsSync(filePath) || (!filePath.startsWith(DIST + sep) && filePath !== DIST)) {
+        if (!existsSync(filePath)) {
+            const candidate = resolve(DIST, `.${req.url}`, "index.html");
+            if (isInsideDist(candidate)) {
+                filePath = candidate;
+            }
+        }
+        if (!existsSync(filePath) || !isInsideDist(filePath)) {
             const notFoundPage = join(DIST, "404.html");
             if (existsSync(notFoundPage)) {
                 let body = readFileSync(notFoundPage);
