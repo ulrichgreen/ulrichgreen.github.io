@@ -2,7 +2,7 @@ import chokidar from "chokidar";
 import { spawn } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import http from "node:http";
-import { extname, join } from "node:path";
+import { extname, join, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { WebSocketServer } from "ws";
 import { buildClient } from "./assets/client.ts";
@@ -152,9 +152,14 @@ export function startDevServer(): void {
             return;
         }
 
-        let filePath = join(DIST, req.url === "/" ? "index.html" : req.url);
-        if (!existsSync(filePath)) filePath = join(DIST, req.url, "index.html");
-        if (!existsSync(filePath)) {
+        let filePath = resolve(DIST, req.url === "/" ? "index.html" : `.${req.url}`);
+        if (!filePath.startsWith(DIST + sep) && filePath !== DIST) {
+            res.writeHead(400);
+            res.end();
+            return;
+        }
+        if (!existsSync(filePath)) filePath = resolve(DIST, `.${req.url}`, "index.html");
+        if (!existsSync(filePath) || (!filePath.startsWith(DIST + sep) && filePath !== DIST)) {
             const notFoundPage = join(DIST, "404.html");
             if (existsSync(notFoundPage)) {
                 let body = readFileSync(notFoundPage);

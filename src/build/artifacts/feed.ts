@@ -62,8 +62,8 @@ export async function buildFeed(
             [
                 "  <entry>",
                 `    <title>${escapeXml(entry.title)}</title>`,
-                `    <link href="${SITE_URL}${entry.href}" />`,
-                `    <id>${SITE_URL}${entry.href}</id>`,
+                `    <link href="${escapeXml(`${SITE_URL}${entry.href}`)}" />`,
+                `    <id>${escapeXml(`${SITE_URL}${entry.href}`)}</id>`,
                 `    <published>${published}</published>`,
                 `    <updated>${updated}</updated>`,
                 entry.description

@@ -38,7 +38,9 @@ export function SiteHead({
                 content="width=device-width, initial-scale=1"
             />
             <title>{title || ""}</title>
-            <meta name="description" content={description || ""} />
+            {description && (
+                <meta name="description" content={description} />
+            )}
             <meta
                 name="theme-color"
                 media="(prefers-color-scheme: light)"
@@ -51,7 +53,9 @@ export function SiteHead({
             />
             {canonicalUrl && <link rel="canonical" href={canonicalUrl} />}
             <meta property="og:title" content={title || ""} />
-            <meta property="og:description" content={description || ""} />
+            {description && (
+                <meta property="og:description" content={description} />
+            )}
             <meta property="og:type" content={ogType} />
             {canonicalUrl && (
                 <meta property="og:url" content={canonicalUrl} />
