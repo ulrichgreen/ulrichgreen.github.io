@@ -9,6 +9,9 @@ on:
     paths:
       - .github/workflows/copilot-setup-steps.yml
 
+env:
+  FORCE_JAVASCRIPT_ACTIONS_TO_NODE24: true
+
 jobs:
   copilot-setup-steps:
     runs-on: ubuntu-latest
@@ -19,14 +22,17 @@ jobs:
       - name: Checkout code
         uses: actions/checkout@v5
 
-      - name: Set up Node.js
-        uses: actions/setup-node@v4
+      - name: Set up pnpm
+        uses: pnpm/action-setup@v5
         with:
-          node-version: '20'
+          version: 10.10.0
+          run_install: false
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v6
+        with:
+          node-version: '24'
           cache: pnpm
 
-      - name: Enable Corepack
-        run: corepack enable
-
       - name: Install dependencies
-        run: corepack pnpm install --frozen-lockfile
+        run: pnpm install --frozen-lockfile
