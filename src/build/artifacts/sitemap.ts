@@ -9,6 +9,15 @@ function toISODate(value: string): string {
     return date.toISOString().slice(0, 10);
 }
 
+function escapeXml(text: string): string {
+    return text
+        .replace(/&/g, "&amp;")
+        .replace(/</g, "&lt;")
+        .replace(/>/g, "&gt;")
+        .replace(/"/g, "&quot;")
+        .replace(/'/g, "&apos;");
+}
+
 export function buildSitemap(
     contentDir: string,
     articleIndex: ArticleIndexEntry[],
@@ -20,14 +29,14 @@ export function buildSitemap(
     const urls: string[] = [];
 
     for (const page of topLevelPages) {
-        urls.push(`  <url>\n    <loc>${SITE_URL}/${page}</loc>\n  </url>`);
+        urls.push(`  <url>\n    <loc>${escapeXml(`${SITE_URL}/${page}`)}</loc>\n  </url>`);
     }
 
     for (const entry of articleIndex) {
         const lastmod = toISODate(entry.revised || entry.published);
         const lastmodTag = lastmod ? `\n    <lastmod>${lastmod}</lastmod>` : "";
         urls.push(
-            `  <url>\n    <loc>${SITE_URL}${entry.href}</loc>${lastmodTag}\n  </url>`,
+            `  <url>\n    <loc>${escapeXml(`${SITE_URL}${entry.href}`)}</loc>${lastmodTag}\n  </url>`,
         );
     }
 

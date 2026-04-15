@@ -1,6 +1,6 @@
 {
     "name": "ulrich.green",
-    "version": "1.0.0",
+    "version": "24.0.0",
     "description": "",
     "scripts": {
         "build": "node --import tsx --import ./src/build/register-css-modules.ts ./src/build/build.ts",

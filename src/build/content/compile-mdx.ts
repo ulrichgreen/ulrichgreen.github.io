@@ -5,6 +5,7 @@ import rehypePrettyCode from "rehype-pretty-code";
 import rehypeSlug from "rehype-slug";
 import remarkGfm from "remark-gfm";
 import type { ContentBodyComponent, ContentHeading } from "../../types/content.ts";
+import { formatCodeLanguage } from "../../format-code-language.ts";
 
 const MDX_ESM_PATTERN = /^\s*(import|export)\s/m;
 
@@ -101,38 +102,6 @@ const CODE_THEME = {
         },
     ],
 };
-
-function formatCodeLanguage(value: string): string {
-    const normalized = value.trim().toLowerCase();
-    if (!normalized) return "code";
-
-    const knownLabels: Record<string, string> = {
-        css: "CSS",
-        html: "HTML",
-        javascript: "JavaScript",
-        js: "JavaScript",
-        json: "JSON",
-        jsx: "JSX",
-        md: "Markdown",
-        mdx: "MDX",
-        shell: "Shell",
-        text: "Text",
-        ts: "TypeScript",
-        tsx: "TSX",
-        typescript: "TypeScript",
-        xml: "XML",
-        yaml: "YAML",
-        yml: "YAML",
-    };
-
-    if (knownLabels[normalized]) return knownLabels[normalized];
-
-    return normalized
-        .split(/[-_]/g)
-        .filter(Boolean)
-        .map((segment) => segment.slice(0, 1).toUpperCase() + segment.slice(1))
-        .join(" ");
-}
 
 function getStringProperty(value: unknown): string | undefined {
     if (typeof value === "string") return value;
@@ -296,7 +265,8 @@ function rehypeCollectHeadings(headings: ContentHeading[]) {
 }
 
 function assertSupportedMdx(body: string, filePath: string) {
-    if (MDX_ESM_PATTERN.test(body)) {
+    const withoutFencedBlocks = body.replace(/^```[\s\S]*?^```/gm, "");
+    if (MDX_ESM_PATTERN.test(withoutFencedBlocks)) {
         throw new Error(
             `${filePath}: MDX ESM is disabled. Use approved components from src/content-components.tsx instead.`,
         );

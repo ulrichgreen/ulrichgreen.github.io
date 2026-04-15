@@ -2,7 +2,7 @@ import chokidar from "chokidar";
 import { spawn } from "node:child_process";
 import { existsSync, readFileSync } from "node:fs";
 import http from "node:http";
-import { extname, join } from "node:path";
+import { extname, join, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import { WebSocketServer } from "ws";
 import { buildClient } from "./assets/client.ts";
@@ -145,6 +145,10 @@ function runFreshBuild(mode: FreshBuildMode): Promise<void> {
 }
 
 export function startDevServer(): void {
+    function isInsideDist(candidate: string): boolean {
+        return candidate.startsWith(DIST + sep) || candidate === DIST;
+    }
+
     const server = http.createServer((req, res) => {
         if (!req.url) {
             res.writeHead(400);
@@ -152,9 +156,19 @@ export function startDevServer(): void {
             return;
         }
 
-        let filePath = join(DIST, req.url === "/" ? "index.html" : req.url);
-        if (!existsSync(filePath)) filePath = join(DIST, req.url, "index.html");
+        let filePath = resolve(DIST, req.url === "/" ? "index.html" : `.${req.url}`);
+        if (!isInsideDist(filePath)) {
+            res.writeHead(400);
+            res.end();
+            return;
+        }
         if (!existsSync(filePath)) {
+            const candidate = resolve(DIST, `.${req.url}`, "index.html");
+            if (isInsideDist(candidate)) {
+                filePath = candidate;
+            }
+        }
+        if (!existsSync(filePath) || !isInsideDist(filePath)) {
             const notFoundPage = join(DIST, "404.html");
             if (existsSync(notFoundPage)) {
                 let body = readFileSync(notFoundPage);

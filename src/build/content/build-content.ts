@@ -117,22 +117,13 @@ export async function buildContent(filePath: string): Promise<BuiltContent> {
         }
     }
 
-    const meta: PageMeta =
-        parsed.meta.layout === "article"
-            ? {
-                  ...parsed.meta,
-                  ...(description ? { description } : {}),
-                  section,
-                  words: wordCount,
-                  readingTime,
-              }
-            : {
-                  ...parsed.meta,
-                  ...(description ? { description } : {}),
-                  section,
-                  words: wordCount,
-                  readingTime,
-              };
+    const meta: PageMeta = {
+        ...parsed.meta,
+        ...(description ? { description } : {}),
+        section,
+        words: wordCount,
+        readingTime,
+    };
 
     const { Content, headings } = await compileMdx(parsed.body, filePath);
 
