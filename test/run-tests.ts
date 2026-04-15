@@ -1,10 +1,12 @@
 import { spawn } from "node:child_process";
 import { resolve } from "node:path";
 import { fileURLToPath } from "node:url";
+import { buildAll } from "../src/build/build.ts";
 
 const root = fileURLToPath(new URL("..", import.meta.url));
 const nodeBin = process.execPath;
 const cssModuleHook = resolve(root, "src/build/register-css-modules.ts");
+const skipBuild = process.argv.includes("--skip-build");
 
 function nodeArgs(args: string[]): string[] {
     return ["--import", "tsx", "--import", cssModuleHook, ...args];
@@ -73,6 +75,11 @@ function runUnitTests(
 }
 
 async function main() {
+    if (!skipBuild) {
+        process.stdout.write("Building site before running tests...\n");
+        await buildAll();
+    }
+
     const [unitResult, ...integrationResults] = await Promise.all([
         runUnitTests(unitTestFiles),
         ...integrationFiles.map(runScript),

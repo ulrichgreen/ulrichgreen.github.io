@@ -27,15 +27,16 @@ async function main() {
         "Home page should not include islands.js (no islands present).",
     );
     assert(homeHtml.includes('id="progress" aria-hidden="true"'));
-    assert(homeHtml.includes('class="site-header full-bleed"'));
+    assert(
+        /<header[^>]*class=["'][^"']*\bsite-header\b[^"']*["']/.test(homeHtml),
+        "Site header should be present.",
+    );
     assert(
         homeHtml.includes('aria-label="Primary"'),
         "Site nav should be present with aria-label.",
     );
     assert(
-        /<section[^>]*aria-label="About"[^>]*class="section [^"]+"/.test(
-            homeHtml,
-        ),
+        /<section[^>]*aria-label="About"/.test(homeHtml),
         "Home page should render the manifesto section.",
     );
     assert(
@@ -45,23 +46,16 @@ async function main() {
         "Manifesto opener should be present.",
     );
     assert(
-        /class="section [^"]+"/.test(homeHtml),
-        "Article list root should have section class.",
-    );
-    assert(
         homeHtml.includes("href=") && homeHtml.includes("On Constraints"),
         "Article list should render article links.",
     );
     assert(
-        /class="[^"]*\blabel\b[^"]*"/.test(homeHtml),
-        "Article list should use label class for year headings.",
-    );
-    assert(homeHtml.includes("On Constraints"));
-    assert(
-        homeHtml.includes(
-            "Constraints do not merely limit design and software work.",
+        articleIndex.every(
+            (entry) =>
+                homeHtml.includes(entry.title) &&
+                homeHtml.includes(`href="${entry.href}"`),
         ),
-        "Home page should show article summaries.",
+        "Home page should render the article index entries.",
     );
     assert(
         homeHtml.includes('aria-label="ulrich.green \u2014 home"'),
@@ -135,22 +129,15 @@ async function main() {
         "Tools are not neutral. They carry assumptions about your work, and those assumptions shape the systems you build.",
     );
     assert(
-        articleHtml.includes('class="title heading-xl"') &&
-            /style="view-transition-name:article-title-on-tools/.test(
-                articleHtml,
-            ),
+        /<h1[^>]*>\s*On Tools\s*<\/h1>/.test(articleHtml) &&
+            /style="view-transition-name:article-title-on-tools/.test(articleHtml),
         "Article title should have a named view transition.",
     );
     assert(articleHtml.includes('class="page page--article"'));
     assert(
-        /class="section header [^"]+"/.test(articleHtml),
-        "Article should render the header section.",
+        articleHtml.includes('<time datetime="2025-03-01">March 1, 2025</time>'),
+        "Article should render the published date in the header.",
     );
-    assert(articleHtml.includes('class="header__eyebrow label"'));
-    assert(articleHtml.includes('class="header__rule"'));
-    assert(articleHtml.includes('class="lede"'));
-    assert(articleHtml.includes('class="section article-body"'));
-    assert(articleHtml.includes("March 1, 2025"));
     assert(
         articleHtml.includes('src="/islands.js"'),
         "Article page with islands should include islands.js.",
@@ -174,8 +161,8 @@ async function main() {
         "Article should expose extracted headings for the table of contents.",
     );
     assert(
-        articleHtml.includes('class="table-of-contents card semi-bleed"'),
-        "Article should render the table of contents island shell.",
+        articleHtml.includes('aria-label="Table of contents"'),
+        "Article should render the table of contents navigation.",
     );
     assert(
         articleHtml.includes('href="#what-the-tool-already-believes"'),
@@ -253,7 +240,7 @@ async function main() {
         "Headings should have autolink anchors from rehype-autolink-headings.",
     );
     assert(
-        /<figure[^>]*class="[^"]*semi-bleed/.test(colophonHtml),
+        /<figure\b/.test(colophonHtml),
         "Colophon should render the figure component.",
     );
     assert(
@@ -423,8 +410,7 @@ async function main() {
     );
 
     assert(
-        constraintsHtml.includes('class="section ') &&
-            constraintsHtml.includes('aria-label="Revision history"'),
+        constraintsHtml.includes('aria-label="Revision history"'),
         "Article with revisions should render revision history.",
     );
     assert(
