@@ -11,7 +11,7 @@
         "check-links": "node --import tsx --import ./src/build/register-css-modules.ts ./test/verify-links.ts",
         "test": "node --import tsx --import ./src/build/register-css-modules.ts ./test/run-tests.ts",
         "typecheck": "tsc --noEmit",
-        "verify": "tsc --noEmit && node --import tsx --import ./src/build/register-css-modules.ts ./src/build/build.ts && node --import tsx --import ./src/build/register-css-modules.ts ./test/run-tests.ts",
+        "verify": "tsc --noEmit && node --import tsx --import ./src/build/register-css-modules.ts ./src/build/build.ts && node --import tsx --import ./src/build/register-css-modules.ts ./test/run-tests.ts --skip-build",
         "watch": "node --import tsx --import ./src/build/register-css-modules.ts ./src/build/dev.ts"
     },
     "keywords": [],
