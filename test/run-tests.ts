@@ -25,6 +25,7 @@ const integrationFiles = [
 // Co-located unit test files (run via node:test, each as a standalone process)
 const unitTestFiles = [
     "src/build/build-summary.test.ts",
+    "src/build/dev.test.ts",
     "src/build/performance-budgets.test.ts",
     "src/build/content/frontmatter.test.ts",
     "src/build/content/article-index.test.ts",

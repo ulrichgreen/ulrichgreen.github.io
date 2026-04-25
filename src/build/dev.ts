@@ -1,6 +1,6 @@
 import chokidar from "chokidar";
 import { spawn } from "node:child_process";
-import { existsSync, readFileSync } from "node:fs";
+import { existsSync, readFileSync, statSync } from "node:fs";
 import http from "node:http";
 import { extname, join, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
@@ -68,6 +68,64 @@ type RebuildKind =
     | "render"
     | "render-articles"
     | "full";
+
+interface DevServerFileResolution {
+    status: 200 | 400 | 404;
+    filePath?: string;
+}
+
+function isInsideDirectory(candidate: string, directory: string): boolean {
+    return candidate.startsWith(directory + sep) || candidate === directory;
+}
+
+export function resolveDevServerFilePath(
+    requestUrl: string | undefined,
+    directory = DIST,
+): DevServerFileResolution {
+    if (!requestUrl) return { status: 400 };
+
+    let pathname: string;
+    try {
+        const decodedRawPath = decodeURIComponent(requestUrl.split(/[?#]/, 1)[0]);
+        if (decodedRawPath.split("/").includes("..")) {
+            return { status: 400 };
+        }
+        pathname = decodeURIComponent(
+            new URL(requestUrl, "http://localhost").pathname,
+        );
+    } catch {
+        return { status: 400 };
+    }
+
+    if (pathname.includes("\0")) return { status: 400 };
+
+    let filePath = resolve(
+        directory,
+        pathname === "/" ? "index.html" : `.${pathname}`,
+    );
+    if (!isInsideDirectory(filePath, directory)) return { status: 400 };
+
+    if (!existsSync(filePath) || !statSync(filePath).isFile()) {
+        const candidate = resolve(directory, `.${pathname}`, "index.html");
+        if (
+            isInsideDirectory(candidate, directory) &&
+            existsSync(candidate) &&
+            statSync(candidate).isFile()
+        ) {
+            filePath = candidate;
+        }
+    }
+
+    if (
+        !existsSync(filePath) ||
+        !statSync(filePath).isFile() ||
+        !isInsideDirectory(filePath, directory)
+    ) {
+        return { status: 404 };
+    }
+
+    return { status: 200, filePath };
+}
 
 function classifyChange(changedPath: string): RebuildKind {
     if (changedPath.startsWith("content")) return "content";
@@ -145,30 +203,14 @@ function runFreshBuild(mode: FreshBuildMode): Promise<void> {
 }
 
 export function startDevServer(): void {
-    function isInsideDist(candidate: string): boolean {
-        return candidate.startsWith(DIST + sep) || candidate === DIST;
-    }
-
     const server = http.createServer((req, res) => {
-        if (!req.url) {
+        const resolved = resolveDevServerFilePath(req.url);
+        if (resolved.status === 400) {
             res.writeHead(400);
             res.end("Bad request");
             return;
         }
-
-        let filePath = resolve(DIST, req.url === "/" ? "index.html" : `.${req.url}`);
-        if (!isInsideDist(filePath)) {
-            res.writeHead(400);
-            res.end();
-            return;
-        }
-        if (!existsSync(filePath)) {
-            const candidate = resolve(DIST, `.${req.url}`, "index.html");
-            if (isInsideDist(candidate)) {
-                filePath = candidate;
-            }
-        }
-        if (!existsSync(filePath) || !isInsideDist(filePath)) {
+        if (resolved.status === 404 || !resolved.filePath) {
             const notFoundPage = join(DIST, "404.html");
             if (existsSync(notFoundPage)) {
                 let body = readFileSync(notFoundPage);
@@ -186,6 +228,7 @@ export function startDevServer(): void {
             return;
         }
 
+        const filePath = resolved.filePath;
         const mime = MIME[extname(filePath)] || "text/plain";
         let body = readFileSync(filePath);
         if (extname(filePath) === ".html") {
