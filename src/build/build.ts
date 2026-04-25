@@ -4,6 +4,11 @@ import {
     devAssetManifest,
     generateAssetManifest,
 } from "./assets/asset-manifest.ts";
+import {
+    listLargestOutputFiles,
+    sumOutputBytes,
+    writeBuildSummary,
+} from "./build-summary.ts";
 import { cleanDist } from "./clean.ts";
 import { buildAncillary } from "./artifacts/ancillary.ts";
 import { buildClient } from "./assets/client.ts";
@@ -21,12 +26,17 @@ import {
     listArticleEntriesFromBuiltContent,
 } from "./content/article-index.ts";
 import { articlesDirectory } from "./shared/paths.ts";
+import { validateContentContracts } from "./content/contracts.ts";
 
 export async function buildAll(options: { dev?: boolean } = {}): Promise<void> {
     const start = performance.now();
 
     if (!options.dev) cleanDist();
-    await Promise.all([buildCss(), buildClient(), buildImages()]);
+    const [, , imageSummary] = await Promise.all([
+        buildCss(),
+        buildClient(),
+        buildImages(),
+    ]);
     const manifest = options.dev ? devAssetManifest : generateAssetManifest();
 
     const sourceFiles = discoverSourceFiles();
@@ -35,9 +45,12 @@ export async function buildAll(options: { dev?: boolean } = {}): Promise<void> {
         failed.length === 0
             ? listArticleEntriesFromBuiltContent(compiled)
             : listArticleEntries(articlesDirectory);
+    if (failed.length === 0) {
+        validateContentContracts({ articleIndex, builtContent: compiled });
+    }
 
     cleanGeneratedPages();
-    writePages(compiled, articleIndex, manifest);
+    const pageSummary = writePages(compiled, articleIndex, manifest);
 
     if (failed.length > 0) {
         for (const { file, error } of failed) {
@@ -49,9 +62,20 @@ export async function buildAll(options: { dev?: boolean } = {}): Promise<void> {
     const compiledArticles = compiled.filter((c) =>
         c.sourcePath.includes("/articles/"),
     );
-    await buildAncillary(articleIndex, compiledArticles);
+    const ancillarySummary = await buildAncillary(articleIndex, compiledArticles);
     if (!options.dev) applyHashedFilenames(manifest);
     if (!options.dev) enforcePerformanceBudgets();
+    writeBuildSummary({
+        pageCount: pageSummary.pageCount,
+        articleCount: articleIndex.length,
+        feedEntries: ancillarySummary.feedEntries,
+        imageSummary,
+        cssBytes: sumOutputBytes([".css"]),
+        jsBytes: sumOutputBytes([".js"]),
+        islandPages: pageSummary.islandPages,
+        islands: pageSummary.islands,
+        largestFiles: listLargestOutputFiles(),
+    });
 
     const elapsed = ((performance.now() - start) / 1000).toFixed(2);
     process.stdout.write(`built ${compiled.length} pages in ${elapsed}s\n`);

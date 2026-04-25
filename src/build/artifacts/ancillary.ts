@@ -6,13 +6,18 @@ import { buildSitemap } from "./sitemap.ts";
 import { contentDirectory } from "../shared/paths.ts";
 import type { BuiltContent, ArticleIndexEntry } from "../../types/content.ts";
 
+export interface AncillaryBuildSummary {
+    feedEntries: number;
+}
+
 export async function buildAncillary(
     articleIndex: ArticleIndexEntry[],
     compiledArticles: BuiltContent[],
-): Promise<void> {
+): Promise<AncillaryBuildSummary> {
     buildSitemap(contentDirectory, articleIndex);
     buildRobots();
     buildHeaders();
     buildOgImage();
-    await buildFeed(articleIndex, compiledArticles);
+    const feedEntries = await buildFeed(articleIndex, compiledArticles);
+    return { feedEntries };
 }

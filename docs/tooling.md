@@ -101,6 +101,10 @@ If a dependency stops serving those constraints, it is replaceable.
 - **Why it was chosen:** the site wants one compiled stylesheet with modern CSS processing and minimal ceremony.
 - **How it fits the architecture:** it bundles and minifies the layered CSS source in `src/styles/` into the single stylesheet the built site ships.
 
+CSS modules use the same toolchain. Component files import `*.module.css` directly; `src/build/register-css-modules.ts` hooks Node's module resolver during build-time execution and points those imports at tiny generated modules in the system temp directory. The final stylesheet still comes from `src/styles/css-modules.ts`, which compiles all component CSS modules and appends their CSS to the site stylesheet.
+
+That split is intentionally narrow: TSX gets normal CSS-module class maps, while the browser still receives one static CSS file. If this can become simpler with platform or tooling support later, it should.
+
 ### esbuild
 
 - **Why it was chosen:** browser bundles should be fast to build and easy to understand.
@@ -146,5 +150,6 @@ At a high level, the toolchain breaks down like this:
 - **assets:** Lightning CSS + esbuild + sharp
 - **local development:** chokidar + ws
 - **execution:** Node.js + pnpm + tsx
+- **maintenance diagnostics:** `pnpm run audit-content`
 
 That combination supports the same architectural direction described in `architecture.md`: files in, static site out, with selective interactivity and explicit build-time guardrails.

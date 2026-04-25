@@ -25,7 +25,7 @@ function escapeCdata(text: string): string {
 export async function buildFeed(
     articleIndex: ArticleIndexEntry[],
     compiledArticles: BuiltContent[],
-): Promise<void> {
+): Promise<number> {
     const latestDate =
         articleIndex.length > 0
             ? toISOTimestamp(
@@ -94,4 +94,5 @@ export async function buildFeed(
     ].join("\n");
 
     writeDistFile("feed.xml", xml);
+    return entries.length;
 }

@@ -24,6 +24,21 @@ The output is plain HTML, CSS, fonts, images, and a couple of focused browser bu
 
 The build is organized as a few clear stages.
 
+```text
+content files
+  → discover source pages
+  → parse and validate frontmatter
+  → compile constrained MDX
+  → validate content contracts
+  → render complete HTML pages
+  → generate CSS, JS, image, feed, sitemap, robots, header, and social-card artifacts
+  → fingerprint production assets
+  → enforce performance budgets
+  → print a compact build summary
+```
+
+That is the whole shape: files in, static site out, with validation before anything becomes publishable.
+
 ### 1. Discover source pages
 
 Source pages are discovered from:
@@ -58,7 +73,18 @@ Content is intentionally constrained:
 
 The content compiler also applies the site’s markdown and code-block transforms so that headings, links, tables, and fenced code are rendered consistently.
 
-### 4. Render full pages
+### 4. Validate content contracts
+
+After content compiles, the build checks the authored archive as a whole:
+
+- article slugs must be unique
+- content paths must stay lowercase and kebab-cased
+- series ordering must be contiguous
+- local `/images/...` references must point at source files under `src/images/`
+
+These checks keep the authoring model plain while making broken references fail during the build.
+
+### 5. Render full pages
 
 Compiled content is rendered into full HTML documents through shared templates.
 
@@ -71,7 +97,7 @@ The render layer is responsible for:
 
 Pages are rendered at build time, not on request.
 
-### 5. Build assets
+### 6. Build assets
 
 The asset build runs alongside page compilation.
 
@@ -85,7 +111,7 @@ It produces:
 
 In production, emitted CSS and JavaScript filenames are fingerprinted so rendered pages can reference cache-friendly assets through a generated manifest.
 
-### 6. Generate ancillary artifacts
+### 7. Generate ancillary artifacts
 
 After the pages are written, the build generates the supporting files that belong to the site as a whole:
 
@@ -97,11 +123,13 @@ After the pages are written, the build generates the supporting files that belon
 
 These artifacts are derived from the same content metadata as the pages rather than being maintained by hand.
 
-### 7. Enforce output budgets
+### 8. Enforce output budgets
 
 The final `dist/` output is measured against size budgets for major asset classes.
 
 That keeps the architecture honest. Static-first only matters if the shipped site actually stays small.
+
+The build also prints a short summary after successful output: page and article counts, feed entries, aggregate CSS and JS sizes, image output counts, island usage, and the largest emitted files by asset class. The summary is observational; the budgets remain the enforcement mechanism.
 
 ## Rendering Model
 
@@ -150,6 +178,8 @@ Each island is:
 The current island system supports multiple hydration timings, including immediate, visible, idle, and interaction-driven hydration.
 
 This keeps interactivity opt-in and local. A page with no islands remains a static page with no island runtime cost.
+
+The build summary lists which island components were rendered and how many pages needed the island runtime. That keeps selective hydration visible instead of implicit.
 
 ## Content Model
 
@@ -208,6 +238,7 @@ The repository verifies the system in layers:
 - `pnpm run build` exercises the full static build and budget enforcement
 - `pnpm run test` runs both unit tests and rendered-output verifiers
 - `pnpm run verify` runs the full validation sequence in order
+- `pnpm run audit-content` prints read-only archive diagnostics for maintenance
 
 The tests cover both implementation details and emitted artifacts. That includes:
 

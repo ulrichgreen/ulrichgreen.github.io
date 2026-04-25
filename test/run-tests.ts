@@ -15,6 +15,7 @@ function nodeArgs(args: string[]): string[] {
 // Integration verifiers (each is a standalone script with its own output)
 const integrationFiles = [
     "test/verify-jsx-rendering.ts",
+    "test/verify-authoring-docs.ts",
     "test/verify-accessibility.ts",
     "test/verify-links.ts",
     "test/verify-feed.ts",
@@ -23,10 +24,14 @@ const integrationFiles = [
 
 // Co-located unit test files (run via node:test, each as a standalone process)
 const unitTestFiles = [
+    "src/build/build-summary.test.ts",
+    "src/build/dev.test.ts",
     "src/build/performance-budgets.test.ts",
     "src/build/content/frontmatter.test.ts",
     "src/build/content/article-index.test.ts",
+    "src/build/content/audit.test.ts",
     "src/build/content/build-content.test.ts",
+    "src/build/content/contracts.test.ts",
     "src/build/content/discover.test.ts",
     "src/build/content/series-index.test.ts",
 ];

@@ -20,6 +20,11 @@ interface ProcessedImage {
     outputs: string[];
 }
 
+export interface ImageBuildSummary {
+    sourceCount: number;
+    outputCount: number;
+}
+
 async function processImage(
     sourcePath: string,
     destDir: string,
@@ -76,8 +81,10 @@ async function processImage(
     return { source: sourcePath, outputs };
 }
 
-export async function buildImages(): Promise<void> {
-    if (!existsSync(imagesDir)) return;
+export async function buildImages(): Promise<ImageBuildSummary> {
+    if (!existsSync(imagesDir)) {
+        return { sourceCount: 0, outputCount: 0 };
+    }
 
     mkdirSync(distImagesDir, { recursive: true });
 
@@ -94,4 +101,5 @@ export async function buildImages(): Promise<void> {
     process.stdout.write(
         `  images: ${files.length} source → ${totalOutputs} output files\n`,
     );
+    return { sourceCount: files.length, outputCount: totalOutputs };
 }

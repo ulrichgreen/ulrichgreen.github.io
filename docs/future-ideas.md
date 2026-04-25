@@ -18,12 +18,6 @@ An optional `related` frontmatter field — an array of article slugs rendered a
 
 An `ArticleLink` content component that resolves an article by slug and renders a validated internal link. Worth considering alongside a more general broken-link checker that would catch non-article links too.
 
-### Content Audit Report
-
-A `pnpm audit-content` command that prints archive diagnostics: word counts, missing descriptions, stale articles, series gaps, draft status. Read-only, maintenance-useful. Not needed while the archive is small.
-
----
-
 ## Build
 
 ### Incremental Rebuild Caching

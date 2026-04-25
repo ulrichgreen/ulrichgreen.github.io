@@ -11,6 +11,13 @@ import {
     type RenderContextValue,
 } from "../../context/render-context.tsx";
 
+export type IslandUsage = Record<string, number>;
+
+export interface RenderedPage {
+    html: string;
+    islands: IslandUsage;
+}
+
 function derivePagePath(sourcePath: string): string {
     const marker = "/content/";
     const idx = sourcePath.indexOf(marker);
@@ -24,13 +31,20 @@ function createRenderContext(
     articleIndex: ArticleIndexEntry[],
     assetManifest: AssetManifest,
     content: BuiltContent,
-): { context: RenderContextValue; hasIslands: () => boolean } {
-    let islandCount = 0;
+): {
+    context: RenderContextValue;
+    hasIslands: () => boolean;
+    getIslandUsage: () => IslandUsage;
+} {
+    const islands = new Map<string, number>();
     const registerIsland = ({ name }: RegisterIslandInput): string => {
-        islandCount += 1;
-        return `${name.toLowerCase()}-${islandCount}`;
+        const count = (islands.get(name) ?? 0) + 1;
+        islands.set(name, count);
+        return `${name.toLowerCase()}-${count}`;
     };
-    const hasIslands = () => islandCount > 0;
+    const hasIslands = () => islands.size > 0;
+    const getIslandUsage = () =>
+        Object.fromEntries(islands.entries()) as IslandUsage;
     return {
         context: {
             articleIndex,
@@ -40,6 +54,7 @@ function createRenderContext(
             hasIslands,
         },
         hasIslands,
+        getIslandUsage,
     };
 }
 
@@ -63,7 +78,25 @@ export function renderPage(
     assetManifest: AssetManifest = defaultAssetManifest,
     seriesInfo?: SeriesInfo,
 ): string {
-    const { context } = createRenderContext(articleIndex, assetManifest, content);
+    return renderPageWithMetadata(
+        content,
+        articleIndex,
+        assetManifest,
+        seriesInfo,
+    ).html;
+}
+
+export function renderPageWithMetadata(
+    content: BuiltContent,
+    articleIndex: ArticleIndexEntry[],
+    assetManifest: AssetManifest = defaultAssetManifest,
+    seriesInfo?: SeriesInfo,
+): RenderedPage {
+    const { context, getIslandUsage } = createRenderContext(
+        articleIndex,
+        assetManifest,
+        content,
+    );
 
     const meta = {
         ...content.meta,
@@ -76,7 +109,10 @@ export function renderPage(
 
     const page = renderLayout(meta, body, seriesInfo);
 
-    return `<!doctype html>\n${renderToStaticMarkup(
-        <RenderContext.Provider value={context}>{page}</RenderContext.Provider>,
-    )}`;
+    return {
+        html: `<!doctype html>\n${renderToStaticMarkup(
+            <RenderContext.Provider value={context}>{page}</RenderContext.Provider>,
+        )}`,
+        islands: getIslandUsage(),
+    };
 }

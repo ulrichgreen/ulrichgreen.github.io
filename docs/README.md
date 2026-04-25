@@ -11,7 +11,7 @@ This folder holds the project's planning and reference documents. Each file has 
 | `architecture.md`      | How the build pipeline, repo layout, and content model work.                                                             |
 | `component-pattern.md` | Recipe for structuring standalone components around colocated TSX and CSS modules.                                       |
 | `tooling.md`           | Current tool choices and why they fit.                                                                                   |
-| `writing-guide.md`     | Authoring reference for MDX frontmatter, approved content components, images, series metadata, revisions, and footnotes. |
+| `writing-guide.md`     | Authoring reference for MDX frontmatter, approved content components, images, series metadata, revisions, footnotes, and content audits. |
 | `roadmap.md`           | Planned work, in rough priority order.                                                                                   |
 | `future-ideas.md`      | Ideas worth remembering but not worth building yet.                                                                      |
 
