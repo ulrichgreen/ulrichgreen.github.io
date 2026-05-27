@@ -63,8 +63,8 @@ export function Picture({
 }: PictureProps) {
     return (
         <picture className={className}>
-            {srcAvif && <source type="image/avif" srcSet={srcAvif} sizes={sizes} />}
-            {srcWebp && <source type="image/webp" srcSet={srcWebp} sizes={sizes} />}
+            {srcAvif && <source type="image/avif" srcSet={srcAvif} />}
+            {srcWebp && <source type="image/webp" srcSet={srcWebp} />}
             <img
                 src={src}
                 alt={alt}
