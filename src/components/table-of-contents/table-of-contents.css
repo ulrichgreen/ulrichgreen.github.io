@@ -1,14 +1,18 @@
 @layer components {
     .table-of-contents {
-        --toc-max-height: calc(100vh - var(--layout-header-height) - (2 * var(--space-2)));
+        --table-of-contents-max-block-size: calc(100vh - var(--layout-header-height) - (2 * var(--space-2)));
         position: sticky;
         inset-block-start: calc(var(--layout-header-height) + var(--space-2));
-        max-block-size: var(--toc-max-height);
+        max-block-size: var(--table-of-contents-max-block-size);
         margin-block: var(--space-4);
         overflow: auto;
     }
 
-    .table-of-contents__heading { margin: 0; color: var(--color-text-primary); }
+    .table-of-contents__heading {
+        margin: 0;
+        color: var(--color-text-primary);
+        font-style: normal;
+    }
 
     .table-of-contents__nav {
         margin-block-start: var(--space-3);

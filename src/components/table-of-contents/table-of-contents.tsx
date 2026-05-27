@@ -8,7 +8,7 @@ export function TableOfContents() {
 
     return (
         <aside className="table-of-contents card semi-bleed">
-            <p className="table-of-contents__heading label">On this page</p>
+            <h2 className="table-of-contents__heading label">On this page</h2>
             <nav
                 className="table-of-contents__nav"
                 aria-label="Table of contents"
