@@ -6,13 +6,13 @@ These are not roadmap commitments. They are implementation outlines for ideas th
 
 ## Selection Criteria
 
-Each approach should only move forward if it:
+Move an approach forward only when it would do all of the following:
 
-- makes the authored source easier to understand
-- removes at least as much machinery as it adds
-- keeps the static-first architecture intact
-- keeps content closer to documents than applications
-- makes future changes easier to review and explain
+- make the authored source easier to understand
+- remove at least as much machinery as it adds
+- keep the static-first architecture intact
+- keep content closer to documents than applications
+- make future changes easier to review and explain
 
 ## 1. Content Archetypes Instead of Scaffolding Logic
 
@@ -475,5 +475,7 @@ If all seven approaches are implemented well, the repository could remove or avo
 5. Add dead selector detection.
 6. Prefer authored navigation and prune conflicting future taxonomy ideas.
 7. Consider the site graph only after smaller derivation cleanups prove the need.
+
+The site graph is warranted when article indexes, routes, series data, draft filtering, and artifact inputs still require repeated manual coordination across multiple build stages after simpler consolidation work.
 
 That order starts with documentation and low-risk deletion before attempting larger build data-flow changes.
